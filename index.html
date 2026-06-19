@@ -701,280 +701,245 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 
 <!-- ── JAVASCRIPT ── -->
 <script>
-(function () {
-  'use strict';
+(function(){
+'use strict';
 
-  /* ─── Estado global da sessão ─── */
-  var STATE = {
-    utms: {},
-    fbclid: null,
-    gclid: null,
-    fbp: null,
-    fbc: null,
-    geo: null,
-    device: {},
-    leadData: null, // dados pessoais preenchidos
-    timeStart: Date.now(),
+var CONFIG={pixelId:'2152403845552453',apiEndpoint:'/api/lead',productName:'Guia Investidor Studios SP',productCategory:'guia_studios_sp',lpSlug:'guia-investidor-studios-sp'};
+var STATE={utms:{},fbc:null,fbp:null,fbclid:null,gclid:null,geo:null,device:{},engagement:{maxScroll:0,sectionsViewed:[],ctaClicks:0,timeStart:Date.now(),formStartTime:null}};
+function captureUTMs(){var p=new URLSearchParams(window.location.search);['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){var v=p.get(k);if(v)STATE.utms[k]=v});STATE.fbclid=p.get('fbclid');STATE.gclid=p.get('gclid');if(STATE.fbclid&&!getCookie('_fbc'))STATE.fbc='fb.1.'+Date.now()+'.'+STATE.fbclid}
+function captureCookies(){STATE.fbp=getCookie('_fbp');STATE.fbc=STATE.fbc||getCookie('_fbc')}
+function getCookie(n){var m=document.cookie.match(new RegExp('(^| )'+n+'=([^;]+)'));return m?decodeURIComponent(m[2]):null}
+function captureDevice(){STATE.device={userAgent:navigator.userAgent,screenResolution:screen.width+'x'+screen.height,viewport:window.innerWidth+'x'+window.innerHeight,language:navigator.language,platform:navigator.platform||'unknown',referrer:document.referrer}}
+function requestGeolocation(){if(!navigator.geolocation)return;navigator.geolocation.getCurrentPosition(function(pos){STATE.geo={latitude:pos.coords.latitude,longitude:pos.coords.longitude,accuracy:pos.coords.accuracy};fetch('https://nominatim.openstreetmap.org/reverse?lat='+pos.coords.latitude+'&lon='+pos.coords.longitude+'&format=json&addressdetails=1',{headers:{'Accept-Language':'pt-BR'}}).then(function(r){return r.json()}).then(function(d){if(d.address){STATE.geo.city=d.address.city||d.address.town||d.address.municipality||'';STATE.geo.state=d.address.state||'';STATE.geo.stateCode=getStateCode(STATE.geo.state);STATE.geo.zip=(d.address.postcode||'').replace(/\D/g,'');STATE.geo.country=d.address.country_code||'br';STATE.geo.country_name=d.address.country||'Brasil'}}).catch(function(){})},function(){},{enableHighAccuracy:false,timeout:8000,maximumAge:300000})}
+function setupScrollTracking(){var thresholds=[25,50,75,100],fired={},last=0;window.addEventListener('scroll',function(){var now=Date.now();if(now-last<200)return;last=now;var st=window.scrollY||document.documentElement.scrollTop,dh=document.documentElement.scrollHeight-window.innerHeight,pct=Math.round((st/dh)*100);if(pct>STATE.engagement.maxScroll)STATE.engagement.maxScroll=pct;thresholds.forEach(function(t){if(pct>=t&&!fired[t]){fired[t]=true;if(typeof fbq!=='undefined')fbq('trackCustom','ScrollDepth',{percent:t,page:CONFIG.lpSlug})}})},{passive:true})}
+function setupSectionObservers(){var secs=document.querySelectorAll('[data-track-section]');if(!window.IntersectionObserver)return;var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var n=e.target.getAttribute('data-track-section');if(STATE.engagement.sectionsViewed.indexOf(n)===-1){STATE.engagement.sectionsViewed.push(n);if(typeof fbq!=='undefined')fbq('track','ViewContent',{content_name:n,content_type:'section',content_category:CONFIG.productCategory})}obs.unobserve(e.target)}})},{threshold:0.5});secs.forEach(function(s){obs.observe(s)})}
+function setupCTATracking(){document.querySelectorAll('[data-track-cta]').forEach(function(b){b.addEventListener('click',function(){STATE.engagement.ctaClicks++;var cn=b.getAttribute('data-track-cta')||'cta';if(typeof fbq!=='undefined')fbq('track','AddToWishlist',{content_name:cn,content_type:'cta_click',content_category:CONFIG.productCategory})})})}
+function setupFormTracking(){var f=document.querySelector('[data-track-form]');if(!f)return;var started=false;f.querySelectorAll('input').forEach(function(field){field.addEventListener('focus',function(){if(!started){started=true;STATE.engagement.formStartTime=Date.now();if(typeof fbq!=='undefined')fbq('track','InitiateCheckout',{content_name:'form_start',content_type:'lead_form',content_category:CONFIG.productCategory})}})})}
+function setupPhoneMask(){var ph=document.getElementById('fw');if(!ph)return;ph.addEventListener('input',function(e){var v=e.target.value.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);if(v.length>6)v='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);else if(v.length>2)v='('+v.slice(0,2)+') '+v.slice(2);else if(v.length>0)v='('+v;e.target.value=v})}
+function generateUUID(){if(crypto&&crypto.randomUUID)return crypto.randomUUID();return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16)})}
+function getStateCode(s){var m={'acre':'ac','alagoas':'al','amapá':'ap','amazonas':'am','bahia':'ba','ceará':'ce','distrito federal':'df','espírito santo':'es','goiás':'go','maranhão':'ma','mato grosso':'mt','mato grosso do sul':'ms','minas gerais':'mg','pará':'pa','paraíba':'pb','paraná':'pr','pernambuco':'pe','piauí':'pi','rio de janeiro':'rj','rio grande do norte':'rn','rio grande do sul':'rs','rondônia':'ro','roraima':'rr','santa catarina':'sc','são paulo':'sp','sergipe':'se','tocantins':'to'};return m[(s||'').toLowerCase()]||''}
+// SUBMIT com tracking completo
+
+function generateUUID(){if(crypto&&crypto.randomUUID)return crypto.randomUUID();return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16)})}
+
+function getStateCode(s){var m={'acre':'ac','alagoas':'al','amapá':'ap','amazonas':'am','bahia':'ba','ceará':'ce','distrito federal':'df','espírito santo':'es','goiás':'go','maranhão':'ma','mato grosso':'mt','mato grosso do sul':'ms','minas gerais':'mg','pará':'pa','paraíba':'pb','paraná':'pr','pernambuco':'pe','piauí':'pi','rio de janeiro':'rj','rio grande do norte':'rn','rio grande do sul':'rs','rondônia':'ro','roraima':'rr','santa catarina':'sc','são paulo':'sp','sergipe':'se','tocantins':'to'};return m[(s||'').toLowerCase()]||''}
+
+
+/* ─── Estado global da sessão (alias para novo código) ─── */
+// STATE já declarado acima via CONFIG/STATE original
+
+/* ─── Submit do formulário (ebook) ─── */
+window.submitLead = function () {
+  var name  = document.getElementById('fn').value.trim();
+  var phone = document.getElementById('fw').value.trim();
+  var email = document.getElementById('fe').value.trim();
+
+  if (!name || !phone || !email) {
+    alert('Preencha todos os campos para receber o guia.');
+    return;
+  }
+
+  // Salva dados para reusar no popup e no botão WA
+  STATE.leadData = STATE.leadData || {};
+  STATE.leadData.name  = name;
+  STATE.leadData.email = email;
+  STATE.leadData.phone = phone;
+
+  var btn = document.getElementById('btn-submit');
+  btn.disabled    = true;
+  btn.textContent = 'Enviando...';
+
+  var eventId = generateUUID();
+  var leadId  = generateUUID();
+  var parts     = name.split(/\s+/);
+  var firstName = parts[0] || '';
+  var lastName  = parts.slice(1).join(' ') || '';
+  var phoneDigits = phone.replace(/\D/g, '');
+  var phoneE164   = phoneDigits.startsWith('55') ? '+' + phoneDigits : '+55' + phoneDigits;
+
+  captureCookies();
+
+  // 1. Pixel browser + Advanced Matching
+  if (typeof fbq !== 'undefined') {
+    fbq('init', CONFIG.pixelId, {
+      em: email.toLowerCase().trim(),
+      ph: phoneE164,
+      fn: firstName.toLowerCase(),
+      ln: lastName.toLowerCase(),
+      ct: ((STATE.geo && STATE.geo.city)      || '').toLowerCase(),
+      st: ((STATE.geo && STATE.geo.stateCode) || '').toLowerCase(),
+      zp: (STATE.geo && STATE.geo.zip) || '',
+      country: (STATE.geo && STATE.geo.country) || 'br',
+      external_id: leadId,
+    });
+    fbq('track', 'Lead', {
+      content_name:     CONFIG.productName,
+      content_category: CONFIG.productCategory,
+      value:    0,
+      currency: 'BRL',
+    }, { eventID: eventId });
+  }
+
+  // 2. Cloudflare Function → Clint + Meta CAPI
+  var payload = {
+    name:         name,
+    email:        email.toLowerCase().trim(),
+    phone:        phone,
+    city:         (STATE.geo && STATE.geo.city)    || '',
+    state:        (STATE.geo && STATE.geo.state)   || '',
+    country:      (STATE.geo && STATE.geo.country) || 'br',
+    utm_source:   STATE.utms.utm_source   || '',
+    utm_medium:   STATE.utms.utm_medium   || '',
+    utm_campaign: STATE.utms.utm_campaign || '',
+    utm_content:  STATE.utms.utm_content  || '',
+    utm_term:     STATE.utms.utm_term     || '',
+    fbp:          STATE.fbp || '',
+    fbc:          STATE.fbc || '',
+    event_id:     eventId,
+    page_url:     window.location.href,
+    webinar_accept: 'Não',
   };
 
-  /* ─── Captura UTMs ─── */
-  function captureUTMs() {
-    var p = new URLSearchParams(window.location.search);
-    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function (k) {
-      var v = p.get(k);
-      if (v) STATE.utms[k] = v;
+  fetch(CONFIG.apiEndpoint, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  })
+    .then(function(r){ return r.json(); })
+    .then(function(d){ console.log('Lead enviado:', d); })
+    .catch(function(err){
+      try {
+        var fl = JSON.parse(localStorage.getItem('_fl') || '[]');
+        fl.push(payload);
+        localStorage.setItem('_fl', JSON.stringify(fl));
+      } catch(e){}
     });
-    STATE.fbclid = p.get('fbclid');
-    STATE.gclid  = p.get('gclid');
-  }
 
-  /* ─── Captura cookies Meta ─── */
-  function captureCookies() {
-    STATE.fbp = getCookie('_fbp');
-    STATE.fbc = STATE.fbc || getCookie('_fbc');
-    if (STATE.fbclid && !STATE.fbc) {
-      STATE.fbc = 'fb.1.' + Date.now() + '.' + STATE.fbclid;
-    }
-  }
+  // Mostra sucesso
+  document.getElementById('form-fields').style.display = 'none';
+  document.getElementById('success').style.display = 'block';
 
-  function getCookie(n) {
-    var m = document.cookie.match(new RegExp('(^| )' + n + '=([^;]+)'));
-    return m ? decodeURIComponent(m[2]) : null;
-  }
+  // Atualiza steps
+  document.getElementById('step-1').classList.remove('active');
+  document.getElementById('step-2').classList.add('active');
 
-  /* ─── Captura device ─── */
-  function captureDevice() {
-    STATE.device = {
-      userAgent:        navigator.userAgent,
-      screenResolution: screen.width + 'x' + screen.height,
-      viewport:         window.innerWidth + 'x' + window.innerHeight,
-      language:         navigator.language,
-      referrer:         document.referrer,
-    };
-  }
+  // Abre popup webinário após 1.8s
+  setTimeout(function(){ openWebinarModal(); }, 1800);
+};
 
-  /* ─── Geolocalização via Nominatim ─── */
-  function requestGeolocation() {
-    if (!navigator.geolocation) return;
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      STATE.geo = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
-      fetch(
-        'https://nominatim.openstreetmap.org/reverse?lat=' + pos.coords.latitude +
-        '&lon=' + pos.coords.longitude + '&format=json&addressdetails=1',
-        { headers: { 'Accept-Language': 'pt-BR' } }
-      )
-        .then(function (r) { return r.json(); })
-        .then(function (d) {
-          if (d.address) {
-            STATE.geo.city    = d.address.city || d.address.town || d.address.municipality || '';
-            STATE.geo.state   = d.address.state || '';
-            STATE.geo.zip     = (d.address.postcode || '').replace(/\D/g, '');
-            STATE.geo.country = d.address.country_code || 'br';
-          }
-        })
-        .catch(function () {});
-    }, function () {}, { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
-  }
+/* ─── Abre modal do webinário ─── */
+function openWebinarModal() {
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('step-2').classList.remove('active');
+  document.getElementById('step-3').classList.add('active');
+}
 
-  /* ─── Máscara WhatsApp ─── */
-  function setupPhoneMask() {
-    var ph = document.getElementById('fw');
-    if (!ph) return;
-    ph.addEventListener('input', function (e) {
-      var v = e.target.value.replace(/\D/g, '');
-      if (v.length > 11) v = v.slice(0, 11);
-      if      (v.length > 6) v = '(' + v.slice(0, 2) + ') ' + v.slice(2, 7) + '-' + v.slice(7);
-      else if (v.length > 2) v = '(' + v.slice(0, 2) + ') ' + v.slice(2);
-      else if (v.length > 0) v = '(' + v;
-      e.target.value = v;
+/* ─── Aceita webinário ─── */
+window.acceptWebinar = function () {
+  var btn = document.getElementById('btn-webinar-accept');
+  btn.disabled    = true;
+  btn.textContent = 'Confirmando...';
+
+  if (typeof fbq !== 'undefined') {
+    fbq('track', 'CompleteRegistration', {
+      content_name: 'Webinário 24/06/2026',
+      status: 'confirmed',
     });
   }
 
-  /* ─── UUID simples ─── */
-  function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = (Math.random() * 16) | 0;
-      return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-    });
-  }
-
-  /* ─── Envia para /api/lead (Cloudflare Pages Function) ─── */
-  function sendLead(extraFields, callback) {
-    var payload = Object.assign(
-      {},
-      {
-        name:         STATE.leadData.name,
-        email:        STATE.leadData.email,
-        phone:        STATE.leadData.phone,
-        city:         (STATE.geo && STATE.geo.city)    || '',
-        state:        (STATE.geo && STATE.geo.state)   || '',
-        country:      (STATE.geo && STATE.geo.country) || 'br',
-        utm_source:   STATE.utms.utm_source   || '',
-        utm_medium:   STATE.utms.utm_medium   || '',
-        utm_campaign: STATE.utms.utm_campaign || '',
-        utm_content:  STATE.utms.utm_content  || '',
-        utm_term:     STATE.utms.utm_term     || '',
-        fbp:          STATE.fbp || '',
-        fbc:          STATE.fbc || '',
-        event_id:     generateUUID(),
-        page_url:     window.location.href,
-        webinar_accept: 'Não', // padrão; sobrescrito se aceitar
-      },
-      extraFields
-    );
-
-    fetch('/api/lead', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(payload),
-    })
-      .then(function (r) { return r.json(); })
-      .then(function (d) { if (callback) callback(null, d); })
-      .catch(function (err) {
-        // Salva localmente em caso de falha
-        try {
-          var fl = JSON.parse(localStorage.getItem('_fl') || '[]');
-          fl.push(payload);
-          localStorage.setItem('_fl', JSON.stringify(fl));
-        } catch (e) {}
-        if (callback) callback(err, null);
-      });
-  }
-
-  /* ─── Submit do formulário (ebook) ─── */
-  window.submitLead = function () {
-    var name  = document.getElementById('fn').value.trim();
-    var phone = document.getElementById('fw').value.trim();
-    var email = document.getElementById('fe').value.trim();
-
-    if (!name || !phone || !email) {
-      alert('Preencha todos os campos para receber o guia.');
-      return;
-    }
-
-    // Salva em STATE para reusar no popup
-    STATE.leadData = { name: name, phone: phone, email: email };
-
-    // Desabilita botão
-    var btn = document.getElementById('btn-submit');
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
-
-    // Pixel browser
-    if (typeof fbq !== 'undefined') {
-      fbq('track', 'Lead', {
-        content_name:     'Guia Studios SP',
-        content_category: 'guia_studios_sp',
-        value: 0,
-        currency: 'BRL',
-      });
-    }
-
-    // Envia com webinar_accept = "Não" (default)
-    sendLead({ webinar_accept: 'Não' }, function () {
-      // Mostra sucesso no fcard
-      document.getElementById('form-fields').style.display = 'none';
-      document.getElementById('success').style.display = 'block';
-
-      // Atualiza steps
-      document.getElementById('step-1').classList.remove('active');
-      document.getElementById('step-2').classList.add('active');
-
-      // Abre popup do webinário após 1.8s
-      setTimeout(function () {
-        openWebinarModal();
-      }, 1800);
-    });
+  var payload = {
+    name:         (STATE.leadData && STATE.leadData.name)  || '',
+    email:        (STATE.leadData && STATE.leadData.email) || '',
+    phone:        (STATE.leadData && STATE.leadData.phone) || '',
+    city:         (STATE.geo && STATE.geo.city)    || '',
+    state:        (STATE.geo && STATE.geo.state)   || '',
+    country:      (STATE.geo && STATE.geo.country) || 'br',
+    utm_source:   STATE.utms.utm_source   || '',
+    utm_medium:   STATE.utms.utm_medium   || '',
+    utm_campaign: STATE.utms.utm_campaign || '',
+    utm_content:  STATE.utms.utm_content  || '',
+    utm_term:     STATE.utms.utm_term     || '',
+    fbp:          STATE.fbp || '',
+    fbc:          STATE.fbc || '',
+    event_id:     generateUUID(),
+    page_url:     window.location.href,
+    webinar_accept: 'Sim',
   };
 
-  /* ─── Abre modal do webinário ─── */
-  function openWebinarModal() {
-    document.getElementById('modal-overlay').classList.add('open');
-    document.getElementById('step-2').classList.remove('active');
-    document.getElementById('step-3').classList.add('active');
-  }
+  fetch(CONFIG.apiEndpoint, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  })
+    .then(function(r){ return r.json(); })
+    .catch(function(){});
 
-  /* ─── Aceita webinário ─── */
-  window.acceptWebinar = function () {
-    var btn = document.getElementById('btn-webinar-accept');
-    btn.disabled = true;
-    btn.textContent = 'Confirmando...';
+  document.getElementById('modal-content').style.display = 'none';
+  document.getElementById('modal-success').style.display = 'block';
+};
 
-    // Pixel browser
-    if (typeof fbq !== 'undefined') {
-      fbq('track', 'CompleteRegistration', {
-        content_name: 'Webinário 24/06/2026',
-        status: 'confirmed',
-      });
-    }
+/* ─── Pula webinário ─── */
+window.skipWebinar = function () {
+  document.getElementById('modal-overlay').classList.remove('open');
+};
 
-    // Envia com webinar_accept = "Sim"
-    sendLead({ webinar_accept: 'Sim' }, function () {
-      document.getElementById('modal-content').style.display = 'none';
-      document.getElementById('modal-success').style.display = 'block';
+/* ─── Fecha modal clicando fora ─── */
+document.getElementById('modal-overlay').addEventListener('click', function(e){
+  if (e.target === this) skipWebinar();
+});
+
+/* ─── WhatsApp flutuante ─── */
+function trackWAClick() {
+  if (typeof fbq !== 'undefined') {
+    fbq('track', 'Contact', {
+      content_name:     'whatsapp_float',
+      content_category: 'wa_click',
     });
-  };
-
-  /* ─── Pula webinário ─── */
-  window.skipWebinar = function () {
-    document.getElementById('modal-overlay').classList.remove('open');
-  };
-
-  /* ─── Fecha modal clicando fora ─── */
-  document.getElementById('modal-overlay').addEventListener('click', function (e) {
-    if (e.target === this) skipWebinar();
-  });
-
-
-  /* ─── WhatsApp flutuante ─── */
-  function trackWAClick() {
-    // Evento Meta pixel (browser)
-    if (typeof fbq !== 'undefined') {
-      fbq('track', 'Contact', {
-        content_name: 'whatsapp_float',
-        content_category: 'wa_click',
-      });
-    }
-    // Evento Meta CAPI via /api/lead
-    // Só envia se já tivermos dados do lead (após conversão)
-    // Senão envia só com dados de sessão
-    var payload = {
-      name:         (STATE.leadData && STATE.leadData.name)  || '',
-      email:        (STATE.leadData && STATE.leadData.email) || '',
-      phone:        (STATE.leadData && STATE.leadData.phone) || '',
-      city:         (STATE.geo && STATE.geo.city)    || '',
-      state:        (STATE.geo && STATE.geo.state)   || '',
-      country:      (STATE.geo && STATE.geo.country) || 'br',
-      utm_source:   STATE.utms.utm_source   || '',
-      utm_medium:   STATE.utms.utm_medium   || '',
-      utm_campaign: STATE.utms.utm_campaign || '',
-      utm_content:  STATE.utms.utm_content  || '',
-      utm_term:     STATE.utms.utm_term     || '',
-      fbp:          STATE.fbp  || '',
-      fbc:          STATE.fbc  || '',
-      event_id:     generateUUID(),
-      page_url:     window.location.href,
-      webinar_accept: 'wa_contact',
-    };
-    fetch('/api/lead', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(payload),
-    }).catch(function(){});
   }
+  var payload = {
+    name:         (STATE.leadData && STATE.leadData.name)  || '',
+    email:        (STATE.leadData && STATE.leadData.email) || '',
+    phone:        (STATE.leadData && STATE.leadData.phone) || '',
+    city:         (STATE.geo && STATE.geo.city)    || '',
+    state:        (STATE.geo && STATE.geo.state)   || '',
+    country:      (STATE.geo && STATE.geo.country) || 'br',
+    utm_source:   STATE.utms.utm_source   || '',
+    utm_medium:   STATE.utms.utm_medium   || '',
+    utm_campaign: STATE.utms.utm_campaign || '',
+    utm_content:  STATE.utms.utm_content  || '',
+    utm_term:     STATE.utms.utm_term     || '',
+    fbp:          STATE.fbp  || '',
+    fbc:          STATE.fbc  || '',
+    event_id:     generateUUID(),
+    page_url:     window.location.href,
+    webinar_accept: 'wa_contact',
+  };
+  fetch(CONFIG.apiEndpoint, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  }).catch(function(){});
+}
 
-  /* Exibe botão WA após 3s */
-  setTimeout(function () {
+/* ─── Init ─── */
+captureUTMs();
+captureCookies();
+captureDevice();
+requestGeolocation();
+setupPhoneMask();
+document.addEventListener('DOMContentLoaded', function(){
+  setupScrollTracking();
+  setupSectionObservers();
+  setupCTATracking();
+  setupFormTracking();
+
+  // Exibe botão WA após 3s
+  setTimeout(function(){
     var btn = document.getElementById('wa-float');
     if (btn) btn.classList.add('visible');
   }, 3000);
+});
 
-  /* ─── Init ─── */
-  captureUTMs();
-  captureCookies();
-  captureDevice();
-  requestGeolocation();
-  setupPhoneMask();
 })();
 </script>
 </body>
