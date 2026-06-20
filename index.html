@@ -273,15 +273,40 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   height:28px;
   fill:#fff;
 }
-@media(max-width:480px){
-  .wa-float{bottom:20px;right:16px;width:50px;height:50px}
-  .wa-float svg{width:24px;height:24px}
+
+/* ── BADGE EBOOK MOBILE ── */
+.ebook-float-mobile{
+  display:none;
+  align-items:center;
+  gap:14px;
+  background:var(--navy-2);
+  border-top:1px solid var(--gold-brd);
+  border-bottom:1px solid var(--gold-brd);
+  padding:12px 20px;
+  width:100%;
+}
+.ebook-float-mobile .ebook-cover{
+  width:40px;
+  height:52px;
+  flex-shrink:0;
+}
+.ebook-float-mobile .ebook-meta small{
+  display:block;
+  font-family:'DM Mono',monospace;
+  font-size:8px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:4px;
+}
+.ebook-float-mobile .ebook-meta p{
+  font-size:12px;
+  font-weight:500;
+  line-height:1.3;
+  color:#fff;
+  margin:0;
 }
 
-/* ANIM */
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
-/* RESPONSIVE — tablet */
 @media(max-width:960px){
   /* Nav */
   nav{padding:0 20px}
@@ -299,9 +324,10 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   .hero-tag{top:50px;font-size:9px;padding:5px 12px}
   .hero-h1-wrap{position:absolute;bottom:105px;left:20px;right:20px}
   .hero-h1{font-size:clamp(22px,5.5vw,36px)}
-  .ebook-float{bottom:16px;left:16px;right:16px;max-width:100%;padding:10px 14px;gap:12px}
-  .ebook-meta p{font-size:12px}
+  /* ebook-float oculto por herança do 960px */
+  .ebook-float{display:none}
   .sp-pulse{display:none}
+  .ebook-float-mobile{display:flex}
 
   /* Form col */
   .hero-form-col{padding:36px 20px}
@@ -342,7 +368,6 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   .webinar-card{padding:16px 18px}
 }
 
-/* RESPONSIVE — mobile pequeno */
 @media(max-width:480px){
   /* Nav */
   nav{padding:0 16px;height:54px}
@@ -358,7 +383,6 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   .hero-tag{top:44px;font-size:8px;padding:4px 10px}
   .hero-h1-wrap{position:absolute;bottom:12px;left:14px;right:14px}
   .hero-h1{font-size:clamp(19px,6vw,26px);line-height:1.1}
-  .ebook-float{display:none}
 
   /* Form */
   .hero-form-col{padding:28px 16px}
@@ -411,6 +435,11 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   .webinar-card{padding:14px 16px}
   .webinar-bullets li{font-size:12px}
   .btn-webinar-accept{font-size:12px;padding:14px}
+
+
+  /* WhatsApp float */
+  .wa-float{bottom:20px;right:16px;width:50px;height:50px}
+  .wa-float svg{width:24px;height:24px}
 }
 </style>
 </head>
@@ -421,11 +450,11 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
     <b>Lotear</b>
     <small>Inteligência Imobiliária</small>
   </div>
-  <a href="#form" class="nav-btn">Baixar o Guia</a>
+  <a href="#form" class="nav-btn" data-track-cta="cta_nav">Baixar o Guia</a>
 </nav>
 
 <!-- ── HERO ── -->
-<section class="hero">
+<section class="hero" data-track-section="hero">
 
   <!-- Coluna visual -->
   <div class="hero-visual">
@@ -455,6 +484,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
     </div>
   </div>
 
+
   <!-- Coluna formulário -->
   <div class="hero-form-col" id="form">
     <div class="form-wrap">
@@ -480,7 +510,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
         <div class="fcard-title">Acesse gratuitamente</div>
 
         <!-- Campos -->
-        <div id="form-fields">
+        <div id="form-fields" data-track-form="lead_form">
           <div class="fg">
             <label>Nome</label>
             <div class="iw">
@@ -503,7 +533,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
             </div>
           </div>
 
-          <button class="btn-submit" id="btn-submit" onclick="submitLead()">
+          <button class="btn-submit" id="btn-submit" onclick="submitLead()" data-track-cta="cta_hero_submit">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:17px;height:17px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Baixar o guia agora
           </button>
@@ -532,6 +562,15 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
     </div>
   </div>
 </section>
+
+<!-- Badge ebook mobile — fora do grid, visível só no mobile -->
+<div class="ebook-float-mobile">
+  <div class="ebook-cover"></div>
+  <div class="ebook-meta">
+    <small>Guia Gratuito</small>
+    <p>O Mapa do Investidor de Studios em SP</p>
+  </div>
+</div>
 
 <!-- ── URGENCY STRIP ── -->
 <div class="urgency-strip">
@@ -572,7 +611,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 </div>
 
 <!-- ── BENEFÍCIOS ── -->
-<section class="section">
+<section class="section" data-track-section="beneficios">
   <div class="section-head">
     <span class="eyebrow">O que você vai aprender</span>
     <h2>Tudo que o investidor precisa saber antes de <em>qualquer decisão.</em></h2>
@@ -612,7 +651,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
     <div class="benefit" style="background:var(--navy-2);display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;">
       <div class="b-num" style="position:static;font-size:80px;color:rgba(201,168,76,.06);line-height:1;margin-bottom:auto"></div>
       <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">"Grandes patrimônios não são construídos por acaso — são construídos com estratégia."</p>
-      <a href="#form" class="nav-btn" style="font-size:10px">Quero o guia &rarr;</a>
+      <a href="#form" class="nav-btn" style="font-size:10px" data-track-cta="cta_beneficios">Quero o guia &rarr;</a>
     </div>
   </div>
 </section>
@@ -628,7 +667,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 </div>
 
 <!-- ── GLOSSÁRIO ── -->
-<div class="gloss-wrap">
+<div class="gloss-wrap" data-track-section="glossario">
   <div class="gloss-inner">
     <div class="gloss-left">
       <h3>Você vai entender o que <em>ninguém explica.</em></h3>
@@ -705,7 +744,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 'use strict';
 
 var CONFIG={pixelId:'2152403845552453',apiEndpoint:'/api/lead',productName:'Guia Investidor Studios SP',productCategory:'guia_studios_sp',lpSlug:'guia-investidor-studios-sp'};
-var STATE={utms:{},fbc:null,fbp:null,fbclid:null,gclid:null,geo:null,device:{},engagement:{maxScroll:0,sectionsViewed:[],ctaClicks:0,timeStart:Date.now(),formStartTime:null}};
+var STATE={utms:{},fbc:null,fbp:null,fbclid:null,gclid:null,geo:null,device:{},leadData:null,engagement:{maxScroll:0,sectionsViewed:[],ctaClicks:0,timeStart:Date.now(),formStartTime:null}};
 function captureUTMs(){var p=new URLSearchParams(window.location.search);['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){var v=p.get(k);if(v)STATE.utms[k]=v});STATE.fbclid=p.get('fbclid');STATE.gclid=p.get('gclid');if(STATE.fbclid&&!getCookie('_fbc'))STATE.fbc='fb.1.'+Date.now()+'.'+STATE.fbclid}
 function captureCookies(){STATE.fbp=getCookie('_fbp');STATE.fbc=STATE.fbc||getCookie('_fbc')}
 function getCookie(n){var m=document.cookie.match(new RegExp('(^| )'+n+'=([^;]+)'));return m?decodeURIComponent(m[2]):null}
@@ -740,10 +779,7 @@ window.submitLead = function () {
   }
 
   // Salva dados para reusar no popup e no botão WA
-  STATE.leadData = STATE.leadData || {};
-  STATE.leadData.name  = name;
-  STATE.leadData.email = email;
-  STATE.leadData.phone = phone;
+  STATE.leadData = { name: name, email: email, phone: phone };
 
   var btn = document.getElementById('btn-submit');
   btn.disabled    = true;
