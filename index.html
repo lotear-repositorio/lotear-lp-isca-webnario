@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>O Mapa do Investidor de Studios em SP Â· Lotear</title>
+<title>O Mapa do Investidor de Studios em SP · Lotear</title>
 
 <!-- META PIXEL -->
 <script>
@@ -43,7 +43,7 @@ html{scroll-behavior:smooth;overflow-x:hidden;overscroll-behavior-y:none}
 html,body{max-width:100%;overflow-x:hidden}
 body{background:var(--navy);color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
 
-/* ââ NAV ââ */
+/* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 56px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,27,42,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--gold-brd)}
 .nav-brand{display:flex;flex-direction:column;gap:2px}
 .nav-brand b{font-size:12px;letter-spacing:3px;text-transform:uppercase;font-weight:600;color:#fff}
@@ -51,7 +51,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 56px;height:60px;d
 .nav-btn{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 24px;border:1px solid var(--gold);color:var(--gold);background:transparent;cursor:pointer;transition:all .18s;text-decoration:none;display:inline-block}
 .nav-btn:hover{background:var(--gold);color:var(--navy)}
 
-/* ââ HERO SPLIT ââ */
+/* ── HERO SPLIT ── */
 .hero{display:grid;grid-template-columns:55% 45%;min-height:100dvh;padding-top:60px}
 
 /* Visual esquerda */
@@ -100,7 +100,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 56px;height:60px;d
 .sp-pulse .ring:nth-child(2){animation-delay:.5s}
 @keyframes pulse-r{0%{opacity:.8;width:40px;height:40px}100%{opacity:0;width:100px;height:100px}}
 
-/* ââ FORM COLUNA DIREITA ââ */
+/* ── FORM COLUNA DIREITA ── */
 .hero-form-col{background:var(--navy-1);display:flex;align-items:center;justify-content:center;padding:80px 52px;position:relative}
 .hero-form-col::before{content:'';position:absolute;left:0;top:15%;bottom:15%;width:1px;background:linear-gradient(to bottom,transparent,var(--gold-brd),transparent)}
 .form-wrap{width:100%;max-width:420px;animation:slideUp .6s .1s both}
@@ -139,20 +139,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 56px;height:60px;d
 .trust-note{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11px;color:var(--muted2)}
 .trust-note svg{width:13px;height:13px;flex-shrink:0;color:var(--muted)}
 
-/* ââ URGENCY STRIP ââ */
+/* ── URGENCY STRIP ── */
 .urgency-strip{background:rgba(201,168,76,.08);border-top:1px solid var(--gold-brd);border-bottom:1px solid var(--gold-brd);padding:14px 56px;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
 .urg-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
 .urg-item svg{width:15px;height:15px;color:var(--gold);flex-shrink:0}
 .urg-item strong{color:#fff}
 .urg-sep{width:1px;height:20px;background:var(--gold-brd)}
 
-/* ââ PROOF BAR ââ */
+/* ── PROOF BAR ── */
 .proof-bar{background:var(--navy-2);border-bottom:1px solid var(--brd);padding:18px 56px;display:flex;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap}
 .proof-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
 .proof-item svg{color:var(--gold);width:16px;height:16px;flex-shrink:0}
 .proof-item strong{color:#fff;font-weight:500}
 
-/* ââ BENEFÃCIOS ââ */
+/* ── BENEFÍCIOS ── */
 .section{padding:88px 56px;max-width:1180px;margin:0 auto}
 .section-head{margin-bottom:52px}
 .section-head h2{font-family:'Playfair Display',serif;font-size:clamp(26px,2.8vw,40px);font-weight:700;line-height:1.2;max-width:520px}
@@ -166,14 +166,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 56px;height:60px;d
 .b-title{font-size:15px;font-weight:600;margin-bottom:9px;line-height:1.3;padding-right:36px}
 .b-desc{font-size:13px;color:var(--muted);line-height:1.7}
 
-/* ââ DEPOIMENTO ââ */
+/* ── DEPOIMENTO ── */
 .testimonial-block{margin:0 56px 56px;border:1px solid var(--gold-brd);background:rgba(201,168,76,.04);padding:24px 28px;display:flex;align-items:flex-start;gap:20px}
 .t-avatar{width:44px;height:44px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#1a3050 0%,#2a4a72 100%);border:1px solid var(--gold-brd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--gold)}
 .t-stars{color:var(--gold);font-size:12px;letter-spacing:2px;margin-bottom:8px}
 .t-text{font-size:13px;color:var(--txt);line-height:1.65;font-style:italic;margin-bottom:8px}
 .t-author{font-size:11px;color:var(--muted);letter-spacing:.5px}
 
-/* ââ GLOSSÃRIO ââ */
+/* ── GLOSSÁRIO ── */
 .gloss-wrap{background:var(--navy-2);border-top:1px solid var(--gold-brd);border-bottom:1px solid var(--gold-brd);padding:52px 56px}
 .gloss-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1.8fr;gap:64px;align-items:center}
 .gloss-left h3{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:10px;line-height:1.25}
@@ -184,13 +184,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 56px;height:60px;d
 .pill:hover{background:rgba(201,168,76,.2)}
 .pill small{font-size:11px;color:var(--muted);font-weight:300}
 
-/* ââ FOOTER ââ */
+/* ── FOOTER ── */
 footer{border-top:1px solid var(--gold-brd);padding:28px 56px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 footer .f-logo{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 footer .f-slogan{font-family:'Playfair Display',serif;font-size:13px;color:var(--gold);font-style:italic}
 footer .f-contact{font-size:11px;color:var(--muted2)}
 
-/* ââ SUCCESS STATE (dentro do fcard) ââ */
+/* ── SUCCESS STATE (dentro do fcard) ── */
 .success-state{display:none;text-align:center;padding:32px 16px}
 .success-state svg{width:44px;height:44px;color:var(--green);margin:0 auto 16px;display:block}
 .success-state h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:10px}
@@ -198,7 +198,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 .success-state .whatsapp-note{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;font-size:13px;font-weight:500;color:#25D366}
 .success-state .whatsapp-note svg{width:18px;height:18px;flex-shrink:0}
 
-/* ââ POPUP WEBINÃRIO ââ */
+/* ── POPUP WEBINÁRIO ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)}
 .modal-overlay.open{display:flex;animation:fadeIn .25s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -230,7 +230,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 .btn-webinar-skip{width:100%;border:none;background:transparent;color:var(--muted2);padding:10px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:color .18s}
 .btn-webinar-skip:hover{color:var(--muted)}
 
-/* Success webinÃ¡rio */
+/* Success webinário */
 .modal-success{display:none;padding:40px 36px;text-align:center}
 .modal-success svg{width:52px;height:52px;color:var(--green);margin:0 auto 20px;display:block}
 .modal-success h3{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:12px}
@@ -239,7 +239,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 .modal-success .confirm-detail::before,.modal-success .confirm-detail::after{content:'';flex:1;height:1px;background:var(--gold-brd)}
 
 
-/* ââ WHATSAPP FLUTUANTE ââ */
+/* ── WHATSAPP FLUTUANTE ── */
 .wa-float{
   position:fixed;
   bottom:28px;
@@ -295,7 +295,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   .hero-tag{top:50px;font-size:9px;padding:5px 12px}
   .hero-h1-wrap{position:absolute;bottom:90px;left:20px;right:20px}
   .hero-h1{font-size:clamp(22px,5.5vw,36px)}
-  /* ebook-float oculto por heranÃ§a do 960px */
+  /* ebook-float oculto por herança do 960px */
   .ebook-float{bottom:8px;left:14px;right:14px;max-width:100%;padding:0;gap:8px;animation:slideBadge .5s .2s both}
   .ebook-cover{width:28px;height:36px}
   .ebook-meta small{font-size:6.5px;letter-spacing:1.5px}
@@ -422,12 +422,12 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 <nav>
   <div class="nav-brand">
     <b>Lotear</b>
-    <small>InteligÃªncia ImobiliÃ¡ria</small>
+    <small>Inteligência Imobiliária</small>
   </div>
   <a href="#form" class="nav-btn" data-track-cta="cta_nav">Baixar o Guia</a>
 </nav>
 
-<!-- ââ HERO ââ -->
+<!-- ── HERO ── -->
 <section class="hero" data-track-section="hero">
 
   <!-- Coluna visual -->
@@ -443,25 +443,25 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
     </div>
 
     <div class="hero-eyebrow">
-      <span class="eyebrow">Material gratuito Â· Lotear</span>
+      <span class="eyebrow">Material gratuito · Lotear</span>
     </div>
-    <div class="hero-tag">SÃ£o Paulo Â· SP</div>
+    <div class="hero-tag">São Paulo · SP</div>
     <div class="hero-h1-wrap">
-      <h1 class="hero-h1">O mapa certo<br>para investir<br><em>em SÃ£o Paulo.</em></h1>
+      <h1 class="hero-h1">O mapa certo<br>para investir<br><em>em São Paulo.</em></h1>
     </div>
 
     <div class="ebook-float">
       <div class="ebook-cover"></div>
       <div class="ebook-meta">
-        <small>+1.200 investidores jÃ¡ tÃªm</small>
-        <p>Tudo que vocÃª precisa antes de decidir</p>
+        <small>+1.200 investidores já têm</small>
+        <p>Tudo que você precisa antes de decidir</p>
       </div>
     </div>
   </div>
 
 
 
-  <!-- Coluna formulÃ¡rio -->
+  <!-- Coluna formulário -->
   <div class="hero-form-col" id="form">
     <div class="form-wrap">
 
@@ -476,7 +476,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
         </div>
         <div class="fstep-sep"></div>
         <div class="fstep" id="step-3">
-          <span class="num">3</span><span>WebinÃ¡rio</span>
+          <span class="num">3</span><span>Webinário</span>
         </div>
       </div>
 
@@ -516,7 +516,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 
           <div class="trust-note">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Seus dados sÃ£o usados apenas para envio do material.
+            Seus dados são usados apenas para envio do material.
           </div>
         </div>
 
@@ -527,10 +527,10 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
           <h3>Guia a caminho!</h3>
-          <p>Em instantes vocÃª receberÃ¡ o material no seu WhatsApp.</p>
+          <p>Em instantes você receberá o material no seu WhatsApp.</p>
           <div class="whatsapp-note">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-            ChegarÃ¡ pelo WhatsApp
+            Chegará pelo WhatsApp
           </div>
         </div>
       </div>
@@ -539,11 +539,11 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   </div>
 </section>
 
-<!-- ââ URGENCY STRIP ââ -->
+<!-- ── URGENCY STRIP ── -->
 <div class="urgency-strip">
   <div class="urg-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-    <span><strong>+1.200</strong> investidores jÃ¡ baixaram</span>
+    <span><strong>+1.200</strong> investidores já baixaram</span>
   </div>
   <div class="urg-sep"></div>
   <div class="urg-item">
@@ -553,11 +553,11 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   <div class="urg-sep"></div>
   <div class="urg-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-    <span>AvaliaÃ§Ã£o <strong>4.9/5</strong> pelos leitores</span>
+    <span>Avaliação <strong>4.9/5</strong> pelos leitores</span>
   </div>
 </div>
 
-<!-- ââ PROOF BAR ââ -->
+<!-- ── PROOF BAR ── -->
 <div class="proof-bar">
   <div class="proof-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -577,11 +577,11 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   </div>
 </div>
 
-<!-- ââ BENEFÃCIOS ââ -->
+<!-- ── BENEFÍCIOS ── -->
 <section class="section" data-track-section="beneficios">
   <div class="section-head">
-    <span class="eyebrow">O que vocÃª vai aprender</span>
-    <h2>Tudo que o investidor precisa saber antes de <em>qualquer decisÃ£o.</em></h2>
+    <span class="eyebrow">O que você vai aprender</span>
+    <h2>Tudo que o investidor precisa saber antes de <em>qualquer decisão.</em></h2>
   </div>
 
   <div class="benefits-grid">
@@ -589,129 +589,129 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
       <div class="b-num">01</div>
       <div class="b-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
       <div class="b-title">O mapa dos bairros de SP</div>
-      <div class="b-desc">ConsolaÃ§Ã£o, Pinheiros, Vila Mariana, Vila OlÃ­mpia â onde cada R$ trabalha melhor e quais regiÃµes tÃªm maior demanda por locaÃ§Ã£o.</div>
+      <div class="b-desc">Consolação, Pinheiros, Vila Mariana, Vila Olímpia — onde cada R$ trabalha melhor e quais regiões têm maior demanda por locação.</div>
     </div>
     <div class="benefit">
       <div class="b-num">02</div>
       <div class="b-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-      <div class="b-title">LanÃ§amento na planta vs. imÃ³vel pronto</div>
-      <div class="b-desc">Comparativo real de fluxo de pagamento, prazo, risco e potencial de valorizaÃ§Ã£o de cada modalidade.</div>
+      <div class="b-title">Lançamento na planta vs. imóvel pronto</div>
+      <div class="b-desc">Comparativo real de fluxo de pagamento, prazo, risco e potencial de valorização de cada modalidade.</div>
     </div>
     <div class="benefit">
       <div class="b-num">03</div>
       <div class="b-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
-      <div class="b-title">O glossÃ¡rio do mercado</div>
-      <div class="b-desc">HIS, HMP e R2V â o que cada sigla significa na prÃ¡tica e como impacta o valor e a seguranÃ§a jurÃ­dica do seu investimento.</div>
+      <div class="b-title">O glossário do mercado</div>
+      <div class="b-desc">HIS, HMP e R2V — o que cada sigla significa na prática e como impacta o valor e a segurança jurídica do seu investimento.</div>
     </div>
     <div class="benefit">
       <div class="b-num">04</div>
       <div class="b-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
       <div class="b-title">Os 3 erros do investidor iniciante</div>
-      <div class="b-desc">Os equÃ­vocos mais comuns de quem entra no mercado de SP sem conhecÃª-lo â e como eliminÃ¡-los antes da decisÃ£o.</div>
+      <div class="b-desc">Os equívocos mais comuns de quem entra no mercado de SP sem conhecê-lo — e como eliminá-los antes da decisão.</div>
     </div>
     <div class="benefit">
       <div class="b-num">05</div>
       <div class="b-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
       <div class="b-title">A curadoria Lotear</div>
-      <div class="b-desc">Os critÃ©rios que a Lotear usa para selecionar cada empreendimento: localizaÃ§Ã£o, incorporadora, potencial de valorizaÃ§Ã£o e seguranÃ§a jurÃ­dica.</div>
+      <div class="b-desc">Os critérios que a Lotear usa para selecionar cada empreendimento: localização, incorporadora, potencial de valorização e segurança jurídica.</div>
     </div>
     <div class="benefit" style="background:var(--navy-2);display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;">
       <div class="b-num" style="position:static;font-size:80px;color:rgba(201,168,76,.06);line-height:1;margin-bottom:auto"></div>
-      <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">"Grandes patrimÃ´nios nÃ£o sÃ£o construÃ­dos por acaso â sÃ£o construÃ­dos com estratÃ©gia."</p>
+      <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px">"Grandes patrimônios não são construídos por acaso — são construídos com estratégia."</p>
       <a href="#form" class="nav-btn" style="font-size:10px" data-track-cta="cta_beneficios">Quero o guia &rarr;</a>
     </div>
   </div>
 </section>
 
-<!-- ââ DEPOIMENTO ââ -->
+<!-- ── DEPOIMENTO ── -->
 <div class="testimonial-block">
   <div class="t-avatar">RM</div>
   <div>
-    <div class="t-stars">âââââ</div>
-    <p class="t-text">"Entrei no mercado sem entender nada de HIS e HMP. O Guia + Webinar foram as Ãºnicas fontes que explicaram de forma direta o impacto no retorno. Comprei meu primeiro studio em 45 dias."</p>
-    <span class="t-author">Ricardo M. Â· Investidor Â· SÃ£o Paulo</span>
+    <div class="t-stars">★★★★★</div>
+    <p class="t-text">"Entrei no mercado sem entender nada de HIS e HMP. O Guia + Webinar foram as únicas fontes que explicaram de forma direta o impacto no retorno. Comprei meu primeiro studio em 45 dias."</p>
+    <span class="t-author">Ricardo M. · Investidor · São Paulo</span>
   </div>
 </div>
 
-<!-- ââ GLOSSÃRIO ââ -->
+<!-- ── GLOSSÁRIO ── -->
 <div class="gloss-wrap" data-track-section="glossario">
   <div class="gloss-inner">
     <div class="gloss-left">
-      <h3>VocÃª vai entender o que <em>ninguÃ©m explica.</em></h3>
-      <p>O mercado imobiliÃ¡rio de SP tem um vocabulÃ¡rio prÃ³prio que intimida quem estÃ¡ de fora. O guia traduz cada sigla em impacto real no seu investimento â sem jargÃ£o, sem enrolaÃ§Ã£o.</p>
+      <h3>Você vai entender o que <em>ninguém explica.</em></h3>
+      <p>O mercado imobiliário de SP tem um vocabulário próprio que intimida quem está de fora. O guia traduz cada sigla em impacto real no seu investimento — sem jargão, sem enrolação.</p>
     </div>
     <div class="gloss-pills">
-      <div class="pill">HIS<small>HabitaÃ§Ã£o de Interesse Social</small></div>
-      <div class="pill">HMP<small>HabitaÃ§Ã£o de Mercado Popular</small></div>
+      <div class="pill">HIS<small>Habitação de Interesse Social</small></div>
+      <div class="pill">HMP<small>Habitação de Mercado Popular</small></div>
       <div class="pill">R2V<small>Residencial de 2 Vias</small></div>
     </div>
   </div>
 </div>
 
 <footer>
-  <div class="f-logo">Lotear Â· InteligÃªncia ImobiliÃ¡ria Â· @soulotear</div>
-  <div class="f-slogan">Porque patrimÃ´nio se constrÃ³i.</div>
+  <div class="f-logo">Lotear · Inteligência Imobiliária · @soulotear</div>
+  <div class="f-slogan">Porque patrimônio se constrói.</div>
   <div class="f-contact">contato@soulotear.com.br</div>
 </footer>
 
-<!-- ââ WHATSAPP FLUTUANTE ââ -->
+<!-- ── WHATSAPP FLUTUANTE ── -->
 <a class="wa-float" id="wa-float" href="https://wa.link/tollet" target="_blank" rel="noopener" aria-label="Falar no WhatsApp" onclick="trackWAClick()">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
   </svg>
 </a>
 
-<!-- ââ POPUP WEBINÃRIO ââ -->
+<!-- ── POPUP WEBINÁRIO ── -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
 
-    <!-- ConteÃºdo do convite -->
+    <!-- Conteúdo do convite -->
     <div class="modal-inner" id="modal-content">
-      <span class="modal-tag">PrÃ³ximo passo</span>
-      <h2 class="modal-title">Seu guia estÃ¡ a caminho<br>pelo <em>WhatsApp.</em></h2>
-      <p class="modal-desc">Enquanto isso, que tal garantir sua vaga no webinÃ¡rio ao vivo onde vamos detalhar cada estratÃ©gia do guia â e responder suas dÃºvidas em tempo real?</p>
+      <span class="modal-tag">Próximo passo</span>
+      <h2 class="modal-title">Seu guia está a caminho<br>pelo <em>WhatsApp.</em></h2>
+      <p class="modal-desc">Enquanto isso, que tal garantir sua vaga no webinário ao vivo onde vamos detalhar cada estratégia do guia — e responder suas dúvidas em tempo real?</p>
 
       <div class="webinar-card">
         <div class="webinar-date" id="webinar-date-display"></div>
-        <div class="webinar-title-text">Como investir em studios em SP com inteligÃªncia</div>
+        <div class="webinar-title-text">Como investir em studios em SP com inteligência</div>
         <div class="webinar-info">Ao vivo com os especialistas da Lotear</div>
       </div>
 
       <ul class="webinar-bullets">
-        <li>Como identificar os melhores lanÃ§amentos antes do mercado</li>
-        <li>AnÃ¡lise de rentabilidade real: planta vs. pronto</li>
+        <li>Como identificar os melhores lançamentos antes do mercado</li>
+        <li>Análise de rentabilidade real: planta vs. pronto</li>
         <li>Perguntas e respostas ao vivo com os especialistas</li>
-        <li>Vagas limitadas â encerramento na vÃ©spera</li>
+        <li>Vagas limitadas — encerramento na véspera</li>
       </ul>
 
       <button class="btn-webinar-accept" id="btn-webinar-accept" onclick="acceptWebinar()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:17px;height:17px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         Confirmar minha vaga gratuitamente
       </button>
-      <button class="btn-webinar-skip" onclick="skipWebinar()">NÃ£o, obrigado â sÃ³ quero o guia</button>
+      <button class="btn-webinar-skip" onclick="skipWebinar()">Não, obrigado — só quero o guia</button>
     </div>
 
-    <!-- Sucesso webinÃ¡rio -->
+    <!-- Sucesso webinário -->
     <div class="modal-success" id="modal-success">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
         <polyline points="22 4 12 14.01 9 11.01"/>
       </svg>
       <h3>Vaga confirmada!</h3>
-      <p>Voce esta inscrito no webinario do dia <span id="confirm-date-short"></span>.<br>Enviaremos o link de acesso pelo seu WhatsApp proximo ao evento.</p>
+      <p>Voce esta inscrito no webinario do dia <span id="confirm-date-short"></span>.<br>Enviaremos o link de acesso pelo seu WhatsApp próximo ao evento.</p>
       <div class="confirm-detail" id="confirm-detail"></div>
     </div>
 
   </div>
 </div>
 
-<!-- ââ JAVASCRIPT ââ -->
+<!-- ── JAVASCRIPT ── -->
 <script>
 (function(){
 'use strict';
 
-var MESES_PT=['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];function _wDate(){var c=CONFIG.webinarDate;if(!c)return{display:'',short:'',clint:'',detail:''};var p=c.date.split('/');var d=parseInt(p[0]),m=parseInt(p[1])-1,y=p[2];var h=c.time.split(':')[0].replace(/^0/,'');return{display:d+' de '+MESES_PT[m]+' de '+y+' - '+h+'h (Brasilia)',short:d+'/'+p[1]+' as '+h+'h',clint:c.date+' '+c.time,detail:d+' - '+MESES_PT[m]+' - '+y+' - '+h+'h'};}function _populateWebinarDates(){var w=_wDate();var el;el=document.getElementById('webinar-date-display');if(el)el.textContent=w.display;el=document.getElementById('urg-date-short');if(el)el.textContent=w.short;el=document.getElementById('confirm-date-short');if(el)el.textContent=w.short;el=document.getElementById('confirm-detail');if(el)el.textContent=w.detail;}
-var CONFIG={pixelId:'2152403845552453',apiEndpoint:'/api/lead',productName:'Guia Investidor Studios SP',productCategory:'guia_studios_sp',lpSlug:'guia-investidor-studios-sp',webinarDate:{date:'26/06/2026',time:'21:00'}};
+var MESES_PT=['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];function _wDate(){var c=CONFIG.webinarDate;if(!c)return{display:'',short:'',clint:'',detail:''};var p=c.date.split('/');var d=parseInt(p[0]),m=parseInt(p[1])-1,y=p[2];var h=c.time.split(':')[0].replace(/^0/,'');return{display:d+' de '+MESES_PT[m]+' de '+y+' - '+h+'h',short:d+'/'+p[1]+' as '+h+'h',clint:c.date+' '+c.time,detail:d+' - '+MESES_PT[m]+' - '+y+' - '+h+'h'};}function _populateWebinarDates(){var w=_wDate();var el;el=document.getElementById('webinar-date-display');if(el)el.textContent=w.display;el=document.getElementById('urg-date-short');if(el)el.textContent=w.short;el=document.getElementById('confirm-date-short');if(el)el.textContent=w.short;el=document.getElementById('confirm-detail');if(el)el.textContent=w.detail;}
+var CONFIG={pixelId:'2152403845552453',apiEndpoint:'/api/lead',productName:'Guia Investidor Studios SP',productCategory:'guia_studios_sp',lpSlug:'guia-investidor-studios-sp',webinarDate:{date:'25/06/2026',time:'20:00'}};
 var STATE={utms:{},fbc:null,fbp:null,fbclid:null,gclid:null,geo:null,device:{},leadData:null,engagement:{maxScroll:0,sectionsViewed:[],ctaClicks:0,timeStart:Date.now(),formStartTime:null}};
 function captureUTMs(){var p=new URLSearchParams(window.location.search);['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){var v=p.get(k);if(v)STATE.utms[k]=v});STATE.fbclid=p.get('fbclid');STATE.gclid=p.get('gclid');if(STATE.fbclid&&!getCookie('_fbc'))STATE.fbc='fb.1.'+Date.now()+'.'+STATE.fbclid}
 function captureCookies(){STATE.fbp=getCookie('_fbp');STATE.fbc=STATE.fbc||getCookie('_fbc')}
@@ -724,18 +724,18 @@ function setupCTATracking(){document.querySelectorAll('[data-track-cta]').forEac
 function setupFormTracking(){var f=document.querySelector('[data-track-form]');if(!f)return;var started=false;f.querySelectorAll('input').forEach(function(field){field.addEventListener('focus',function(){if(!started){started=true;STATE.engagement.formStartTime=Date.now();if(typeof fbq!=='undefined')fbq('track','InitiateCheckout',{content_name:'form_start',content_type:'lead_form',content_category:CONFIG.productCategory})}})})}
 function setupPhoneMask(){var ph=document.getElementById('fw');if(!ph)return;ph.addEventListener('input',function(e){var v=e.target.value.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);if(v.length>6)v='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);else if(v.length>2)v='('+v.slice(0,2)+') '+v.slice(2);else if(v.length>0)v='('+v;e.target.value=v})}
 function generateUUID(){if(crypto&&crypto.randomUUID)return crypto.randomUUID();return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16)})}
-function getStateCode(s){var m={'acre':'ac','alagoas':'al','amapÃ¡':'ap','amazonas':'am','bahia':'ba','cearÃ¡':'ce','distrito federal':'df','espÃ­rito santo':'es','goiÃ¡s':'go','maranhÃ£o':'ma','mato grosso':'mt','mato grosso do sul':'ms','minas gerais':'mg','parÃ¡':'pa','paraÃ­ba':'pb','paranÃ¡':'pr','pernambuco':'pe','piauÃ­':'pi','rio de janeiro':'rj','rio grande do norte':'rn','rio grande do sul':'rs','rondÃ´nia':'ro','roraima':'rr','santa catarina':'sc','sÃ£o paulo':'sp','sergipe':'se','tocantins':'to'};return m[(s||'').toLowerCase()]||''}
+function getStateCode(s){var m={'acre':'ac','alagoas':'al','amapá':'ap','amazonas':'am','bahia':'ba','ceará':'ce','distrito federal':'df','espírito santo':'es','goiás':'go','maranhão':'ma','mato grosso':'mt','mato grosso do sul':'ms','minas gerais':'mg','pará':'pa','paraíba':'pb','paraná':'pr','pernambuco':'pe','piauí':'pi','rio de janeiro':'rj','rio grande do norte':'rn','rio grande do sul':'rs','rondônia':'ro','roraima':'rr','santa catarina':'sc','são paulo':'sp','sergipe':'se','tocantins':'to'};return m[(s||'').toLowerCase()]||''}
 // SUBMIT com tracking completo
 
 function generateUUID(){if(crypto&&crypto.randomUUID)return crypto.randomUUID();return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16)})}
 
-function getStateCode(s){var m={'acre':'ac','alagoas':'al','amapÃ¡':'ap','amazonas':'am','bahia':'ba','cearÃ¡':'ce','distrito federal':'df','espÃ­rito santo':'es','goiÃ¡s':'go','maranhÃ£o':'ma','mato grosso':'mt','mato grosso do sul':'ms','minas gerais':'mg','parÃ¡':'pa','paraÃ­ba':'pb','paranÃ¡':'pr','pernambuco':'pe','piauÃ­':'pi','rio de janeiro':'rj','rio grande do norte':'rn','rio grande do sul':'rs','rondÃ´nia':'ro','roraima':'rr','santa catarina':'sc','sÃ£o paulo':'sp','sergipe':'se','tocantins':'to'};return m[(s||'').toLowerCase()]||''}
+function getStateCode(s){var m={'acre':'ac','alagoas':'al','amapá':'ap','amazonas':'am','bahia':'ba','ceará':'ce','distrito federal':'df','espírito santo':'es','goiás':'go','maranhão':'ma','mato grosso':'mt','mato grosso do sul':'ms','minas gerais':'mg','pará':'pa','paraíba':'pb','paraná':'pr','pernambuco':'pe','piauí':'pi','rio de janeiro':'rj','rio grande do norte':'rn','rio grande do sul':'rs','rondônia':'ro','roraima':'rr','santa catarina':'sc','são paulo':'sp','sergipe':'se','tocantins':'to'};return m[(s||'').toLowerCase()]||''}
 
 
-/* âââ Estado global da sessÃ£o (alias para novo cÃ³digo) âââ */
-// STATE jÃ¡ declarado acima via CONFIG/STATE original
+/* ─── Estado global da sessão (alias para novo código) ─── */
+// STATE já declarado acima via CONFIG/STATE original
 
-/* âââ Submit do formulÃ¡rio (ebook) âââ */
+/* ─── Submit do formulário (ebook) ─── */
 window.submitLead = function () {
   var name  = document.getElementById('fn').value.trim();
   var phone = document.getElementById('fw').value.trim();
@@ -746,7 +746,7 @@ window.submitLead = function () {
     return;
   }
 
-  // Salva dados para reusar no popup e no botÃ£o WA
+  // Salva dados para reusar no popup e no botão WA
   STATE.leadData = { name: name, email: email, phone: phone };
 
   var btn = document.getElementById('btn-submit');
@@ -784,7 +784,7 @@ window.submitLead = function () {
     }, { eventID: eventId });
   }
 
-  // 2. Cloudflare Function â Clint + Meta CAPI
+  // 2. Cloudflare Function → Clint + Meta CAPI
   var payload = {
     name:         name,
     email:        email.toLowerCase().trim(),
@@ -801,7 +801,7 @@ window.submitLead = function () {
     fbc:          STATE.fbc || '',
     event_id:     eventId,
     page_url:     window.location.href,
-    webinar_accept: 'NÃ£o',
+    webinar_accept: 'Não',
     data_hora_webinar: _wDate().clint,
   };
 
@@ -828,18 +828,18 @@ window.submitLead = function () {
   document.getElementById('step-1').classList.remove('active');
   document.getElementById('step-2').classList.add('active');
 
-  // Abre popup webinÃ¡rio apÃ³s 1.8s
+  // Abre popup webinário após 1.8s
   setTimeout(function(){ openWebinarModal(); }, 1800);
 };
 
-/* âââ Abre modal do webinÃ¡rio âââ */
+/* ─── Abre modal do webinário ─── */
 function openWebinarModal() {
   document.getElementById('modal-overlay').classList.add('open');
   document.getElementById('step-2').classList.remove('active');
   document.getElementById('step-3').classList.add('active');
 }
 
-/* âââ Aceita webinÃ¡rio âââ */
+/* ─── Aceita webinário ─── */
 window.acceptWebinar = function () {
   var btn = document.getElementById('btn-webinar-accept');
   btn.disabled    = true;
@@ -847,7 +847,7 @@ window.acceptWebinar = function () {
 
   if (typeof fbq !== 'undefined') {
     fbq('track', 'CompleteRegistration', {
-      content_name: 'WebinÃ¡rio 25/06/2026',
+      content_name: 'Webinário 25/06/2026',
       status: 'confirmed',
     });
   }
@@ -884,12 +884,12 @@ window.acceptWebinar = function () {
   document.getElementById('modal-success').style.display = 'block';
 };
 
-/* âââ Pula webinÃ¡rio âââ */
+/* ─── Pula webinário ─── */
 window.skipWebinar = function () {
   document.getElementById('modal-overlay').classList.remove('open');
 };
 
-/* âââ Fecha modal clicando fora âââ */
+/* ─── Fecha modal clicando fora ─── */
 document.getElementById('modal-overlay').addEventListener('click', function(e){
   if (e.target === this) skipWebinar();
 });
@@ -904,7 +904,7 @@ function trackWAClick() {
   }
 }
 
-/* âââ Init âââ */
+/* ─── Init ─── */
 captureUTMs();
 captureCookies();
 captureDevice();
@@ -916,7 +916,7 @@ document.addEventListener('DOMContentLoaded', function(){_populateWebinarDates()
   setupCTATracking();
   setupFormTracking();
 
-  // Exibe botÃ£o WA apÃ³s 3s
+  // Exibe botão WA após 3s
   setTimeout(function(){
     var btn = document.getElementById('wa-float');
     if (btn) btn.classList.add('visible');
