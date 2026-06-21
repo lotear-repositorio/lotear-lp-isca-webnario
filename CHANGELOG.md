@@ -43,6 +43,7 @@ Novas entradas sempre acima das anteriores (mais recente primeiro).
 ---
 
 ## Histórico de alterações
+<!-- deploy trigger 2026-06-21 -->
 
 ---
 
