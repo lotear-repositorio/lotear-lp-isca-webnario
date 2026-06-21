@@ -31,8 +31,7 @@ export async function onRequestGet(context) {
 
   try {
     const fileData = await getFileFromGitHub(token);
-    const content = atob(fileData.content.replace(/
-/g, ''));
+    const content = atob(fileData.content.replace(/\n/g, ''));
     const m = content.match(/webinarDate:\{date:'([^']+)',time:'([^']+)'\}/);
     if (!m) return new Response(JSON.stringify({ error: 'webinarDate nao encontrado' }), { status: 422, headers: CORS });
     return new Response(JSON.stringify({ ok: true, date: m[1], time: m[2] }), { status: 200, headers: CORS });
@@ -56,8 +55,7 @@ export async function onRequestPost(context) {
   try {
     const fileData = await getFileFromGitHub(token);
     const sha = fileData.sha;
-    const content = atob(fileData.content.replace(/
-/g, ''));
+    const content = atob(fileData.content.replace(/\n/g, ''));
 
     const updated = content.replace(
       /webinarDate:\{date:'[^']+',time:'[^']+'\}/,
