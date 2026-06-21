@@ -2,11 +2,11 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>Admin — Data do Webinario</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Admin Webinario</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+body{background:#0d1117;color:#e6edf3;font-family:-apple-system,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 .card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:28px 24px;width:100%;max-width:420px}
 .logo{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8b949e;margin-bottom:24px;text-align:center}
 h1{font-size:18px;font-weight:600;margin-bottom:4px;text-align:center}
@@ -36,7 +36,7 @@ button:disabled{background:#21262d;color:#484f58;cursor:not-allowed}
 </head>
 <body>
 <div class="card">
-  <div class="logo">Lotear · Admin</div>
+  <div class="logo">Lotear Admin</div>
   <h1>Atualizar Webinario</h1>
   <p class="sub">guia.soulotear.com.br</p>
   <div class="cur">
@@ -54,49 +54,45 @@ button:disabled{background:#21262d;color:#484f58;cursor:not-allowed}
   </div>
   <div class="prev" id="prev">
     <div class="prev-label">Pre-visualizacao</div>
-    <div class="prev-row"><span class="pk">LP / Popup</span><span class="pv" id="pd"></span></div>
-    <div class="prev-row"><span class="pk">Clint (webhook)</span><span class="pc" id="pc"></span></div>
-    <div class="prev-row"><span class="pk">Rodape curto</span><span class="pv" id="ps"></span></div>
+    <div class="prev-row"><span class="pk">LP</span><span class="pv" id="pd"></span></div>
+    <div class="prev-row"><span class="pk">Clint</span><span class="pc" id="pc"></span></div>
+    <div class="prev-row"><span class="pk">Curto</span><span class="pv" id="ps"></span></div>
   </div>
   <button id="btn" onclick="save()" disabled>Atualizar LP</button>
   <div class="st" id="st"></div>
-  <div class="note" id="note">
-    Commit enviado. Aguarde ~2 minutos para o deploy.<br>
-    <a href="https://guia.soulotear.com.br" target="_blank" style="color:#58a6ff">Abrir LP para verificar</a>
-  </div>
+  <div class="note" id="note">Deploy em ~2 min. <a href="https://guia.soulotear.com.br" target="_blank" style="color:#58a6ff">Verificar LP</a></div>
 </div>
 <script>
 var M=["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
-function fDisp(d,t){var p=d.split("-");var h=t.split(":")[0].replace(/^0/,"");return parseInt(p[2])+" de "+M[parseInt(p[1])-1]+" de "+p[0]+" - "+h+"h (Brasilia)";}
-function fShort(d,t){var p=d.split("-");var h=t.split(":")[0].replace(/^0/,"");return parseInt(p[2])+"/"+p[1]+" as "+h+"h";}
-function fClint(d,t){var p=d.split("-");return p[2]+"/"+p[1]+"/"+p[0]+" "+t;}
+function fD(d,t){var p=d.split("-");var h=t.split(":")[0].replace(/^0/,"");return parseInt(p[2])+" de "+M[parseInt(p[1])-1]+" de "+p[0]+" - "+h+"h";}
+function fS(d,t){var p=d.split("-");var h=t.split(":")[0].replace(/^0/,"");return parseInt(p[2])+"/"+p[1]+" as "+h+"h";}
+function fC(d,t){var p=d.split("-");return p[2]+"/"+p[1]+"/"+p[0]+" "+t;}
 function fDDMM(d){var p=d.split("-");return p[2]+"/"+p[1]+"/"+p[0];}
-
+function upd(){
+  var d=document.getElementById("dt").value;
+  var t=document.getElementById("tm").value;
+  if(!d||!t){document.getElementById("btn").disabled=true;document.getElementById("prev").style.display="none";return;}
+  document.getElementById("pd").textContent=fD(d,t);
+  document.getElementById("pc").textContent=fC(d,t);
+  document.getElementById("ps").textContent=fS(d,t);
+  document.getElementById("prev").style.display="block";
+  document.getElementById("btn").disabled=false;
+}
 async function loadCur(){
   try{
-    var r=await fetch("/api/update-webinar");
+    var r=await fetch("/api/update-webinar",{method:"GET"});
     var d=await r.json();
     if(d.ok){
       var p=d.date.split("/");
       var h=d.time.split(":")[0].replace(/^0/,"");
       document.getElementById("cur").textContent=parseInt(p[0])+" de "+M[parseInt(p[1])-1]+" de "+p[2]+" - "+h+"h";
-    } else {
+    }else{
       document.getElementById("cur").textContent="Erro: "+d.error;
     }
-  }catch(e){document.getElementById("cur").textContent="Erro: "+e.message;}
+  }catch(e){
+    document.getElementById("cur").textContent="Erro: "+e.message;
+  }
 }
-
-function upd(){
-  var d=document.getElementById("dt").value;
-  var t=document.getElementById("tm").value;
-  if(!d||!t){document.getElementById("btn").disabled=true;document.getElementById("prev").style.display="none";return;}
-  document.getElementById("pd").textContent=fDisp(d,t);
-  document.getElementById("pc").textContent=fClint(d,t);
-  document.getElementById("ps").textContent=fShort(d,t);
-  document.getElementById("prev").style.display="block";
-  document.getElementById("btn").disabled=false;
-}
-
 async function save(){
   var d=document.getElementById("dt").value;
   var t=document.getElementById("tm").value;
@@ -108,10 +104,10 @@ async function save(){
     var r=await fetch("/api/update-webinar",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({date:fDDMM(d),time:t})});
     var res=await r.json();
     if(res.ok){
-      st.className="st ok";st.textContent="Commit "+res.sha+" — deploy em ~2 min";
+      st.className="st ok";st.textContent="Commit "+res.sha+" enviado";
       document.getElementById("note").style.display="block";
-      document.getElementById("cur").textContent=fDisp(d,t);
-    } else {
+      document.getElementById("cur").textContent=fD(d,t);
+    }else{
       throw new Error(res.error||"Erro desconhecido");
     }
   }catch(e){
@@ -119,7 +115,6 @@ async function save(){
     document.getElementById("btn").disabled=false;
   }
 }
-
 loadCur();
 </script>
 </body>
