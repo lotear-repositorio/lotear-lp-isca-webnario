@@ -548,7 +548,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   <div class="urg-sep"></div>
   <div class="urg-item">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    <span>Webinário ao vivo: <strong>25/06 às 20h</strong></span>
+    <span>Webinário ao vivo: <strong id="urg-date-short"></strong></span>
   </div>
   <div class="urg-sep"></div>
   <div class="urg-item">
@@ -672,7 +672,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
       <p class="modal-desc">Enquanto isso, que tal garantir sua vaga no webinário ao vivo onde vamos detalhar cada estratégia do guia — e responder suas dúvidas em tempo real?</p>
 
       <div class="webinar-card">
-        <div class="webinar-date">25 de junho de 2026 · 20h (horário de Brasília)</div>
+        <div class="webinar-date" id="webinar-date-display"></div>
         <div class="webinar-title-text">Como investir em studios em SP com inteligência</div>
         <div class="webinar-info">Ao vivo com os especialistas da Lotear</div>
       </div>
@@ -698,8 +698,8 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
         <polyline points="22 4 12 14.01 9 11.01"/>
       </svg>
       <h3>Vaga confirmada!</h3>
-      <p>Você está inscrito no webinário do dia 25/06 às 20h.<br>Enviaremos o link de acesso pelo seu WhatsApp próximo ao evento.</p>
-      <div class="confirm-detail">25 · junho · 2026 · 20h</div>
+      <p>Você está inscrito no webinário do dia <span id="confirm-date-short"></span>.<br>Enviaremos o link de acesso pelo seu WhatsApp próximo ao evento.</p>
+      <div class="confirm-detail" id="confirm-detail"></div>
     </div>
 
   </div>
@@ -710,7 +710,10 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 (function(){
 'use strict';
 
-var CONFIG={pixelId:'2152403845552453',apiEndpoint:'/api/lead',productName:'Guia Investidor Studios SP',productCategory:'guia_studios_sp',lpSlug:'guia-investidor-studios-sp'};
+var MESES_PT=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+function _wDate(){var c=CONFIG.webinarDate;if(!c)return{display:'',short:'',clint:'',detail:''};var p=c.date.split('/');var d=parseInt(p[0]),m=parseInt(p[1])-1,y=p[2];var h=c.time.split(':')[0].replace(/^0/,'');return{display:d+' de '+MESES_PT[m]+' de '+y+' · '+h+'h (horário de Brasília)',short:d+'/'+p[1]+' às '+h+'h',clint:c.date+' '+c.time,detail:d+' · '+MESES_PT[m]+' · '+y+' · '+h+'h'};}
+function _populateWebinarDates(){var w=_wDate();var el;el=document.getElementById('webinar-date-display');if(el)el.textContent=w.display;el=document.getElementById('urg-date-short');if(el)el.textContent=w.short;el=document.getElementById('confirm-date-short');if(el)el.textContent=w.short;el=document.getElementById('confirm-detail');if(el)el.textContent=w.detail;}
+var CONFIG={pixelId:'2152403845552453',apiEndpoint:'/api/lead',productName:'Guia Investidor Studios SP',productCategory:'guia_studios_sp',lpSlug:'guia-investidor-studios-sp',webinarDate:{date:'25/06/2026',time:'20:00'}};
 var STATE={utms:{},fbc:null,fbp:null,fbclid:null,gclid:null,geo:null,device:{},leadData:null,engagement:{maxScroll:0,sectionsViewed:[],ctaClicks:0,timeStart:Date.now(),formStartTime:null}};
 function captureUTMs(){var p=new URLSearchParams(window.location.search);['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){var v=p.get(k);if(v)STATE.utms[k]=v});STATE.fbclid=p.get('fbclid');STATE.gclid=p.get('gclid');if(STATE.fbclid&&!getCookie('_fbc'))STATE.fbc='fb.1.'+Date.now()+'.'+STATE.fbclid}
 function captureCookies(){STATE.fbp=getCookie('_fbp');STATE.fbc=STATE.fbc||getCookie('_fbc')}
@@ -801,6 +804,7 @@ window.submitLead = function () {
     event_id:     eventId,
     page_url:     window.location.href,
     webinar_accept: 'Não',
+    data_hora_webinar: _wDate().clint,
   };
 
   fetch(CONFIG.apiEndpoint, {
@@ -867,6 +871,7 @@ window.acceptWebinar = function () {
     event_id:     generateUUID(),
     page_url:     window.location.href,
     webinar_accept: 'Sim',
+    data_hora_webinar: _wDate().clint,
   };
 
   fetch(CONFIG.apiEndpoint, {
@@ -899,29 +904,6 @@ function trackWAClick() {
       content_category: 'wa_click',
     });
   }
-  var payload = {
-    name:         (STATE.leadData && STATE.leadData.name)  || '',
-    email:        (STATE.leadData && STATE.leadData.email) || '',
-    phone:        (STATE.leadData && STATE.leadData.phone) || '',
-    city:         (STATE.geo && STATE.geo.city)    || '',
-    state:        (STATE.geo && STATE.geo.state)   || '',
-    country:      (STATE.geo && STATE.geo.country) || 'br',
-    utm_source:   STATE.utms.utm_source   || '',
-    utm_medium:   STATE.utms.utm_medium   || '',
-    utm_campaign: STATE.utms.utm_campaign || '',
-    utm_content:  STATE.utms.utm_content  || '',
-    utm_term:     STATE.utms.utm_term     || '',
-    fbp:          STATE.fbp  || '',
-    fbc:          STATE.fbc  || '',
-    event_id:     generateUUID(),
-    page_url:     window.location.href,
-    webinar_accept: 'wa_contact',
-  };
-  fetch(CONFIG.apiEndpoint, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(payload),
-  }).catch(function(){});
 }
 
 /* ─── Init ─── */
@@ -931,6 +913,7 @@ captureDevice();
 requestGeolocation();
 setupPhoneMask();
 document.addEventListener('DOMContentLoaded', function(){
+_populateWebinarDates();
   setupScrollTracking();
   setupSectionObservers();
   setupCTATracking();
