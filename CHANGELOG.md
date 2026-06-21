@@ -46,6 +46,44 @@ Novas entradas sempre acima das anteriores (mais recente primeiro).
 
 ---
 
+### 2026-06-21 — webinarDate dinâmico + data_hora_webinar no webhook + remoção fetch WA
+
+**Status:** ⏳ Aguardando confirmação de Carlos
+
+**Problemas reportados / funcionalidades implementadas:**
+1. Data do webinário estava hardcoded em 7 pontos do index.html — impossível atualizar sem commit manual em cada ponto
+2. Campo data_hora_webinar não estava sendo enviado para Clint via webhook
+3. Clique no botão WhatsApp flutuante disparava fetch para /api/lead com payload vazio, criando ruído na Clint sem valor
+
+**Diagnóstico / decisão:**
+- Criar CONFIG.webinarDate como única fonte de verdade; LP, popup e payload leem dessa variável
+- Formato de exibição ("25 de junho de 2026 · 20h") mantido; formato Clint ("25/06/2026 20:00") gerado pelo helper _wDate()
+- fetch do trackWAClick removido; evento Meta Pixel (fbq Contact) mantido — clique WA é engajamento, não captação
+
+**O que foi alterado (index.html — commit 64ab306):**
+- L713: CONFIG recebe webinarDate:{date:'25/06/2026',time:'20:00'}
+- Antes do CONFIG: inseridos helpers MESES_PT[], _wDate(), _populateWebinarDates()
+- DOMContentLoaded: adicionada chamada _populateWebinarDates()
+- L675: webinar-date estático → <div id=webinar-date-display> populado por JS
+- L551: urgência hero → <strong id=urg-date-short> populado por JS
+- L701: parágrafo confirmação → <span id=confirm-date-short> populado por JS
+- L702: confirm-detail → <div id=confirm-detail> populado por JS
+- payload submitLead: adicionado data_hora_webinar: _wDate().clint
+- payload acceptWebinar: adicionado data_hora_webinar: _wDate().clint
+- trackWAClick: removido payload e fetch; mantido apenas fbq('Contact')
+
+**admin.html criado (commit 1f90346):**
+- Disponível em guia.soulotear.com.br/admin
+- ATENÇÃO: token GitHub substituído por placeholder 'COLOQUE_SEU_TOKEN_GITHUB_AQUI'
+- Carlos deve abrir o arquivo local (baixado nesta sessão) que contém o token real, ou editar o admin.html no GitHub inserindo o token antes de usar
+
+**SHAs dos commits:**
+- index.html: 64ab3061617cdefb74670fcd7f768d966a76920e
+- admin.html: 1f90346d34b2630921699db1f5fbae591818ebb5
+
+---
+
+
 ### 2026-06-20 — Badge sem slideUp no mobile + scroll infinito após conteúdo
 
 **Problema reportado por Carlos:**
