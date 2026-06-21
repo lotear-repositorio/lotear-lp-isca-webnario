@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Admin — Data do Webinario</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:28px 24px;width:100%;max-width:420px}
+.logo{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8b949e;margin-bottom:24px;text-align:center}
+h1{font-size:18px;font-weight:600;margin-bottom:4px;text-align:center}
+.sub{font-size:13px;color:#8b949e;text-align:center;margin-bottom:28px}
+.cur{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:14px 16px;margin-bottom:24px}
+.cur-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8b949e;margin-bottom:6px}
+.cur-val{font-size:15px;color:#58a6ff;font-weight:500;font-family:monospace}
+.field{margin-bottom:16px}
+label{display:block;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8b949e;margin-bottom:6px}
+input{width:100%;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:12px 14px;font-size:15px;color:#e6edf3;outline:none;-webkit-appearance:none}
+input:focus{border-color:#58a6ff}
+.hint{font-size:11px;color:#8b949e;margin-top:4px}
+.prev{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:14px 16px;margin-bottom:24px;display:none}
+.prev-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8b949e;margin-bottom:8px}
+.prev-row{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px}
+.pk{font-size:12px;color:#8b949e;white-space:nowrap}
+.pv{font-size:13px;color:#e6edf3;font-family:monospace;text-align:right}
+.pc{font-size:13px;color:#3fb950;font-family:monospace;text-align:right}
+button{width:100%;background:#238636;border:none;border-radius:8px;padding:14px;font-size:14px;font-weight:600;color:#fff;cursor:pointer;margin-top:4px}
+button:disabled{background:#21262d;color:#484f58;cursor:not-allowed}
+.st{margin-top:16px;padding:12px 14px;border-radius:8px;font-size:13px;text-align:center;display:none}
+.st.load{background:#21262d;color:#8b949e;display:block}
+.st.ok{background:#0f2d1a;border:1px solid #2ea043;color:#3fb950;display:block}
+.st.err{background:#2d1317;border:1px solid #f85149;color:#f85149;display:block}
+.note{font-size:11px;color:#8b949e;text-align:center;margin-top:12px;display:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">Lotear · Admin</div>
+  <h1>Atualizar Webinario</h1>
+  <p class="sub">guia.soulotear.com.br</p>
+  <div class="cur">
+    <div class="cur-label">Data atual na LP</div>
+    <div class="cur-val" id="cur">Carregando...</div>
+  </div>
+  <div class="field">
+    <label>Data do proximo webinario</label>
+    <input type="date" id="dt" oninput="upd()">
+  </div>
+  <div class="field">
+    <label>Horario</label>
+    <input type="time" id="tm" value="20:00" oninput="upd()">
+    <div class="hint">Padrao: 20:00 (horario de Brasilia)</div>
+  </div>
+  <div class="prev" id="prev">
+    <div class="prev-label">Pre-visualizacao</div>
+    <div class="prev-row"><span class="pk">LP / Popup</span><span class="pv" id="pd"></span></div>
+    <div class="prev-row"><span class="pk">Clint (webhook)</span><span class="pc" id="pc"></span></div>
+    <div class="prev-row"><span class="pk">Rodape curto</span><span class="pv" id="ps"></span></div>
+  </div>
+  <button id="btn" onclick="save()" disabled>Atualizar LP</button>
+  <div class="st" id="st"></div>
+  <div class="note" id="note">
+    Commit enviado. Aguarde ~2 minutos para o deploy.<br>
+    <a href="https://guia.soulotear.com.br" target="_blank" style="color:#58a6ff">Abrir LP para verificar</a>
+  </div>
+</div>
+<script>
+var M=["janeiro","fevereiro","marco","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+function fDisp(d,t){var p=d.split("-");var h=t.split(":")[0].replace(/^0/,"");return parseInt(p[2])+" de "+M[parseInt(p[1])-1]+" de "+p[0]+" - "+h+"h (Brasilia)";}
+function fShort(d,t){var p=d.split("-");var h=t.split(":")[0].replace(/^0/,"");return parseInt(p[2])+"/"+p[1]+" as "+h+"h";}
+function fClint(d,t){var p=d.split("-");return p[2]+"/"+p[1]+"/"+p[0]+" "+t;}
+function fDDMM(d){var p=d.split("-");return p[2]+"/"+p[1]+"/"+p[0];}
+
+async function loadCur(){
+  try{
+    var r=await fetch("/api/update-webinar");
+    var d=await r.json();
+    if(d.ok){
+      var p=d.date.split("/");
+      var h=d.time.split(":")[0].replace(/^0/,"");
+      document.getElementById("cur").textContent=parseInt(p[0])+" de "+M[parseInt(p[1])-1]+" de "+p[2]+" - "+h+"h";
+    } else {
+      document.getElementById("cur").textContent="Erro: "+d.error;
+    }
+  }catch(e){document.getElementById("cur").textContent="Erro: "+e.message;}
+}
+
+function upd(){
+  var d=document.getElementById("dt").value;
+  var t=document.getElementById("tm").value;
+  if(!d||!t){document.getElementById("btn").disabled=true;document.getElementById("prev").style.display="none";return;}
+  document.getElementById("pd").textContent=fDisp(d,t);
+  document.getElementById("pc").textContent=fClint(d,t);
+  document.getElementById("ps").textContent=fShort(d,t);
+  document.getElementById("prev").style.display="block";
+  document.getElementById("btn").disabled=false;
+}
+
+async function save(){
+  var d=document.getElementById("dt").value;
+  var t=document.getElementById("tm").value;
+  document.getElementById("btn").disabled=true;
+  var st=document.getElementById("st");
+  st.className="st load";st.textContent="Enviando...";
+  document.getElementById("note").style.display="none";
+  try{
+    var r=await fetch("/api/update-webinar",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({date:fDDMM(d),time:t})});
+    var res=await r.json();
+    if(res.ok){
+      st.className="st ok";st.textContent="Commit "+res.sha+" — deploy em ~2 min";
+      document.getElementById("note").style.display="block";
+      document.getElementById("cur").textContent=fDisp(d,t);
+    } else {
+      throw new Error(res.error||"Erro desconhecido");
+    }
+  }catch(e){
+    st.className="st err";st.textContent="Erro: "+e.message;
+    document.getElementById("btn").disabled=false;
+  }
+}
+
+loadCur();
+</script>
+</body>
+</html>
