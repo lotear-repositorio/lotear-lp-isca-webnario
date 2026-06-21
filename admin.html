@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Admin — Data do Webinário</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+  .card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:28px 24px;width:100%;max-width:420px}
+  .logo{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8b949e;margin-bottom:24px;text-align:center}
+  h1{font-size:18px;font-weight:600;color:#e6edf3;margin-bottom:4px;text-align:center}
+  .subtitle{font-size:13px;color:#8b949e;text-align:center;margin-bottom:28px}
+  .current-block{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:14px 16px;margin-bottom:24px}
+  .current-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8b949e;margin-bottom:6px}
+  .current-value{font-size:15px;color:#58a6ff;font-weight:500;font-family:'SF Mono',Consolas,monospace}
+  .field{margin-bottom:16px}
+  label{display:block;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8b949e;margin-bottom:6px}
+  input{width:100%;background:#0d1117;border:1px solid #30363d;border-radius:8px;padding:12px 14px;font-size:15px;color:#e6edf3;outline:none;transition:border-color .15s;-webkit-appearance:none}
+  input:focus{border-color:#58a6ff}
+  .hint{font-size:11px;color:#8b949e;margin-top:4px}
+  .preview-block{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:14px 16px;margin-bottom:24px;display:none}
+  .preview-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#8b949e;margin-bottom:8px}
+  .preview-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+  .preview-key{font-size:12px;color:#8b949e}
+  .preview-val{font-size:13px;color:#e6edf3;font-family:'SF Mono',Consolas,monospace}
+  .preview-clint{font-size:13px;color:#3fb950;font-family:'SF Mono',Consolas,monospace}
+  button{width:100%;background:#238636;border:none;border-radius:8px;padding:14px;font-size:14px;font-weight:600;letter-spacing:.5px;color:#fff;cursor:pointer;transition:background .15s;margin-top:4px}
+  button:hover{background:#2ea043}
+  button:disabled{background:#21262d;color:#484f58;cursor:not-allowed}
+  .status{margin-top:16px;padding:12px 14px;border-radius:8px;font-size:13px;text-align:center;display:none}
+  .status.loading{background:#21262d;color:#8b949e;display:block}
+  .status.success{background:#0f2d1a;border:1px solid #2ea043;color:#3fb950;display:block}
+  .status.error{background:#2d1317;border:1px solid #f85149;color:#f85149;display:block}
+  .deploy-note{font-size:11px;color:#8b949e;text-align:center;margin-top:12px}
+  .step{display:flex;align-items:center;gap:8px;font-size:12px;color:#8b949e;margin-top:4px}
+  .step-dot{width:6px;height:6px;border-radius:50%;background:#8b949e;flex-shrink:0}
+  .step-dot.active{background:#58a6ff}
+  .step-dot.done{background:#3fb950}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">Lotear · Admin</div>
+  <h1>Atualizar Webinário</h1>
+  <p class="subtitle">guia.soulotear.com.br</p>
+
+  <div class="current-block">
+    <div class="current-label">Data atual na LP</div>
+    <div class="current-value" id="current-display">Carregando...</div>
+  </div>
+
+  <div class="field">
+    <label>Data do próximo webinário</label>
+    <input type="date" id="inp-date" oninput="updatePreview()">
+  </div>
+  <div class="field">
+    <label>Horário</label>
+    <input type="time" id="inp-time" value="20:00" oninput="updatePreview()">
+    <div class="hint">Padrão: 20:00 (horário de Brasília)</div>
+  </div>
+
+  <div class="preview-block" id="preview">
+    <div class="preview-label">Pré-visualização</div>
+    <div class="preview-row">
+      <span class="preview-key">LP / Popup</span>
+      <span class="preview-val" id="prev-display">—</span>
+    </div>
+    <div class="preview-row">
+      <span class="preview-key">Clint (webhook)</span>
+      <span class="preview-clint" id="prev-clint">—</span>
+    </div>
+    <div class="preview-row">
+      <span class="preview-key">Rodapé curto</span>
+      <span class="preview-val" id="prev-short">—</span>
+    </div>
+  </div>
+
+  <button id="btn-save" onclick="saveDate()" disabled>Atualizar LP</button>
+
+  <div class="status" id="status"></div>
+
+  <div id="steps" style="margin-top:16px;display:none">
+    <div class="step"><div class="step-dot" id="s1"></div>Buscando arquivo no GitHub...</div>
+    <div class="step"><div class="step-dot" id="s2"></div>Enviando commit...</div>
+    <div class="step"><div class="step-dot" id="s3"></div>Deploy no Cloudflare Pages (~1-2 min)</div>
+  </div>
+
+  <div class="deploy-note" id="deploy-note" style="display:none">
+    Após o commit, aguarde ~2 minutos para o deploy propagar.<br>
+    <a href="https://guia.soulotear.com.br" target="_blank" style="color:#58a6ff">Abrir LP para verificar</a>
+  </div>
+</div>
+
+<script>
+const REPO  = 'lotear-repositorio/lotear-lp-isca-webnario';
+const FILE  = 'index.html';
+const TOKEN = 'COLOQUE_SEU_TOKEN_GITHUB_AQUI';
+const API   = 'https://api.github.com/repos/' + REPO + '/contents/' + FILE;
+
+const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+function parseCurrentDate(content) {
+  // Busca webinarDate no CONFIG
+  var m = content.match(/webinarDate:\s*\{\s*date:\s*'([^']+)',\s*time:\s*'([^']+)'\s*\}/);
+  if (m) return { date: m[1], time: m[2] };
+  // Fallback: busca a data hardcoded no HTML
+  var m2 = content.match(/25 de junho de 2026/);
+  return m2 ? { date: '25/06/2026', time: '20:00' } : null;
+}
+
+function formatDisplay(dateStr, timeStr) {
+  // dateStr = YYYY-MM-DD (do input type=date) ou DD/MM/YYYY
+  var parts;
+  if (dateStr.includes('-')) {
+    parts = dateStr.split('-'); // [YYYY, MM, DD]
+    var d = parseInt(parts[2]), m = parseInt(parts[1]) - 1, y = parts[0];
+    var h = timeStr.split(':')[0].replace(/^0/, '');
+    return d + ' de ' + MESES[m] + ' de ' + y + ' · ' + h + 'h (horário de Brasília)';
+  }
+  // já em DD/MM/YYYY
+  parts = dateStr.split('/');
+  var d = parseInt(parts[0]), m = parseInt(parts[1]) - 1, y = parts[2];
+  var h = timeStr.split(':')[0].replace(/^0/, '');
+  return d + ' de ' + MESES[m] + ' de ' + y + ' · ' + h + 'h (horário de Brasília)';
+}
+
+function formatShort(dateStr, timeStr) {
+  var parts = dateStr.includes('-') ? [dateStr.split('-')[2], dateStr.split('-')[1]] : dateStr.split('/');
+  var h = timeStr.split(':')[0].replace(/^0/,'');
+  return parts[0].replace(/^0/,'') + '/' + parts[1] + ' às ' + h + 'h';
+}
+
+function toClintFormat(dateStr, timeStr) {
+  // retorna DD/MM/YYYY HH:MM
+  if (dateStr.includes('-')) {
+    var p = dateStr.split('-');
+    return p[2] + '/' + p[1] + '/' + p[0] + ' ' + timeStr;
+  }
+  return dateStr + ' ' + timeStr;
+}
+
+function toStorageDate(dateStr) {
+  // garante DD/MM/YYYY para salvar no CONFIG
+  if (dateStr.includes('-')) {
+    var p = dateStr.split('-');
+    return p[2] + '/' + p[1] + '/' + p[0];
+  }
+  return dateStr;
+}
+
+// Carrega data atual do GitHub
+async function loadCurrent() {
+  try {
+    var r = await fetch(API, { headers: { Authorization: 'token ' + TOKEN } });
+    var d = await r.json();
+    var content = atob(d.content.replace(/\n/g,''));
+    var parsed = parseCurrentDate(content);
+    if (parsed) {
+      document.getElementById('current-display').textContent =
+        formatDisplay(parsed.date, parsed.time);
+    } else {
+      document.getElementById('current-display').textContent = 'Não encontrado';
+    }
+  } catch(e) {
+    document.getElementById('current-display').textContent = 'Erro ao carregar';
+  }
+}
+
+function updatePreview() {
+  var d = document.getElementById('inp-date').value;
+  var t = document.getElementById('inp-time').value;
+  var btn = document.getElementById('btn-save');
+  var prev = document.getElementById('preview');
+
+  if (!d || !t) { btn.disabled = true; prev.style.display = 'none'; return; }
+
+  document.getElementById('prev-display').textContent = formatDisplay(d, t);
+  document.getElementById('prev-clint').textContent   = toClintFormat(d, t);
+  document.getElementById('prev-short').textContent   = formatShort(d, t);
+  prev.style.display = 'block';
+  btn.disabled = false;
+}
+
+function setStep(n, state) {
+  // state: 'active' | 'done'
+  var el = document.getElementById('s' + n);
+  el.className = 'step-dot ' + state;
+}
+
+function showStatus(type, msg) {
+  var el = document.getElementById('status');
+  el.className = 'status ' + type;
+  el.textContent = msg;
+}
+
+async function saveDate() {
+  var dateInput = document.getElementById('inp-date').value;
+  var timeInput = document.getElementById('inp-time').value;
+  var btn = document.getElementById('btn-save');
+  btn.disabled = true;
+
+  document.getElementById('steps').style.display = 'block';
+  document.getElementById('deploy-note').style.display = 'none';
+  showStatus('loading', 'Iniciando...');
+
+  // STEP 1: buscar SHA e conteúdo atual
+  setStep(1, 'active');
+  showStatus('loading', 'Buscando arquivo...');
+  var r, d;
+  try {
+    r = await fetch(API, { headers: { Authorization: 'token ' + TOKEN } });
+    d = await r.json();
+  } catch(e) {
+    showStatus('error', 'Falha ao conectar com GitHub.'); btn.disabled = false; return;
+  }
+  var sha = d.sha;
+  var content = atob(d.content.replace(/\n/g,''));
+  setStep(1, 'done');
+
+  // Preparar novos valores
+  var storageDateStr = toStorageDate(dateInput);
+  var displayStr     = formatDisplay(dateInput, timeInput);
+  var shortStr       = formatShort(dateInput, timeInput);
+  var pixelStr       = storageDateStr.split('/')[0].replace(/^0/,'') + '/' + storageDateStr.split('/')[1];
+
+  // STEP 2: aplicar substituições
+  setStep(2, 'active');
+  showStatus('loading', 'Preparando commit...');
+
+  var newContent = content;
+
+  // 2a. CONFIG.webinarDate — adiciona se não existir, atualiza se existir
+  if (/webinarDate:\s*\{[^}]+\}/.test(newContent)) {
+    newContent = newContent.replace(
+      /webinarDate:\s*\{[^}]+\}/,
+      "webinarDate:{date:'" + storageDateStr + "',time:'" + timeInput + "'}"
+    );
+  } else {
+    // Insere após lpSlug
+    newContent = newContent.replace(
+      /(lpSlug:'[^']*')\}/,
+      "$1,webinarDate:{date:'" + storageDateStr + "',time:'" + timeInput + "'}}"
+    );
+  }
+
+  // 2b. Textos hardcoded na LP (se ainda existirem antes de migrar para JS dinâmico)
+  // data principal popup
+  newContent = newContent.replace(
+    /(<div class="webinar-date">)[^<]+(<\/div>)/,
+    '$1' + displayStr + '$2'
+  );
+  // texto confirmação modal
+  newContent = newContent.replace(
+    /(Você está inscrito no webinário do dia )[^<.]+(\.<br>)/,
+    '$1' + pixelStr + ' às ' + timeInput.split(':')[0].replace(/^0/,'') + 'h$2'
+  );
+  // confirm-detail
+  newContent = newContent.replace(
+    /(<div class="confirm-detail">)[^<]+(<\/div>)/,
+    function(match, p1, p2) {
+      var p = storageDateStr.split('/');
+      return p1 + parseInt(p[0]) + ' · ' + MESES[parseInt(p[1])-1] + ' · ' + p[2] + ' · ' + timeInput.split(':')[0].replace(/^0/,'') + 'h' + p2;
+    }
+  );
+  // rodapé hero curto
+  newContent = newContent.replace(
+    /(<span>Webinário ao vivo: <strong>)[^<]+(<\/strong><\/span>)/,
+    '$1' + shortStr + '$2'
+  );
+  // CompleteRegistration no acceptWebinar JS
+  newContent = newContent.replace(
+    /content_name:\s*'Webinário [^']+'/,
+    "content_name:'Webinário " + storageDateStr.split('/').slice(0,2).join('/') + "/'" 
+  );
+
+  // Encode base64
+  var encoded = btoa(unescape(encodeURIComponent(newContent)));
+
+  // PUT no GitHub
+  var commitMsg = 'admin: atualiza webinário para ' + storageDateStr + ' ' + timeInput;
+  try {
+    var resp = await fetch(API, {
+      method: 'PUT',
+      headers: {
+        Authorization: 'token ' + TOKEN,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: commitMsg,
+        content: encoded,
+        sha: sha
+      })
+    });
+    var result = await resp.json();
+    if (!resp.ok) throw new Error(result.message || 'Erro no commit');
+    setStep(2, 'done');
+    setStep(3, 'active');
+    showStatus('success', '✓ Commit enviado — ' + (result.commit && result.commit.sha ? result.commit.sha.slice(0,7) : ''));
+    document.getElementById('deploy-note').style.display = 'block';
+    // Atualiza display da data atual
+    document.getElementById('current-display').textContent = displayStr;
+    setTimeout(function(){ setStep(3, 'done'); }, 90000); // 90s estimado
+  } catch(e) {
+    showStatus('error', 'Falha no commit: ' + e.message);
+    btn.disabled = false;
+    setStep(2, 'active');
+  }
+}
+
+loadCurrent();
+</script>
+</body>
+</html>
