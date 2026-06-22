@@ -140,6 +140,7 @@ export async function onRequestPost(context) {
     // Controle de fluxo
     webinar_accept = 'Não', // "Sim" ou "Não"
     data_hora_webinar = '',
+    tag_data       = '',
     event_id       = generateUUID(),
     page_url       = '',
   } = body;
@@ -164,6 +165,7 @@ export async function onRequestPost(context) {
     utm_term,
     webinar_accept, // "Sim" ou "Não"
     data_hora_webinar,
+    tag_data,
   };
 
   const clintResult = await sendToClint(clintPayload);
