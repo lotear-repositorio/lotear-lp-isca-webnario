@@ -847,17 +847,46 @@ window.acceptWebinar = function () {
   btn.disabled    = true;
   btn.textContent = 'Confirmando...';
 
+  // Gera eventID único — compartilhado entre pixel browser e CAPI para deduplicação correta
+  var crEventId = generateUUID();
+
+  // Extrai e normaliza dados do lead (já capturados no submit do ebook)
+  var leadName    = (STATE.leadData && STATE.leadData.name)  || '';
+  var leadEmail   = (STATE.leadData && STATE.leadData.email) || '';
+  var leadPhone   = (STATE.leadData && STATE.leadData.phone) || '';
+  var parts       = leadName.split(/\s+/);
+  var firstName   = (parts[0] || '').toLowerCase();
+  var lastName    = (parts.slice(1).join(' ') || '').toLowerCase();
+  var phoneDigits = leadPhone.replace(/\D/g, '');
+  var phoneE164   = phoneDigits.startsWith('55') ? '+' + phoneDigits : '+55' + phoneDigits;
+
+  // 1. Pixel browser com Advanced Matching completo + eventID para deduplicação
   if (typeof fbq !== 'undefined') {
-    fbq('track', 'CompleteRegistration', {
-      content_name: 'Webinário 25/06/2026',
-      status: 'confirmed',
+    fbq('init', CONFIG.pixelId, {
+      em:          leadEmail.toLowerCase().trim(),
+      ph:          phoneE164,
+      fn:          firstName,
+      ln:          lastName,
+      ct:          ((STATE.geo && STATE.geo.city)      || '').toLowerCase(),
+      st:          ((STATE.geo && STATE.geo.stateCode) || '').toLowerCase(),
+      zp:          (STATE.geo && STATE.geo.zip)        || '',
+      country:     (STATE.geo && STATE.geo.country)    || 'br',
+      external_id: crEventId,
     });
+    fbq('track', 'CompleteRegistration', {
+      content_name:     'Webinario Lotear Studios SP',
+      content_category: CONFIG.productCategory,
+      status:           'confirmed',
+      value:            0,
+      currency:         'BRL',
+    }, { eventID: crEventId });
   }
 
+  // 2. Payload CAPI — mesmo eventID do pixel (deduplicação server-side)
   var payload = {
-    name:         (STATE.leadData && STATE.leadData.name)  || '',
-    email:        (STATE.leadData && STATE.leadData.email) || '',
-    phone:        (STATE.leadData && STATE.leadData.phone) || '',
+    name:         leadName,
+    email:        leadEmail.toLowerCase().trim(),
+    phone:        leadPhone,
     city:         (STATE.geo && STATE.geo.city)    || '',
     state:        (STATE.geo && STATE.geo.state)   || '',
     country:      (STATE.geo && STATE.geo.country) || 'br',
@@ -868,10 +897,11 @@ window.acceptWebinar = function () {
     utm_term:     STATE.utms.utm_term     || '',
     fbp:          STATE.fbp || '',
     fbc:          STATE.fbc || '',
-    event_id:     generateUUID(),
+    event_id:     crEventId,
     page_url:     window.location.href,
-    webinar_accept: 'Sim',
+    webinar_accept:    'Sim',
     data_hora_webinar: _wDate().clint,
+    event_name:        'CompleteRegistration',
   };
 
   fetch(CONFIG.apiEndpoint, {
