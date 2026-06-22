@@ -764,7 +764,7 @@ window.submitLead = async function () {
   var phoneDigits = phone.replace(/\D/g, '');
   var phoneE164   = phoneDigits.startsWith('55') ? '+' + phoneDigits : '+55' + phoneDigits;
 
-  await waitForGeo(3000);
+  await waitForGeo(0);
   captureCookies();
 
   var wcChecked = !!(document.getElementById('wc-input') && document.getElementById('wc-input').checked);
@@ -876,7 +876,7 @@ window.acceptWebinar = async function () {
   var phoneDigits = leadPhone.replace(/\D/g, '');
   var phoneE164   = phoneDigits.startsWith('55') ? '+' + phoneDigits : '+55' + phoneDigits;
 
-  await waitForGeo(3000);
+  await waitForGeo(0);
   // 1. Pixel browser com Advanced Matching completo + eventID para deduplicação
   if (typeof fbq !== 'undefined') {
     fbq('init', CONFIG.pixelId, {
