@@ -805,6 +805,7 @@ window.submitLead = function () {
     page_url:     window.location.href,
     webinar_accept: 'Não',
     data_hora_webinar: _wDate().clint,
+    tag_data: '',
   };
 
   fetch(CONFIG.apiEndpoint, {
@@ -901,6 +902,7 @@ window.acceptWebinar = function () {
     page_url:     window.location.href,
     webinar_accept:    'Sim',
     data_hora_webinar: _wDate().clint,
+    tag_data:          'Funil de Webinar - Inscrito - ' + CONFIG.webinarDate.date.replace(/\//g, '-'),
     event_name:        'CompleteRegistration',
   };
 
