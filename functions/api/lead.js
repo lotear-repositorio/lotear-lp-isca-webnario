@@ -44,7 +44,7 @@ async function sha256(value) {
 /**
  * Envia evento para Meta Conversions API
  */
-async function sendMetaCAPI({ eventName, email, phone, firstName, lastName, city, state, country, zip, clientIP, userAgent, fbp, fbc, eventId, sourceUrl }) {
+async function sendMetaCAPI({ eventName, email, phone, firstName, lastName, city, state, country, zip, externalId, clientIP, userAgent, fbp, fbc, eventId, sourceUrl }) {
   const userData = {
     em:  email     ? [await sha256(email)]     : undefined,
     ph:  phone     ? [await sha256(phone)]      : undefined,
@@ -53,7 +53,8 @@ async function sendMetaCAPI({ eventName, email, phone, firstName, lastName, city
     ct:  city      ? [await sha256(city)]       : undefined,
     st:  state     ? [await sha256(state)]      : undefined,
     country: country ? [await sha256(country)] : undefined,
-    zp:  zip       ? [await sha256(zip)]       : undefined,
+    zp:  zip        ? [await sha256(zip)]        : undefined,
+    external_id: externalId ? [await sha256(externalId)] : undefined,
     fbp: fbp || undefined,
     fbc: fbc || undefined,
   };
@@ -143,6 +144,7 @@ export async function onRequestPost(context) {
     data_hora_webinar = '',
     tag_data       = '',
     zip            = '',
+    region         = '',
     user_agent     = '',
     event_id       = generateUUID(),
     page_url       = '',
@@ -151,8 +153,9 @@ export async function onRequestPost(context) {
   // Fallback geo via headers Cloudflare (se front-end nao enviou city/state)
   const cfCity    = context.request.headers.get('CF-IPCity')    || '';
   const cfCountry = context.request.headers.get('CF-IPCountry') || '';
+  const cfRegion  = context.request.headers.get('CF-IPRegion')  || '';
   const resolvedCity    = city    || decodeURIComponent(cfCity).replace(/\+/g, ' ');
-  const resolvedState   = state   || '';
+  const resolvedState   = (region || state || cfRegion || '').toLowerCase();
   const resolvedCountry = country || cfCountry.toLowerCase() || 'br';
   const resolvedZip     = zip     || '';
   const clientIP        = context.request.headers.get('CF-Connecting-IP') || context.request.headers.get('X-Forwarded-For') || '';
@@ -199,6 +202,7 @@ export async function onRequestPost(context) {
     state:     resolvedState,
     country:   resolvedCountry,
     zip:       resolvedZip,
+    externalId: event_id,
     clientIP:  clientIP,
     userAgent: resolvedUA,
     fbp,
