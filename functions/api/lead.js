@@ -145,6 +145,13 @@ export async function onRequestPost(context) {
     page_url       = '',
   } = body;
 
+  // Fallback geo via headers Cloudflare (se front-end nao enviou city/state)
+  const cfCity    = context.request.headers.get('CF-IPCity')    || '';
+  const cfCountry = context.request.headers.get('CF-IPCountry') || '';
+  const resolvedCity    = city    || decodeURIComponent(cfCity).replace(/\+/g, ' ');
+  const resolvedState   = state   || '';
+  const resolvedCountry = country || cfCountry.toLowerCase() || 'br';
+
   // Separar primeiro/último nome para CAPI
   const parts     = name.trim().split(/\s+/);
   const firstName = parts[0]          || '';
@@ -155,9 +162,9 @@ export async function onRequestPost(context) {
     name,
     email,
     phone,
-    city,
-    state,
-    country,
+    city:    resolvedCity,
+    state:   resolvedState,
+    country: resolvedCountry,
     utm_source,
     utm_medium,
     utm_campaign,
@@ -181,9 +188,9 @@ export async function onRequestPost(context) {
     phone,
     firstName,
     lastName,
-    city,
-    state,
-    country,
+    city:    resolvedCity,
+    state:   resolvedState,
+    country: resolvedCountry,
     fbp,
     fbc,
     eventId: event_id,
