@@ -44,7 +44,7 @@ async function sha256(value) {
 /**
  * Envia evento para Meta Conversions API
  */
-async function sendMetaCAPI({ eventName, email, phone, firstName, lastName, city, state, country, fbp, fbc, eventId, sourceUrl }) {
+async function sendMetaCAPI({ eventName, email, phone, firstName, lastName, city, state, country, zip, clientIP, userAgent, fbp, fbc, eventId, sourceUrl }) {
   const userData = {
     em:  email     ? [await sha256(email)]     : undefined,
     ph:  phone     ? [await sha256(phone)]      : undefined,
@@ -53,6 +53,7 @@ async function sendMetaCAPI({ eventName, email, phone, firstName, lastName, city
     ct:  city      ? [await sha256(city)]       : undefined,
     st:  state     ? [await sha256(state)]      : undefined,
     country: country ? [await sha256(country)] : undefined,
+    zp:  zip       ? [await sha256(zip)]       : undefined,
     fbp: fbp || undefined,
     fbc: fbc || undefined,
   };
@@ -66,9 +67,9 @@ async function sendMetaCAPI({ eventName, email, phone, firstName, lastName, city
         event_name:       eventName,
         event_time:       Math.floor(Date.now() / 1000),
         event_id:         eventId,
-        event_source_url: sourceUrl || 'https://lotear.soulotear.com.br',
+        event_source_url: sourceUrl || 'https://guia.soulotear.com.br',
         action_source:    'website',
-        user_data:        userData,
+        user_data:        { ...userData, client_ip_address: clientIP || undefined, client_user_agent: userAgent || undefined },
       },
     ],
   };
@@ -141,6 +142,8 @@ export async function onRequestPost(context) {
     webinar_accept = 'Não', // "Sim" ou "Não"
     data_hora_webinar = '',
     tag_data       = '',
+    zip            = '',
+    user_agent     = '',
     event_id       = generateUUID(),
     page_url       = '',
   } = body;
@@ -151,6 +154,9 @@ export async function onRequestPost(context) {
   const resolvedCity    = city    || decodeURIComponent(cfCity).replace(/\+/g, ' ');
   const resolvedState   = state   || '';
   const resolvedCountry = country || cfCountry.toLowerCase() || 'br';
+  const resolvedZip     = zip     || '';
+  const clientIP        = context.request.headers.get('CF-Connecting-IP') || context.request.headers.get('X-Forwarded-For') || '';
+  const resolvedUA      = user_agent || context.request.headers.get('User-Agent') || '';
 
   // Separar primeiro/último nome para CAPI
   const parts     = name.trim().split(/\s+/);
@@ -170,6 +176,7 @@ export async function onRequestPost(context) {
     utm_campaign,
     utm_content,
     utm_term,
+    cep: resolvedZip,
     webinar_accept, // "Sim" ou "Não"
     data_hora_webinar,
     tag_data,
@@ -188,9 +195,12 @@ export async function onRequestPost(context) {
     phone,
     firstName,
     lastName,
-    city:    resolvedCity,
-    state:   resolvedState,
-    country: resolvedCountry,
+    city:      resolvedCity,
+    state:     resolvedState,
+    country:   resolvedCountry,
+    zip:       resolvedZip,
+    clientIP:  clientIP,
+    userAgent: resolvedUA,
     fbp,
     fbc,
     eventId: event_id,
