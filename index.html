@@ -720,7 +720,7 @@ function captureCookies(){STATE.fbp=getCookie('_fbp');STATE.fbc=STATE.fbc||getCo
 function getCookie(n){var m=document.cookie.match(new RegExp('(^| )'+n+'=([^;]+)'));return m?decodeURIComponent(m[2]):null}
 function captureDevice(){STATE.device={userAgent:navigator.userAgent,screenResolution:screen.width+'x'+screen.height,viewport:window.innerWidth+'x'+window.innerHeight,language:navigator.language,platform:navigator.platform||'unknown',referrer:document.referrer}}
 function requestGeolocation(){if(!navigator.geolocation)return;navigator.geolocation.getCurrentPosition(function(pos){STATE.geo={latitude:pos.coords.latitude,longitude:pos.coords.longitude,accuracy:pos.coords.accuracy};fetch('https://nominatim.openstreetmap.org/reverse?lat='+pos.coords.latitude+'&lon='+pos.coords.longitude+'&format=json&addressdetails=1',{headers:{'Accept-Language':'pt-BR'}}).then(function(r){return r.json()}).then(function(d){if(d.address){STATE.geo.city=d.address.city||d.address.town||d.address.municipality||'';STATE.geo.state=d.address.state||'';STATE.geo.stateCode=getStateCode(STATE.geo.state);STATE.geo.zip=(d.address.postcode||'').replace(/\D/g,'');STATE.geo.country=d.address.country_code||'br';STATE.geo.country_name=d.address.country||'Brasil'}}).catch(function(){})},function(){},{enableHighAccuracy:false,timeout:8000,maximumAge:300000})}
-function setupScrollTracking(){var thresholds=[25,50,75,100],fired={},last=0;window.addEventListener('scroll',function(){var now=Date.now();if(now-last<200)return;last=now;var st=window.scrollY||document.documentElement.scrollTop,dh=document.documentElement.scrollHeight-window.innerHeight,pct=Math.round((st/dh)*100);if(pct>STATE.engagement.maxScroll)STATE.engagement.maxScroll=pct;thresholds.forEach(function(t){if(pct>=t&&!fired[t]){fired[t]=true;if(typeof fbq!=='undefined')fbq('trackCustom','ScrollDepth',{percent:t,page:CONFIG.lpSlug})}})},{passive:true})}
+function waitForGeo(ms){return new Promise(function(resolve){if(STATE.geo&&STATE.geo.city){return resolve();}var deadline=Date.now()+ms;var iv=setInterval(function(){if((STATE.geo&&STATE.geo.city)||Date.now()>=deadline){clearInterval(iv);resolve();}},100);});}function setupScrollTracking(){var thresholds=[25,50,75,100],fired={},last=0;window.addEventListener('scroll',function(){var now=Date.now();if(now-last<200)return;last=now;var st=window.scrollY||document.documentElement.scrollTop,dh=document.documentElement.scrollHeight-window.innerHeight,pct=Math.round((st/dh)*100);if(pct>STATE.engagement.maxScroll)STATE.engagement.maxScroll=pct;thresholds.forEach(function(t){if(pct>=t&&!fired[t]){fired[t]=true;if(typeof fbq!=='undefined')fbq('trackCustom','ScrollDepth',{percent:t,page:CONFIG.lpSlug})}})},{passive:true})}
 function setupSectionObservers(){var secs=document.querySelectorAll('[data-track-section]');if(!window.IntersectionObserver)return;var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var n=e.target.getAttribute('data-track-section');if(STATE.engagement.sectionsViewed.indexOf(n)===-1){STATE.engagement.sectionsViewed.push(n);if(typeof fbq!=='undefined')fbq('track','ViewContent',{content_name:n,content_type:'section',content_category:CONFIG.productCategory})}obs.unobserve(e.target)}})},{threshold:0.5});secs.forEach(function(s){obs.observe(s)})}
 function setupCTATracking(){document.querySelectorAll('[data-track-cta]').forEach(function(b){b.addEventListener('click',function(){STATE.engagement.ctaClicks++;var cn=b.getAttribute('data-track-cta')||'cta';if(typeof fbq!=='undefined')fbq('track','AddToWishlist',{content_name:cn,content_type:'cta_click',content_category:CONFIG.productCategory})})})}
 function setupFormTracking(){var f=document.querySelector('[data-track-form]');if(!f)return;var started=false;f.querySelectorAll('input').forEach(function(field){field.addEventListener('focus',function(){if(!started){started=true;STATE.engagement.formStartTime=Date.now();if(typeof fbq!=='undefined')fbq('track','InitiateCheckout',{content_name:'form_start',content_type:'lead_form',content_category:CONFIG.productCategory})}})})}
@@ -738,7 +738,7 @@ function getStateCode(s){var m={'acre':'ac','alagoas':'al','amapá':'ap','amazon
 // STATE já declarado acima via CONFIG/STATE original
 
 /* ─── Submit do formulário (ebook) ─── */
-window.submitLead = function () {
+window.submitLead = async function () {
   var name  = document.getElementById('fn').value.trim();
   var phone = document.getElementById('fw').value.trim();
   var email = document.getElementById('fe').value.trim();
@@ -763,6 +763,7 @@ window.submitLead = function () {
   var phoneDigits = phone.replace(/\D/g, '');
   var phoneE164   = phoneDigits.startsWith('55') ? '+' + phoneDigits : '+55' + phoneDigits;
 
+  await waitForGeo(3000);
   captureCookies();
 
   // 1. Pixel browser + Advanced Matching
@@ -843,7 +844,7 @@ function openWebinarModal() {
 }
 
 /* ─── Aceita webinário ─── */
-window.acceptWebinar = function () {
+window.acceptWebinar = async function () {
   var btn = document.getElementById('btn-webinar-accept');
   btn.disabled    = true;
   btn.textContent = 'Confirmando...';
@@ -861,6 +862,7 @@ window.acceptWebinar = function () {
   var phoneDigits = leadPhone.replace(/\D/g, '');
   var phoneE164   = phoneDigits.startsWith('55') ? '+' + phoneDigits : '+55' + phoneDigits;
 
+  await waitForGeo(3000);
   // 1. Pixel browser com Advanced Matching completo + eventID para deduplicação
   if (typeof fbq !== 'undefined') {
     fbq('init', CONFIG.pixelId, {
