@@ -1,3 +1,47 @@
+## Aguardando confirmacao -- 2026-06-22 (2)
+
+**Commit:** e19a056e0190ff7b3f97434ca3fb7f6860459d26
+**Motivo:** Correcao do evento CompleteRegistration (webinar) -- deduplicacao quebrada e dados incompletos
+
+### Problemas corrigidos
+
+**1. Deduplicacao pixel browser x CAPI estava quebrada**
+- ANTES: fbq() disparava sem eventID; CAPI gerava generateUUID() proprio -- dois IDs diferentes, Meta contava como 2 eventos
+- DEPOIS: crEventId gerado uma vez, compartilhado entre fbq({ eventID: crEventId }) e event_id do payload CAPI
+
+**2. Advanced Matching ausente no CompleteRegistration**
+- ANTES: fbq('track', 'CompleteRegistration') sem reinicializar o pixel com dados do lead
+- DEPOIS: fbq('init') com em/ph/fn/ln/ct/st/zp/country/external_id executado imediatamente antes do track
+
+**3. Dados do evento incompletos**
+- ANTES: apenas content_name e status
+- DEPOIS: content_name, content_category, status, value, currency (BRL)
+
+**4. event_name ausente no payload CAPI**
+- ANTES: CAPI nao sabia qual evento processar server-side
+- DEPOIS: event_name: 'CompleteRegistration' incluido no payload
+
+### Dados agora enviados no CompleteRegistration
+
+| Campo | Descricao |
+|---|---|
+| em | email normalizado (lowercase) |
+| ph | telefone formato E164 (+55...) |
+| fn/ln | primeiro e ultimo nome (lowercase) |
+| ct/st/zp/country | cidade, estado, CEP, pais (via geolocalizacao) |
+| external_id | UUID unico compartilhado com CAPI |
+| eventID | mesmo crEventId no pixel e no CAPI |
+| content_category | guia_studios_sp |
+| value/currency | 0 / BRL |
+| utm_source/medium/campaign/content/term | UTMs da URL |
+| fbp/fbc | cookies Meta |
+| page_url | URL completa |
+| webinar_accept | Sim |
+| data_hora_webinar | data/hora do webinar formatada |
+| event_name | CompleteRegistration (para CAPI server-side) |
+
+---
+
 ## Aguardando confirmacao -- 2026-06-22
 
 **Commit:** a0a5dd6bff24e044cd9366138affe9037569d0e3
