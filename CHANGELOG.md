@@ -1,3 +1,24 @@
+## Aguardando confirmacao -- 2026-06-22
+
+**Commit:** a0a5dd6bff24e044cd9366138affe9037569d0e3
+**Motivo:** Reducao de linguagem financeira para reclassificacao Meta
+
+### Alteracoes
+
+- `<title>`: 'O Mapa do Investidor' -> 'O Guia do Comprador'
+- H1: 'para investir' -> 'para comprar Studios'
+- Beneficio 02: removido 'potencial de valorizacao'
+- Beneficio 04: removido 'investidor iniciante'
+- Bullet webinar: removido 'Analise de rentabilidade real'
+- Footer: removido 'patrimonio'
+- Head: adicionadas metatags category=real estate e industry=imobiliario
+- Popup: sem alteracoes (conteudo ja neutro)
+
+**Contexto:** Restricao Level 1 Core Setup DESATIVADO. Analise pendente no Events Manager.
+Alteracoes sao preventivas para evitar ativacao automatica da restricao.
+
+---
+
 # CHANGELOG — guia.soulotear.com.br
 
 **Repositório:** `lotear-repositorio/lotear-lp-isca-webnario`  
