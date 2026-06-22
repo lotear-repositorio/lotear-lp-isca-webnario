@@ -138,7 +138,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 56px;height:60px;d
 .btn-submit:active{transform:scale(.99)}
 .btn-submit:disabled{opacity:.6;cursor:not-allowed}
 
-.trust-note{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11px;color:var(--muted2)}.webinar-check-wrap{margin:10px 0 2px;border:1px solid rgba(255,255,255,.08);border-radius:6px}.webinar-check-row{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;cursor:pointer;transition:background .15s;border-radius:6px 6px 0 0;-webkit-tap-highlight-color:transparent}.webinar-check-row:hover{background:rgba(76,175,131,.08)}.webinar-check-row.wc-active{background:rgba(76,175,131,.1)}#wc-box{width:17px;height:17px;border-radius:4px;border:1.5px solid rgba(255,255,255,.25);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s;background:transparent}#wc-box.wc-checked{background:var(--green);border-color:var(--green)}.webinar-check-label{font-size:12px;color:rgba(255,255,255,.75);line-height:1.4}.webinar-check-label strong{color:#fff;font-weight:500;font-size:12px;display:block;margin-bottom:2px}.wc-badge{display:none;align-items:center;gap:6px;padding:7px 13px;background:rgba(76,175,131,.12);border-top:1px solid rgba(76,175,131,.2);border-radius:0 0 6px 6px}.wc-badge.wc-visible{display:flex}.wc-badge span{font-size:11px;color:var(--green)}
+.trust-note{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11px;color:var(--muted2)}.wc-wrap{margin:10px 0 2px;border:1px solid rgba(255,255,255,.08);border-radius:6px}.wc-label{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;cursor:pointer;border-radius:6px 6px 0 0;-webkit-tap-highlight-color:transparent;transition:background .15s;user-select:none;-webkit-user-select:none}.wc-label:hover,.wc-label:active{background:rgba(76,175,131,.08)}#wc-input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}.wc-box{width:17px;height:17px;border-radius:4px;border:1.5px solid rgba(255,255,255,.3);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s;background:transparent}#wc-input:checked~.wc-label .wc-box{background:var(--green);border-color:var(--green)}#wc-input:checked~.wc-label .wc-check-icon{display:block!important}#wc-input:checked~.wc-label{background:rgba(76,175,131,.1)}.wc-text{font-size:12px;color:rgba(255,255,255,.75);line-height:1.4}.wc-text strong{color:#fff;font-weight:500;font-size:12px;display:block;margin-bottom:2px}.wc-badge{display:none;align-items:center;gap:6px;padding:7px 13px;background:rgba(76,175,131,.12);border-top:1px solid rgba(76,175,131,.2);border-radius:0 0 6px 6px}#wc-input:checked~.wc-badge{display:flex}
 .trust-note svg{width:13px;height:13px;flex-shrink:0;color:var(--muted)}
 
 /* ── URGENCY STRIP ── */
@@ -511,7 +511,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
             </div>
           </div>
 
-          <div class="webinar-check-wrap" onclick="toggleWebinarCheck()" style="cursor:pointer"><div class="webinar-check-row" id="wc-row"><div id="wc-box"></div><div class="webinar-check-label"><strong>Participar do webinario ao vivo</strong><span id="wc-date-label"></span></div></div><div class="wc-badge" id="wc-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Inscricao confirmada junto com o guia</span></div></div>
+          <div class="wc-wrap"><input type="checkbox" id="wc-input"><label class="wc-label" for="wc-input"><span class="wc-box"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" style="display:none" class="wc-check-icon"><polyline points="20 6 9 17 4 12"/></svg></span><span class="wc-text"><strong>Participar do webinario ao vivo</strong><span id="wc-date-label"></span></span></label><div class="wc-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span>Inscricao confirmada junto com o guia</span></div></div>
           <button class="btn-submit" id="btn-submit" onclick="submitLead()" data-track-cta="cta_hero_submit">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:17px;height:17px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Baixar o guia agora
@@ -739,7 +739,6 @@ function getStateCode(s){var m={'acre':'ac','alagoas':'al','amapá':'ap','amazon
 // STATE já declarado acima via CONFIG/STATE original
 
 /* ─── Submit do formulário (ebook) ─── */
-function toggleWebinarCheck(){var box=document.getElementById("wc-box");var row=document.getElementById("wc-row");var badge=document.getElementById("wc-badge");var checked=box.classList.toggle("wc-checked");row.classList.toggle("wc-active",checked);badge.classList.toggle("wc-visible",checked);box.innerHTML=checked?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':"";}
 window.submitLead = async function () {
   var name  = document.getElementById('fn').value.trim();
   var phone = document.getElementById('fw').value.trim();
@@ -768,7 +767,7 @@ window.submitLead = async function () {
   await waitForGeo(3000);
   captureCookies();
 
-  var wcChecked = !!(document.getElementById('wc-box') && document.getElementById('wc-box').classList.contains('wc-checked'));
+  var wcChecked = !!(document.getElementById('wc-input') && document.getElementById('wc-input').checked);
 
   // 1. Pixel browser + Advanced Matching
   if (typeof fbq !== 'undefined') {
