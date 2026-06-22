@@ -1,3 +1,29 @@
+## Aguardando confirmacao -- 2026-06-22 (3)
+
+**Commits:** cad8c01d7c (lead.js) + 2283b650d8 (index.html)
+**Motivo:** Adicao do campo tag_data no payload enviado para a Clint
+
+### O que mudou
+
+**functions/api/lead.js**
+- Desestrutura `tag_data` do body recebido (default: string vazia)
+- Inclui `tag_data` no `clintPayload` enviado para o webhook Clint
+
+**index.html — submitLead() (download do ebook)**
+- Envia `tag_data: ''` (vazio) — lead ainda nao se inscreveu no webinar
+
+**index.html — acceptWebinar() (inscricao no webinar)**
+- Envia `tag_data: 'Funil de Webinar - Inscrito - DD-MM-AAAA'`
+- Data formatada automaticamente a partir de `CONFIG.webinarDate.date`
+- Exemplo com webinar 25/06/2026: `'Funil de Webinar - Inscrito - 25-06-2026'`
+- Quando a data do webinar for alterada via /admin, o campo se atualiza sozinho
+
+### Campos que chegam na Clint apos a mudanca
+name, email, phone, city, state, country, utm_source/medium/campaign/content/term,
+webinar_accept, data_hora_webinar, **tag_data** (novo), event_id, page_url
+
+---
+
 ## Aguardando confirmacao -- 2026-06-22 (2)
 
 **Commit:** e19a056e0190ff7b3f97434ca3fb7f6860459d26
