@@ -151,13 +151,15 @@ export async function onRequestPost(context) {
   } = body;
 
   // Fallback geo via headers Cloudflare (se front-end nao enviou city/state)
-  const cfCity    = context.request.headers.get('CF-IPCity')    || '';
-  const cfCountry = context.request.headers.get('CF-IPCountry') || '';
-  const cfRegion  = context.request.headers.get('CF-IPRegion')  || '';
+  const cf        = context.request.cf || {};
+  const cfCity    = cf.city       || '';
+  const cfCountry = (cf.country   || context.request.headers.get('CF-IPCountry') || '').toLowerCase();
+  const cfRegion  = cf.regionCode || cf.region || '';
+  const cfZip     = cf.postalCode || '';
   const resolvedCity    = city    || decodeURIComponent(cfCity).replace(/\+/g, ' ');
   const resolvedState   = (region || state || cfRegion || '').toLowerCase();
   const resolvedCountry = country || cfCountry.toLowerCase() || 'br';
-  const resolvedZip     = zip     || '';
+  const resolvedZip     = zip     || cfZip || '';
   const clientIP        = context.request.headers.get('CF-Connecting-IP') || context.request.headers.get('X-Forwarded-For') || '';
   const resolvedUA      = user_agent || context.request.headers.get('User-Agent') || '';
 
