@@ -777,8 +777,6 @@ window.submitLead = async function () {
   await waitForGeo(0);
   captureCookies();
 
-  var wcChecked = !!(document.getElementById('wc-input') && document.getElementById('wc-input').checked);
-
   // 1. Pixel browser + Advanced Matching
   if (typeof fbq !== 'undefined') {
     fbq('init', CONFIG.pixelId, {
@@ -798,15 +796,13 @@ window.submitLead = async function () {
       value:    0,
       currency: 'BRL',
     }, { eventID: eventId });
-    if (wcChecked) {
-      fbq('track', 'CompleteRegistration', {
-        content_name:     'Webinario Lotear Studios SP',
-        content_category: CONFIG.productCategory,
-        status:           'confirmed',
-        value:    0,
-        currency: 'BRL',
-      }, { eventID: eventId });
-    }
+    fbq('track', 'CompleteRegistration', {
+      content_name:     'Webinario Lotear Studios SP',
+      content_category: CONFIG.productCategory,
+      status:           'confirmed',
+      value:    0,
+      currency: 'BRL',
+    }, { eventID: eventId });
   }
 
   // 2. Cloudflare Function → Clint + Meta CAPI
@@ -827,10 +823,10 @@ window.submitLead = async function () {
     fbc:          STATE.fbc || '',
     event_id:     eventId,
     page_url:     window.location.href,
-    webinar_accept: wcChecked ? 'Sim' : 'Não',
-    data_hora_webinar: wcChecked ? _wDate().clint : '',
-    tag_data: wcChecked ? ('Funil de Webinar - Inscrito - ' + CONFIG.webinarDate.date.replace(/\//g, '-')) : '',
-    event_name: wcChecked ? 'CompleteRegistration' : '',
+    webinar_accept: 'Sim',
+    data_hora_webinar: _wDate().clint,
+    tag_data: 'Funil de Webinar - Inscrito - ' + CONFIG.webinarDate.date.replace(/\//g, '-'),
+    event_name: 'CompleteRegistration',
   };
 
   fetch(CONFIG.apiEndpoint, {
@@ -856,10 +852,7 @@ window.submitLead = async function () {
   document.getElementById('step-1').classList.remove('active');
   document.getElementById('step-2').classList.add('active');
 
-  // Auto-inscrição: registra lead no webinário na Clint sem ação adicional
-  acceptWebinar(true);
-
-  // Abre popup de confirmação após 1.8s
+  // Abre popup de convite após 1.8s
   setTimeout(function(){ openWebinarModal(); }, 1800);
 };
 
@@ -871,79 +864,12 @@ function openWebinarModal() {
 }
 
 /* ─── Aceita webinário ─── */
-window.acceptWebinar = async function (silent) {
-  // Quando silent=true (auto-call do submitLead), preserva o DOM do modal
+window.acceptWebinar = function () {
+  // Apenas UI — o lead já foi registrado na Clint pelo submitLead()
+  // Não faz fetch adicional para evitar duplicação de negócios
   var btn = document.getElementById('btn-webinar-accept');
-  if (btn && !silent) { btn.disabled = true; btn.textContent = 'Confirmando...'; }
-
-  // Gera eventID único — compartilhado entre pixel browser e CAPI para deduplicação correta
-  var crEventId = generateUUID();
-
-  // Extrai e normaliza dados do lead (já capturados no submit do ebook)
-  var leadName    = (STATE.leadData && STATE.leadData.name)  || '';
-  var leadEmail   = (STATE.leadData && STATE.leadData.email) || '';
-  var leadPhone   = (STATE.leadData && STATE.leadData.phone) || '';
-  var parts       = leadName.split(/\s+/);
-  var firstName   = (parts[0] || '').toLowerCase();
-  var lastName    = (parts.slice(1).join(' ') || '').toLowerCase();
-  var phoneDigits = leadPhone.replace(/\D/g, '');
-  var phoneE164   = phoneDigits.startsWith('55') ? '+' + phoneDigits : '+55' + phoneDigits;
-
-  await waitForGeo(0);
-  // 1. Pixel browser com Advanced Matching completo + eventID para deduplicação
-  if (typeof fbq !== 'undefined') {
-    fbq('init', CONFIG.pixelId, {
-      em:          leadEmail.toLowerCase().trim(),
-      ph:          phoneE164,
-      fn:          firstName,
-      ln:          lastName,
-      ct:          ((STATE.geo && STATE.geo.city)      || '').toLowerCase(),
-      st:          ((STATE.geo && STATE.geo.stateCode) || '').toLowerCase(),
-      zp:          (STATE.geo && STATE.geo.zip)        || '',
-      country:     (STATE.geo && STATE.geo.country)    || 'br',
-      external_id: crEventId,
-    });
-    fbq('track', 'CompleteRegistration', {
-      content_name:     'Webinario Lotear Studios SP',
-      content_category: CONFIG.productCategory,
-      status:           'confirmed',
-      value:            0,
-      currency:         'BRL',
-    }, { eventID: crEventId });
-  }
-
-  // 2. Payload CAPI — mesmo eventID do pixel (deduplicação server-side)
-  var payload = {
-    name:         leadName,
-    email:        leadEmail.toLowerCase().trim(),
-    phone:        leadPhone,
-    city:         (STATE.geo && STATE.geo.city)    || '',
-    state:        (STATE.geo && STATE.geo.state)   || '',
-    country:      (STATE.geo && STATE.geo.country) || 'br',
-    zip:          (STATE.geo && STATE.geo.zip)     || '',
-    utm_source:   STATE.utms.utm_source   || '',
-    utm_medium:   STATE.utms.utm_medium   || '',
-    utm_campaign: STATE.utms.utm_campaign || '',
-    utm_content:  STATE.utms.utm_content  || '',
-    utm_term:     STATE.utms.utm_term     || '',
-    fbp:          STATE.fbp || '',
-    fbc:          STATE.fbc || '',
-    event_id:     crEventId,
-    page_url:     window.location.href,
-    webinar_accept:    'Sim',
-    data_hora_webinar: _wDate().clint,
-    tag_data:          'Funil de Webinar - Inscrito - ' + CONFIG.webinarDate.date.replace(/\//g, '-'),
-    event_name:        'CompleteRegistration',
-  };
-
-  fetch(CONFIG.apiEndpoint, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(payload),
-  })
-    .then(function(r){ return r.json(); })
-    .catch(function(){});
-
+  if (btn) { btn.disabled = true; btn.textContent = 'Confirmando...'; }
+  if (!document.getElementById('modal-success')) return;
   document.getElementById('modal-content').style.display = 'none';
   document.getElementById('modal-success').style.display = 'block';
 };
