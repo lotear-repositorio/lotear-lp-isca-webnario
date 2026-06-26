@@ -1,3 +1,38 @@
+## ⏳ Aguardando confirmação — 2026-06-26 (4)
+
+**Commit:** 383769f90a896e5fa40ef5cde7af909cd0c76d20
+**SHA anterior (rollback):** 4d0c98ed95a7c4e09b798556e09ffa0d1916081c
+**Motivo:** Restauração de 3 regressões introduzidas pela limpeza CSS do modal (commit 40d4320)
+
+### Causa raiz comum
+Durante a remoção dos ~30 blocos CSS do modal, CSS de elementos não relacionados
+foi apagado junto (wa-float base e overscroll do body estavam na mesma região do arquivo).
+
+### Bug 1 — Scroll infinito (mobile) — REABERTO
+- **Status original:** ✅ Confirmado resolvido em 20/06/2026 (commit 992bf9c)
+- **Causa do retorno:** `body{overscroll-behavior-y:none}` removido na limpeza CSS do modal
+- **Fix:** `body{max-width:100%;overflow-x:hidden;overscroll-behavior-y:none}` restaurado
+- **Ref CHANGELOG:** solução definitiva de 20/06/2026 — html E body precisam da propriedade
+
+### Bug 2 — Botão WhatsApp flutuante sumiu — REABERTO
+- **Status original:** ✅ funcionando antes do commit 40d4320
+- **Causa:** CSS `.wa-float` base (`position:fixed`, `display:flex`, `opacity:0`, `transition`) e
+  `.wa-float.visible` removidos. JS tenta `classList.add('visible')` via setTimeout 3s, mas
+  sem a regra CSS o elemento permanece `opacity:0`
+- **Fix:** CSS `.wa-float` base + `.wa-float.visible{opacity:1;transform:translateY(0)}` reinseridos
+
+### Bug 3 — Ícone e texto desalinhados no success-state — NOVO
+- **Causa:** SVG e texto soltos no `div.whatsapp-note` sem wrapper — `gap:8px` do flexbox
+  não age de forma consistente entre nó SVG e nó texto (especialmente mobile Safari)
+- **Fix:** cada parte envolvida em `<span>`:
+  `<span class="wn-icon"><svg>...</svg></span><span>Chegará pelo WhatsApp</span>`
+
+### Rollback
+`git revert 383769f90a896e5fa40ef5cde7af909cd0c76d20`
+SHA anterior: `4d0c98ed95a7c4e09b798556e09ffa0d1916081c`
+
+---
+
 ## ⏳ Aguardando confirmação — 2026-06-26 (3)
 
 **Commit:** 40d4320dab852862264e381af2b98bf54d8fbbbf
