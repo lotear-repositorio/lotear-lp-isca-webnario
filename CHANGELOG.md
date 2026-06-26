@@ -1,3 +1,41 @@
+## ⏳ Aguardando confirmação — 2026-06-26
+
+**Commit:** 7b5215feb3f550b29979a3e39eec042549440473
+**SHA anterior (rollback):** 3a4eba1ced42ff196edc4cd008fd869d957975bf
+**Motivo:** Otimização de imagens WebP + mudanças copy webinário + eliminação vocabulário Meta financial classifier
+
+### Imagens (base64 no CSS)
+- **hero-visual** (`.hero-photo`): JPEG 87.1 KB → WebP q=75 38.5 KB | PSNR 37.3 dB | redução 56%
+- **ebook-float** (`.ebook-cover`): JPEG 64.2 KB + redimensionado 477→240px → WebP q=75 11.3 KB | PSNR 33.4 dB | redução 82%
+- **HTML total**: 255.9 KB → 121.0 KB (53% menor)
+
+### Copy / Anti-classifier Meta
+- `L429` Nav CTA: `'Baixar o Guia'` → `'Garantir minha vaga →'`
+- `L452` H1: `'O mapa certo para comprar Studios em São Paulo.'` → `'O que ninguém te explica antes de comprar seu primeiro studio em SP.'`
+- `L458` Badge: `'+1.200 investidores já têm'` → `'+1.200 pessoas já têm'`
+- `L485` form-sub: inclui webinário como parte automática do cadastro
+- Novo elemento `div.wb-box` + CSS `.wb-box/.wb-date/.wb-title/.wb-desc` inserido após form-sub
+- `L514` Removido `div.wc-wrap` (checkbox opt-in webinário)
+- `L517` CTA botão: `'Baixar o guia agora'` → `'Receber o guia + garantir minha vaga no webinário'`
+- `L549` Urgency strip: `'investidores já baixaram'` → `'pessoas já têm o guia'`
+- Modal `webinar-title-text`: `'Como investir em studios'` → `'Como entender e comprar studios'`
+- `h2` benefícios: `'investidor'` → `'você'`
+- Depoimento: `'Investidor'` → `'Comprador'`
+
+### Lógica JS
+- `submitLead()`: `acceptWebinar(true)` chamado automaticamente — 100% dos leads inscritos no webinário sem opt-in separado
+- `acceptWebinar(silent)`: parâmetro `silent=true` pula atualizações visuais do modal quando chamado via submitLead
+- `_populateWebinarDates()`: adiciona população do novo `#wb-date-display`
+
+### Rollback
+Se houver problema visual ou funcional:
+```
+git revert 7b5215feb3f550b29979a3e39eec042549440473
+```
+Ou restaurar diretamente o SHA anterior via GitHub API com SHA `3a4eba1ced42ff196edc4cd008fd869d957975bf`.
+
+---
+
 ## Aguardando confirmacao -- 2026-06-22 (3)
 
 **Commits:** cad8c01d7c (lead.js) + 2283b650d8 (index.html)
