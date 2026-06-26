@@ -1,3 +1,40 @@
+## ⏳ Aguardando confirmação — 2026-06-26 (2)
+
+**Commit:** 66367cb7b00042bdabf4e2e3d4deb179b9574d5e
+**SHA anterior (rollback):** adc40fd30bc10616e25ff2c673976d09232033b0
+**Motivo:** Correção de duplicação de negócios na Clint (2 webhooks por cadastro)
+
+### Causa raiz
+`submitLead()` fazia fetch para `/api/lead` → 1 negócio na Clint.
+`acceptWebinar(true)` chamado logo depois fazia **segundo fetch** → 2º negócio.
+Introduzido no commit anterior (7b5215f) ao adicionar `acceptWebinar(true)` automático sem remover o fetch da função.
+
+### O que foi alterado
+
+**submitLead():**
+- Removida `var wcChecked` (lia `#wc-input` inexistente desde remoção do checkbox)
+- `webinar_accept` sempre `'Sim'` (sem condicional)
+- `tag_data` e `data_hora_webinar` sempre preenchidos
+- `fbq('CompleteRegistration')` disparado sempre com mesmo `eventId` do Lead (deduplicação correta)
+- Removida chamada `acceptWebinar(true)` — era a origem do segundo webhook
+
+**acceptWebinar():**
+- Função reduzida a UI-only: sem fetch para `/api/lead`, sem pixel browser, sem CAPI
+- Mantém apenas: `btn.disabled`, transição `modal-content → modal-success`
+- Lead já registrado no Clint pelo `submitLead()` — `acceptWebinar` é só confirmação visual
+
+### Fluxo de webhooks após fix
+| Ação | Webhooks Clint | Eventos Meta pixel | Eventos CAPI |
+|---|---|---|---|
+| Cadastro (submitLead) | 1 × webinar_accept=Sim | Lead + CompleteRegistration (mesmo eventId) | 1 × CompleteRegistration |
+| Clique no modal (acceptWebinar) | 0 | 0 | 0 |
+
+### Rollback
+`git revert 66367cb7b00042bdabf4e2e3d4deb179b9574d5e`
+Ou restaurar SHA `adc40fd30bc10616e25ff2c673976d09232033b0`.
+
+---
+
 ## ⏳ Aguardando confirmação — 2026-06-26
 
 **Commit:** 7b5215feb3f550b29979a3e39eec042549440473
