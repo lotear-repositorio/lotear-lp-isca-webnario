@@ -198,75 +198,42 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 .success-state h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:10px}
 .success-state p{font-size:13px;color:var(--muted);line-height:1.7}
 .success-state .whatsapp-note{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;font-size:13px;font-weight:500;color:#25D366}
+.webinar-confirm-note{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:12px;color:var(--green);opacity:.85}
 .success-state .whatsapp-note svg{width:18px;height:18px;flex-shrink:0}
 
 /* ── POPUP WEBINÁRIO ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)}
-.modal-overlay.open{display:flex;animation:fadeIn .25s ease}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-.modal{background:var(--navy-1);border:1px solid var(--gold-brd);max-width:500px;width:100%;position:relative;animation:slideUp .3s ease}
-.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-
-.modal-inner{padding:40px 36px}
-.modal-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:inline-flex;align-items:center;gap:8px}
-.modal-tag::before{content:'';width:16px;height:1px;background:var(--gold)}
-.modal-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;line-height:1.15;margin-bottom:16px}
-.modal-title em{font-style:italic;color:var(--gold)}
-.modal-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px}
-
-.webinar-card{background:var(--navy-2);border:1px solid var(--gold-brd);padding:20px 24px;margin-bottom:24px}
-.webinar-date{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.webinar-title-text{font-size:15px;font-weight:600;margin-bottom:4px}
-.webinar-info{font-size:13px;color:var(--muted)}
-
-.webinar-bullets{list-style:none;margin-bottom:28px}
-.webinar-bullets li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:8px}
-.webinar-bullets li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px}
-
-.btn-webinar-accept{width:100%;border:none;background:var(--green);color:#fff;padding:16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:background .18s,transform .1s;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
-.btn-webinar-accept:hover{background:var(--green-d)}
-.btn-webinar-accept:active{transform:scale(.99)}
-.btn-webinar-accept:disabled{opacity:.6;cursor:not-allowed}
-
-.btn-webinar-skip{width:100%;border:none;background:transparent;color:var(--muted2);padding:10px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:color .18s}
-.btn-webinar-skip:hover{color:var(--muted)}
-
-/* Success webinário */
-.modal-success{display:none;padding:40px 36px;text-align:center}
-.modal-success svg{width:52px;height:52px;color:var(--green);margin:0 auto 20px;display:block}
-.modal-success h3{font-family:'Playfair Display',serif;font-size:24px;margin-bottom:12px}
-.modal-success p{font-size:14px;color:var(--muted);line-height:1.7}
-.modal-success .confirm-detail{margin-top:20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;justify-content:center;gap:8px}
-.modal-success .confirm-detail::before,.modal-success .confirm-detail::after{content:'';flex:1;height:1px;background:var(--gold-brd)}
 
 
-/* ── WHATSAPP FLUTUANTE ── */
-.wa-float{
-  position:fixed;
-  bottom:28px;
-  right:24px;
-  z-index:500;
-  width:56px;
-  height:56px;
-  border-radius:50%;
-  background:#25D366;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 4px 20px rgba(37,211,102,.4);
-  cursor:pointer;
-  text-decoration:none;
-  opacity:0;
-  transform:scale(0.8);
-  transition:opacity .3s ease, transform .3s ease, background .2s;
-  pointer-events:none;
-}
-.wa-float.visible{
-  opacity:1;
-  transform:scale(1);
-  pointer-events:auto;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .wa-float:hover{
   background:#1ebe5a;
   transform:scale(1.08);
@@ -338,9 +305,9 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   footer{padding:20px;flex-direction:column;align-items:flex-start;gap:8px}
 
   /* Modal */
-  .modal-inner,.modal-success{padding:28px 20px}
-  .modal-title{font-size:20px}
-  .webinar-card{padding:16px 18px}
+  
+  
+  
 }
 
 @media(max-width:480px){
@@ -403,13 +370,13 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   footer .f-slogan{font-size:11px}
 
   /* Modal */
-  .modal{margin:0 8px}
-  .modal-inner,.modal-success{padding:24px 18px}
-  .modal-title{font-size:19px}
-  .modal-desc{font-size:13px}
-  .webinar-card{padding:14px 16px}
-  .webinar-bullets li{font-size:12px}
-  .btn-webinar-accept{font-size:12px;padding:14px}
+  
+  
+  
+  
+  
+  
+  
 
 
   /* WhatsApp float */
@@ -481,10 +448,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
         <div class="fstep" id="step-2">
           <span class="num">2</span><span>Guia</span>
         </div>
-        <div class="fstep-sep"></div>
-        <div class="fstep" id="step-3">
-          <span class="num">3</span><span>Webinário</span>
-        </div>
+
       </div>
 
       <p class="form-sub">Preencha e receba o guia agora pelo WhatsApp — você já fica inscrito no webinário de 01/07 às 20h, onde analisamos ao vivo um empreendimento real da curadoria.</p>
@@ -544,6 +508,10 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
           <div class="whatsapp-note">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
             Chegará pelo WhatsApp
+          </div>
+          <div class="webinar-confirm-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Vaga no webinário de <strong id="success-webinar-date"></strong> confirmada
           </div>
         </div>
       </div>
@@ -674,56 +642,13 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   </svg>
 </a>
 
-<!-- ── POPUP WEBINÁRIO ── -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-
-    <!-- Conteúdo do convite -->
-    <div class="modal-inner" id="modal-content">
-      <span class="modal-tag">Próximo passo</span>
-      <h2 class="modal-title">Seu guia está a caminho<br>pelo <em>WhatsApp.</em></h2>
-      <p class="modal-desc">Enquanto isso, que tal garantir sua vaga no webinário ao vivo onde vamos detalhar cada estratégia do guia — e responder suas dúvidas em tempo real?</p>
-
-      <div class="webinar-card">
-        <div class="webinar-date" id="webinar-date-display"></div>
-        <div class="webinar-title-text">Como entender e comprar studios em SP com inteligência</div>
-        <div class="webinar-info">Ao vivo com os especialistas da Lotear</div>
-      </div>
-
-      <ul class="webinar-bullets">
-        <li>Como identificar os melhores lançamentos antes do mercado</li>
-        <li>Como comparar planta e imóvel pronto na prática</li>
-        <li>Perguntas e respostas ao vivo com os especialistas</li>
-        <li>Vagas limitadas — encerramento na véspera</li>
-      </ul>
-
-      <button class="btn-webinar-accept" id="btn-webinar-accept" onclick="acceptWebinar()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:17px;height:17px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-        Confirmar minha vaga gratuitamente
-      </button>
-      <button class="btn-webinar-skip" onclick="skipWebinar()">Não, obrigado — só quero o guia</button>
-    </div>
-
-    <!-- Sucesso webinário -->
-    <div class="modal-success" id="modal-success">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-        <polyline points="22 4 12 14.01 9 11.01"/>
-      </svg>
-      <h3>Vaga confirmada!</h3>
-      <p>Voce esta inscrito no webinario do dia <span id="confirm-date-short"></span>.<br>Enviaremos o link de acesso pelo seu WhatsApp próximo ao evento.</p>
-      <div class="confirm-detail" id="confirm-detail"></div>
-    </div>
-
-  </div>
-</div>
 
 <!-- ── JAVASCRIPT ── -->
 <script>
 (function(){
 'use strict';
 
-var MESES_PT=['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];function _wDate(){var c=CONFIG.webinarDate;if(!c)return{display:'',short:'',clint:'',detail:''};var p=c.date.split('/');var d=parseInt(p[0]),m=parseInt(p[1])-1,y=p[2];var h=c.time.split(':')[0].replace(/^0/,'');return{display:d+' de '+MESES_PT[m]+' de '+y+' - '+h+'h',short:d+'/'+p[1]+' as '+h+'h',clint:c.date+' '+c.time,detail:d+' - '+MESES_PT[m]+' - '+y+' - '+h+'h'};}function _populateWebinarDates(){var w=_wDate();var el;el=document.getElementById('webinar-date-display');if(el)el.textContent=w.display;el=document.getElementById('urg-date-short');if(el)el.textContent=w.short;el=document.getElementById('confirm-date-short');if(el)el.textContent=w.short;el=document.getElementById('confirm-detail');if(el)el.textContent=w.detail;el=document.getElementById('wc-date-label');if(el)el.textContent=w.short+' — gratuito';el=document.getElementById('wb-date-display');if(el)el.textContent='📅 '+w.display.replace(' -',' ·');}
+var MESES_PT=['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];function _wDate(){var c=CONFIG.webinarDate;if(!c)return{display:'',short:'',clint:'',detail:''};var p=c.date.split('/');var d=parseInt(p[0]),m=parseInt(p[1])-1,y=p[2];var h=c.time.split(':')[0].replace(/^0/,'');return{display:d+' de '+MESES_PT[m]+' de '+y+' - '+h+'h',short:d+'/'+p[1]+' as '+h+'h',clint:c.date+' '+c.time,detail:d+' - '+MESES_PT[m]+' - '+y+' - '+h+'h'};}function _populateWebinarDates(){var w=_wDate();var el;el=document.getElementById('webinar-date-display');if(el)el.textContent=w.display;el=document.getElementById('urg-date-short');if(el)el.textContent=w.short;el=document.getElementById('confirm-date-short');if(el)el.textContent=w.short;el=document.getElementById('confirm-detail');if(el)el.textContent=w.detail;el=document.getElementById('wb-date-display');if(el)el.textContent='📅 '+w.display.replace(' -',' ·');}
 var CONFIG={pixelId:'2152403845552453',apiEndpoint:'/api/lead',productName:'Guia Studios SP',productCategory:'guia_studios_sp',lpSlug:'guia-investidor-studios-sp',webinarDate:{date:'01/07/2026',time:'20:00'}};
 var STATE={utms:{},fbc:null,fbp:null,fbclid:null,gclid:null,geo:null,device:{},leadData:null,engagement:{maxScroll:0,sectionsViewed:[],ctaClicks:0,timeStart:Date.now(),formStartTime:null}};
 function captureUTMs(){var p=new URLSearchParams(window.location.search);['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){var v=p.get(k);if(v)STATE.utms[k]=v});STATE.fbclid=p.get('fbclid');STATE.gclid=p.get('gclid');if(STATE.fbclid&&!getCookie('_fbc'))STATE.fbc='fb.1.'+Date.now()+'.'+STATE.fbclid}
@@ -852,37 +777,18 @@ window.submitLead = async function () {
   document.getElementById('step-1').classList.remove('active');
   document.getElementById('step-2').classList.add('active');
 
-  // Abre popup de convite após 1.8s
-  setTimeout(function(){ openWebinarModal(); }, 1800);
+  // Preenche data do webinário na confirmação
+  var swEl = document.getElementById('success-webinar-date');
+  if (swEl) swEl.textContent = _wDate().short;
+
+
 };
 
-/* ─── Abre modal do webinário ─── */
-function openWebinarModal() {
-  document.getElementById('modal-overlay').classList.add('open');
-  document.getElementById('step-2').classList.remove('active');
-  document.getElementById('step-3').classList.add('active');
-}
 
-/* ─── Aceita webinário ─── */
-window.acceptWebinar = function () {
-  // Apenas UI — o lead já foi registrado na Clint pelo submitLead()
-  // Não faz fetch adicional para evitar duplicação de negócios
-  var btn = document.getElementById('btn-webinar-accept');
-  if (btn) { btn.disabled = true; btn.textContent = 'Confirmando...'; }
-  if (!document.getElementById('modal-success')) return;
-  document.getElementById('modal-content').style.display = 'none';
-  document.getElementById('modal-success').style.display = 'block';
-};
 
-/* ─── Pula webinário ─── */
-window.skipWebinar = function () {
-  document.getElementById('modal-overlay').classList.remove('open');
-};
 
-/* ─── Fecha modal clicando fora ─── */
-document.getElementById('modal-overlay').addEventListener('click', function(e){
-  if (e.target === this) skipWebinar();
-});
+
+
 
 /* WA flutuante */
 function trackWAClick() {
