@@ -1,3 +1,33 @@
+## ⏳ Aguardando confirmação — 2026-06-26 (3)
+
+**Commit:** 40d4320dab852862264e381af2b98bf54d8fbbbf
+**SHA anterior (rollback):** 05e8a021d89fa0a8c5360a5860b6ec9610e4c3b6
+**Motivo:** Remoção do modal webinário — sem utilidade após inscrição automática
+
+### Diagnóstico
+O modal perguntava "Quer garantir sua vaga?" mas o lead já estava inscrito
+automaticamente desde o submitLead() (webinar_accept=Sim). O popup aparecia
+1.8s após o submit como ruído puro, sem efeito funcional.
+
+### Removido
+- HTML: `div#modal-overlay` completo (modal-content + modal-success)
+- JS: `openWebinarModal()`, `acceptWebinar()`, `skipWebinar()`, event listener de clique fora
+- JS: `setTimeout(openWebinarModal, 1800)` do `submitLead()`
+- CSS: ~30 seletores do modal (`.modal-*`, `.webinar-card`, `.webinar-bullets`, `.btn-webinar-*`, `.confirm-detail`)
+- HTML: `step-3 'Webinário'` do funil visual (só era ativado pelo modal)
+- JS: `wc-date-label` do `_populateWebinarDates`
+
+### Adicionado ao success-state
+- Bloco `.webinar-confirm-note`: "Vaga no webinário de [data] confirmada"
+- Data populada dinamicamente via `_wDate().short` no `submitLead()`
+- CSS `.webinar-confirm-note`: verde, flex, ícone calendário inline
+
+### Rollback
+`git revert 40d4320dab852862264e381af2b98bf54d8fbbbf`
+SHA anterior: `05e8a021d89fa0a8c5360a5860b6ec9610e4c3b6`
+
+---
+
 ## ⏳ Aguardando confirmação — 2026-06-26 (2)
 
 **Commit:** 66367cb7b00042bdabf4e2e3d4deb179b9574d5e
