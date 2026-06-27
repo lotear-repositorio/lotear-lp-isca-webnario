@@ -339,7 +339,7 @@ Novas entradas sempre acima das anteriores (mais recente primeiro).
 
 ### 2026-06-21 — webinarDate dinâmico + data_hora_webinar no webhook + remoção fetch WA
 
-**Status:** ⏳ Aguardando confirmação de Carlos
+**Status:** ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Problemas reportados / funcionalidades implementadas:**
 1. Data do webinário estava hardcoded em 7 pontos do index.html — impossível atualizar sem commit manual em cada ponto
