@@ -96,7 +96,7 @@ SHA anterior: `b8f422ccac3fa8c357097652d4fe56ef70b8f647`
 
 ---
 
-## ⏳ Aguardando confirmação — 2026-06-27 (5)
+## ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Commit:** 9351b00d47ab207b953816f05c65784a40d0c8da
 **SHA anterior (rollback):** 3f8cf495856c6a579733cc17acbc4f5d2b428153
