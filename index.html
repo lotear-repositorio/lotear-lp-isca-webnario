@@ -25,7 +25,7 @@ src="https://www.facebook.com/tr?id=2152403845552453&ev=PageView&noscript=1"/></
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;overflow-x:hidden;overscroll-behavior-y:none;overflow-y:scroll}
+/* ═══ SCROLL-FIX — NÃO REMOVER ESTE BLOCO ═══ */html{scroll-behavior:smooth;overflow-x:hidden;overscroll-behavior-y:none;overflow-y:scroll}
 :root{
   --navy:#0D1B2A;
   --navy-1:#0f2035;
@@ -42,7 +42,7 @@ html{scroll-behavior:smooth;overflow-x:hidden;overscroll-behavior-y:none;overflo
   --muted2:rgba(255,255,255,.22);
   --brd:rgba(255,255,255,.07);
 }
-html,body{max-width:100%;overflow-x:hidden;overscroll-behavior-y:none;height:100%}
+html,body{max-width:100%;overflow-x:hidden;overscroll-behavior-y:none;height:100%}/* ═══ FIM SCROLL-FIX ═══ */
 body{background:var(--navy);color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
 
 /* ── NAV ── */
@@ -234,6 +234,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 
 
 
+/* ═══ WA-FLOAT — NÃO REMOVER ESTE BLOCO ═══ */
 .wa-float{
   position:fixed;
   bottom:28px;
@@ -253,7 +254,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
   transform:translateY(10px);
   transition:opacity .3s,transform .3s,background .2s,transform .15s;
 }
-.wa-float.visible{opacity:1;transform:translateY(0)}
+.wa-float.visible{opacity:1;transform:translateY(0)}/* ═══ FIM WA-FLOAT ═══ */
 .wa-float:hover{
   background:#1ebe5a;
   transform:scale(1.08);
@@ -680,7 +681,7 @@ function waitForGeo(ms){return new Promise(function(resolve){if(STATE.geo&&STATE
 function setupSectionObservers(){var secs=document.querySelectorAll('[data-track-section]');if(!window.IntersectionObserver)return;var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var n=e.target.getAttribute('data-track-section');if(STATE.engagement.sectionsViewed.indexOf(n)===-1){STATE.engagement.sectionsViewed.push(n);if(typeof fbq!=='undefined')fbq('track','ViewContent',{content_name:n,content_category:CONFIG.productCategory})}obs.unobserve(e.target)}})},{threshold:0.5});secs.forEach(function(s){obs.observe(s)})}
 function setupCTATracking(){document.querySelectorAll('[data-track-cta]').forEach(function(b){b.addEventListener('click',function(){STATE.engagement.ctaClicks++;var cn=b.getAttribute('data-track-cta')||'cta';if(typeof fbq!=='undefined')fbq('track','AddToWishlist',{content_name:cn,content_category:CONFIG.productCategory})})})}
 function setupFormTracking(){var f=document.querySelector('[data-track-form]');if(!f)return;var started=false;f.querySelectorAll('input').forEach(function(field){field.addEventListener('focus',function(){if(!started){started=true;STATE.engagement.formStartTime=Date.now();if(typeof fbq!=='undefined')fbq('track','InitiateCheckout',{content_name:'form_start',content_category:CONFIG.productCategory})}})})}
-function setupPhoneMask(){var ph=document.getElementById('fw');if(!ph)return;ph.addEventListener('input',function(e){var v=e.target.value.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);if(v.length>6)v='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);else if(v.length>2)v='('+v.slice(0,2)+') '+v.slice(2);else if(v.length>0)v='('+v;e.target.value=v})}
+function setupPhoneMask(){var ph=document.getElementById('fw');if(!ph)return;ph.addEventListener('input',function(e){var el=e.target,start=el.selectionStart,end=el.selectionEnd,old=el.value,v=old.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);var fmt='';if(v.length>6)fmt='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);else if(v.length>2)fmt='('+v.slice(0,2)+') '+v.slice(2);else if(v.length>0)fmt='('+v;else fmt='';if(fmt===old)return;var digitsBeforeCursor=old.slice(0,start).replace(/\D/g,'').length;el.value=fmt;var newPos=0,count=0;for(var i=0;i<fmt.length;i++){if(/\d/.test(fmt[i])){count++;if(count===digitsBeforeCursor){newPos=i+1;break}}};if(digitsBeforeCursor===0)newPos=0;el.setSelectionRange(newPos,newPos)})}
 function generateUUID(){if(crypto&&crypto.randomUUID)return crypto.randomUUID();return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16)})}
 function getStateCode(s){var m={'acre':'ac','alagoas':'al','amapá':'ap','amazonas':'am','bahia':'ba','ceará':'ce','distrito federal':'df','espírito santo':'es','goiás':'go','maranhão':'ma','mato grosso':'mt','mato grosso do sul':'ms','minas gerais':'mg','pará':'pa','paraíba':'pb','paraná':'pr','pernambuco':'pe','piauí':'pi','rio de janeiro':'rj','rio grande do norte':'rn','rio grande do sul':'rs','rondônia':'ro','roraima':'rr','santa catarina':'sc','são paulo':'sp','sergipe':'se','tocantins':'to'};return m[(s||'').toLowerCase()]||''}
 // SUBMIT com tracking completo
