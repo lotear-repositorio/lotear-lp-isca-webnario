@@ -1,3 +1,43 @@
+## ⏳ Aguardando confirmação — 2026-06-27
+
+**Commits:**
+- index.html: `f22a5a4139c9df827d0ce44b0ea3c97291bf5872`
+- lead.js: `483d133292f60083cdf40125958bc8c48d166e0d`
+
+**SHAs anteriores (rollback):**
+- index.html: `9eae51d409a176e340055ccdb737ca4f622fab15`
+- lead.js: `b526b7b49264490c48bc2117a692c562d108c185`
+
+**Motivo:** Correção de 3 problemas de tracking Meta (Events Manager warnings)
+
+### Problema 1 — value/currency ausentes no CAPI
+- **Impacto:** 37% dos eventos Lead + 100% dos CompleteRegistration sem `custom_data`
+- **Causa:** `sendMetaCAPI()` não incluía `custom_data: {value, currency}` no payload
+- **Fix (lead.js):** parâmetros `value=0, currency='BRL'` adicionados à função + `custom_data` no payload
+
+### Problema 2 — eventId único para dois eventos distintos
+- **Impacto:** deduplicação incorreta entre Lead e CompleteRegistration
+- **Causa:** `var eventId = generateUUID()` único usado em ambos os `fbq('track')`
+- **Fix (index.html):** `eventIdLead` e `eventIdCR` separados; payload CAPI usa `eventIdCR`
+
+### Problema 3 — ln enviado como string vazia
+- **Impacto:** cobertura de sobrenome 20% com dado inválido nos 80% restantes
+- **Causa:** `ln: lastName.toLowerCase()` passava `''` quando lead digitava só 1 nome
+- **Fix (index.html):** spread condicional `...(lastName ? { ln: lastName.toLowerCase() } : {})`
+- **Nota:** 20% de cobertura é estrutural (formulário campo único). Enviar dado incorreto
+  piora o EMQ — ausência é preferível. Adicionar campo separado de sobrenome seria UX ruim.
+
+### Impacto na página
+Zero. Nenhum DOM, CSS, fluxo de submit ou payload Clint alterado.
+
+### Rollback
+```
+git revert f22a5a4139c9df827d0ce44b0ea3c97291bf5872  # index.html
+git revert 483d133292f60083cdf40125958bc8c48d166e0d  # lead.js
+```
+
+---
+
 ## ⏳ Aguardando confirmação — 2026-06-26 (4)
 
 **Commit:** 383769f90a896e5fa40ef5cde7af909cd0c76d20
