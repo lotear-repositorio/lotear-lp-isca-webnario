@@ -1,4 +1,23 @@
-## ⏳ Aguardando confirmação — 2026-06-27
+## ✅ Sessão encerrada — 27/06/2026
+
+**Decisões confirmadas por Carlos:**
+1. **Empreendimento ao vivo (webinário 01/07):** genérico — sem nomear NIK ou ON Paulista. Mensagens D+2 e D+3 referenciam "empreendimento da curadoria Lotear".
+2. **Template A:** Opção B — Utility mínimo entrega o guia e confirma inscrição. Marketing D+0 separado 2h depois faz o gancho do webinário e pede interação (abre janela de conversa para os Marketing seguintes funcionarem).
+3. **Confirmação visual:** scroll infinito, WA flutuante, whatsapp-note, 1 negócio no Clint — todos ok.
+
+**Estado da LP — SHA final: b8f422ccac3fa8c357097652d4fe56ef70b8f647**
+Tamanho: 111.8 KB (era 255.9 KB). Todos os itens da LP implementados e confirmados.
+
+**Pendente para próxima sessão:**
+- SEO técnico base (meta description, OG, schema, canonical, alt) — ~3h, zero risco
+- Configurar automação Clint: Template A (Utility) + Template B (Marketing D+0) + D+1 + D+2 + D+3 + pós-evento
+- Verificar no Clint: existe campo/tag "compareceu" para bifurcar pós-evento 7A/7B?
+- Montar bloco de análise ao vivo nos slides (genérico — sem empreendimento nomeado)
+- Atualizar data nos slides: "01 de julho de 2026 · 20h" (está "17 de Junho")
+
+---
+
+## ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Commits:**
 - index.html: `f22a5a4139c9df827d0ce44b0ea3c97291bf5872`
@@ -38,7 +57,7 @@ git revert 483d133292f60083cdf40125958bc8c48d166e0d  # lead.js
 
 ---
 
-## ⏳ Aguardando confirmação — 2026-06-26 (4)
+## ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Commit:** 383769f90a896e5fa40ef5cde7af909cd0c76d20
 **SHA anterior (rollback):** 4d0c98ed95a7c4e09b798556e09ffa0d1916081c
@@ -73,7 +92,7 @@ SHA anterior: `4d0c98ed95a7c4e09b798556e09ffa0d1916081c`
 
 ---
 
-## ⏳ Aguardando confirmação — 2026-06-26 (3)
+## ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Commit:** 40d4320dab852862264e381af2b98bf54d8fbbbf
 **SHA anterior (rollback):** 05e8a021d89fa0a8c5360a5860b6ec9610e4c3b6
@@ -103,7 +122,7 @@ SHA anterior: `05e8a021d89fa0a8c5360a5860b6ec9610e4c3b6`
 
 ---
 
-## ⏳ Aguardando confirmação — 2026-06-26 (2)
+## ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Commit:** 66367cb7b00042bdabf4e2e3d4deb179b9574d5e
 **SHA anterior (rollback):** adc40fd30bc10616e25ff2c673976d09232033b0
@@ -140,7 +159,7 @@ Ou restaurar SHA `adc40fd30bc10616e25ff2c673976d09232033b0`.
 
 ---
 
-## ⏳ Aguardando confirmação — 2026-06-26
+## ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Commit:** 7b5215feb3f550b29979a3e39eec042549440473
 **SHA anterior (rollback):** 3a4eba1ced42ff196edc4cd008fd869d957975bf
