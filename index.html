@@ -711,8 +711,9 @@ window.submitLead = async function () {
   btn.disabled    = true;
   btn.textContent = 'Enviando...';
 
-  var eventId = generateUUID();
-  var leadId  = generateUUID();
+  var eventIdLead = generateUUID();
+  var eventIdCR   = generateUUID();
+  var leadId       = generateUUID();
   var parts     = name.split(/\s+/);
   var firstName = parts[0] || '';
   var lastName  = parts.slice(1).join(' ') || '';
@@ -728,7 +729,7 @@ window.submitLead = async function () {
       em: email.toLowerCase().trim(),
       ph: phoneE164,
       fn: firstName.toLowerCase(),
-      ln: lastName.toLowerCase(),
+      ...(lastName ? { ln: lastName.toLowerCase() } : {}),
       ct: ((STATE.geo && STATE.geo.city)      || '').toLowerCase(),
       st: ((STATE.geo && STATE.geo.stateCode) || '').toLowerCase(),
       zp: (STATE.geo && STATE.geo.zip) || '',
@@ -740,14 +741,14 @@ window.submitLead = async function () {
       content_category: CONFIG.productCategory,
       value:    0,
       currency: 'BRL',
-    }, { eventID: eventId });
+    }, { eventID: eventIdLead });
     fbq('track', 'CompleteRegistration', {
       content_name:     'Webinario Lotear Studios SP',
       content_category: CONFIG.productCategory,
       status:           'confirmed',
       value:    0,
       currency: 'BRL',
-    }, { eventID: eventId });
+    }, { eventID: eventIdCR });
   }
 
   // 2. Cloudflare Function → Clint + Meta CAPI
@@ -766,7 +767,7 @@ window.submitLead = async function () {
     utm_term:     STATE.utms.utm_term     || '',
     fbp:          STATE.fbp || '',
     fbc:          STATE.fbc || '',
-    event_id:     eventId,
+    event_id:     eventIdCR,
     page_url:     window.location.href,
     webinar_accept: 'Sim',
     data_hora_webinar: _wDate().clint,
