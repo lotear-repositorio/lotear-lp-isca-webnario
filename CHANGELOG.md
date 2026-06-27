@@ -1,3 +1,34 @@
+## ⏳ Aguardando confirmação — 2026-06-27 (3)
+
+**Commit:** 35b8add8233d80ddf6d6e8d47caefa3ae1bcec71
+**SHA anterior (rollback):** f1d5757f06c11bea3ff48b8c87b1625390aa6b66
+
+**Motivo:** Fix definitivo multicamada do scroll infinito mobile (iOS Safari)
+
+### Por que reaparecia
+iOS Safari ignora `overscroll-behavior-y:none` sozinho em determinadas condições.
+Edições anteriores removiam partes do CSS ao limpar blocos do modal, quebrando a proteção.
+
+### Solução multicamada — 5 camadas independentes
+| Camada | O que faz | Onde |
+|---|---|---|
+| 1 | `html{overflow-y:scroll}` — força scroll no elemento raiz | CSS |
+| 2 | `html,body{height:100%}` — ancora ao viewport | CSS |
+| 3 | `body{overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}` | CSS |
+| 4 | `overscroll-behavior-y:none` em html, html,body e body | CSS (3 ocorrências) |
+| 5 | `touchmove` + `preventDefault` no body/html | JS |
+
+Com 5 camadas, a remoção de qualquer uma delas não quebra o comportamento.
+
+### Impacto
+Zero em tracking, wa-float, formulário, conversão, webinário.
+
+### Rollback
+`git revert 35b8add8233d80ddf6d6e8d47caefa3ae1bcec71`
+SHA anterior: `f1d5757f06c11bea3ff48b8c87b1625390aa6b66`
+
+---
+
 ## ⏳ Aguardando confirmação — 2026-06-27 (2)
 
 **Commit:** 222583465d74377b0e301ff62eb8809a3908452b
