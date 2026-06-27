@@ -1,3 +1,37 @@
+## ⏳ Aguardando confirmação — 2026-06-27 (4)
+
+**Commits:**
+- index.html: `8968fa716a5e5a9215639270677ea78369a6adc2` (SHA: `3f8cf495856c6a579733cc17acbc4f5d2b428153`)
+- lotear_audit.py: `fbf0e07b10b4d3837ddea309a25a0bf2be787b27` (novo arquivo)
+- CLAUDE.md: `0c3a0b74c1acdb29ffd7f3e5a1efe9545bd67e06` (novo arquivo)
+
+**SHA anterior index.html (rollback):** `d153cbf0b54740b7ae4865378f231500e95db90a`
+
+### 3 entregas neste commit
+
+**1. Fix — Máscara de telefone (backspace)**
+- **Causa:** listener `input` reescrevia o campo inteiro e jogava cursor para o final
+- **Sintoma:** impossível corrigir dígitos antes do traço com backspace
+- **Fix:** `digitsBeforeCursor` calculado antes de reformatar → `setSelectionRange` restaura posição exata após reformatação
+
+**2. Proteção — Comentários de seção no CSS**
+- `/* ═══ SCROLL-FIX — NÃO REMOVER ESTE BLOCO ═══ */` ao redor dos blocos de scroll
+- `/* ═══ WA-FLOAT — NÃO REMOVER ESTE BLOCO ═══ */` ao redor do CSS do botão WA
+- Qualquer edição que remover esses blocos aparece visivelmente no diff do GitHub
+
+**3. Protocolo permanente — `lotear_audit.py` + `CLAUDE.md`**
+- `lotear_audit.py`: 28 itens verificados automaticamente. Uso: `python3 lotear_audit.py /tmp/index_novo.html`
+- `CLAUDE.md`: protocolo de desenvolvimento gravado no repo — blocos protegidos, restrições de vocabulário, elementos críticos, rollback
+
+### Auditoria pré-commit
+28/28 ✅
+
+### Rollback
+`git revert 8968fa716a5e5a9215639270677ea78369a6adc2`
+SHA anterior: `d153cbf0b54740b7ae4865378f231500e95db90a`
+
+---
+
 ## ⏳ Aguardando confirmação — 2026-06-27 (3)
 
 **Commit:** 35b8add8233d80ddf6d6e8d47caefa3ae1bcec71
