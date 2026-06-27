@@ -96,6 +96,25 @@ SHA anterior: `b8f422ccac3fa8c357097652d4fe56ef70b8f647`
 
 ---
 
+## ⏳ Aguardando confirmação — 2026-06-27 (5)
+
+**Commit:** 9351b00d47ab207b953816f05c65784a40d0c8da
+**SHA anterior (rollback):** 3f8cf495856c6a579733cc17acbc4f5d2b428153
+
+### Mudanças
+1. **Link WA:** `wa.link/tollet` → `wa.link/dq4v89` (número com automação Clint)
+2. **Trigger WA:** `setTimeout(3s)` → `IntersectionObserver` no footer
+   - Botão aparece apenas quando lead rola até o final da página
+   - `waObserver.disconnect()` após aparecer — fica fixo
+   - Fallback: 90% de scroll se footer não for encontrado
+
+### Auditoria pré-commit: 28/28 ✅
+
+### Rollback
+`git revert 9351b00d47ab207b953816f05c65784a40d0c8da`
+
+---
+
 ## ✅ Sessão encerrada — 27/06/2026
 
 **Decisões confirmadas por Carlos:**
