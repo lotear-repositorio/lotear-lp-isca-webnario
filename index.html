@@ -843,29 +843,32 @@ document.addEventListener('touchmove', function(e) {
 }, { passive: false });
 
 // ═══ WA-FLOAT TRIGGER — NÃO REMOVER ═══
-  // Aparece quando o footer entra no viewport (lead chegou ao fim da página)
+  // Aparece após 30s OU quando seção de depoimento entra no viewport
+  // 30s = tempo médio que lead hesitante fica antes de decidir sair
   var waBtn = document.getElementById('wa-float');
   if (waBtn) {
-    var waObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          waBtn.classList.add('visible');
-          waObserver.disconnect();
-        }
-      });
-    }, { threshold: 0.1 });
-    var waFooter = document.querySelector('footer');
-    if (waFooter) {
-      waObserver.observe(waFooter);
-    } else {
-      // Fallback: 90% de scroll
-      var waFallback = function() {
-        if ((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight >= 0.90) {
-          waBtn.classList.add('visible');
-          window.removeEventListener('scroll', waFallback);
-        }
-      };
-      window.addEventListener('scroll', waFallback, { passive: true });
+    var waShown = false;
+    function showWaBtn() {
+      if (waShown) return;
+      waShown = true;
+      waBtn.classList.add('visible');
+      if (waTimer)     clearTimeout(waTimer);
+      if (waObserver)  waObserver.disconnect();
+    }
+    // Gatilho 1: 30 segundos
+    var waTimer = setTimeout(showWaBtn, 30000);
+    // Gatilho 2: scroll até o depoimento (o que vier primeiro)
+    var waObserver = null;
+    var waAnchor = document.querySelector('.testimonial-block') ||
+                   document.querySelector('.gloss-section')    ||
+                   document.querySelector('footer');
+    if (waAnchor) {
+      waObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) showWaBtn();
+        });
+      }, { threshold: 0.2 });
+      waObserver.observe(waAnchor);
     }
   }
 });
