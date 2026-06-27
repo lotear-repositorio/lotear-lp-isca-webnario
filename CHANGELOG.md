@@ -115,6 +115,23 @@ SHA anterior: `b8f422ccac3fa8c357097652d4fe56ef70b8f647`
 
 ---
 
+## ⏳ Aguardando confirmação — 2026-06-27 (6)
+
+**Commit:** 6625d62cba6650a174bc72e78f4aa5478b7e5116
+**SHA anterior (rollback):** 833cce421a30de427f33a56e8bf2f151dc8d353a
+
+### Mudança
+WA trigger: footer-only → 30s + scroll até depoimento (combinados)
+- Gatilho 1: 30 segundos de permanência na página
+- Gatilho 2: scroll até .testimonial-block
+- Flag waShown evita duplo disparo
+- Auditoria: 28/28 ✅
+
+### Rollback
+`git revert 6625d62cba6650a174bc72e78f4aa5478b7e5116`
+
+---
+
 ## ✅ Sessão encerrada — 27/06/2026
 
 **Decisões confirmadas por Carlos:**
