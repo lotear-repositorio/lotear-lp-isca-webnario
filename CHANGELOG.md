@@ -1,3 +1,36 @@
+## ⏳ Aguardando confirmação — 2026-06-27 (2)
+
+**Commit:** 222583465d74377b0e301ff62eb8809a3908452b
+**SHA anterior (rollback):** b8f422ccac3fa8c357097652d4fe56ef70b8f647
+
+**Motivo:** Restauração de conversão — gap criativo/página corrigido
+
+### Diagnóstico
+Conversão caiu de 30% → 8% após mudanças do webinário.
+Causa raiz: mismatch de expectativa — criativo promete guia simples,
+LP pedia guia + webinário + empreendimento antes de o lead preencher.
+
+### 4 mudanças cirúrgicas
+1. **H1** restaurado: "O mapa certo para comprar Studios em São Paulo."
+2. **form-sub** restaurado: "...receba o guia direto no WhatsApp em instantes."
+3. **CTA** restaurado: "Baixar o guia agora"
+4. **wb-box** reposicionado: antes dos campos → após o botão (bônus pós-decisão)
+
+### Auditoria pré-commit: 23/23 ✅
+Todos os itens críticos verificados programaticamente antes do commit:
+overscroll (html+body), wa-float (CSS+visible+JS), tracking (pixel+CAPI+eventIds),
+sem modal/wcChecked/acceptWebinar, 3 campos, success-state, webinar-confirm-note.
+
+### O que NÃO mudou
+webinar_accept=Sim automático, tag_data, eventIdLead/CR, ln condicional,
+Meta Pixel 2152403845552453 — inscrição no webinário mantida intacta.
+
+### Rollback
+`git revert 222583465d74377b0e301ff62eb8809a3908452b`
+SHA anterior: `b8f422ccac3fa8c357097652d4fe56ef70b8f647`
+
+---
+
 ## ✅ Sessão encerrada — 27/06/2026
 
 **Decisões confirmadas por Carlos:**
