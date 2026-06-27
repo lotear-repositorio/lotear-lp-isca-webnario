@@ -1,4 +1,4 @@
-## ⏳ Aguardando confirmação — 2026-06-27 (4)
+## ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Commits:**
 - index.html: `8968fa716a5e5a9215639270677ea78369a6adc2` (SHA: `3f8cf495856c6a579733cc17acbc4f5d2b428153`)
@@ -32,7 +32,7 @@ SHA anterior: `d153cbf0b54740b7ae4865378f231500e95db90a`
 
 ---
 
-## ⏳ Aguardando confirmação — 2026-06-27 (3)
+## ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Commit:** 35b8add8233d80ddf6d6e8d47caefa3ae1bcec71
 **SHA anterior (rollback):** f1d5757f06c11bea3ff48b8c87b1625390aa6b66
@@ -63,7 +63,7 @@ SHA anterior: `f1d5757f06c11bea3ff48b8c87b1625390aa6b66`
 
 ---
 
-## ⏳ Aguardando confirmação — 2026-06-27 (2)
+## ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Commit:** 222583465d74377b0e301ff62eb8809a3908452b
 **SHA anterior (rollback):** b8f422ccac3fa8c357097652d4fe56ef70b8f647
