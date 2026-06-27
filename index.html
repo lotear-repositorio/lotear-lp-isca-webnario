@@ -25,7 +25,7 @@ src="https://www.facebook.com/tr?id=2152403845552453&ev=PageView&noscript=1"/></
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;overflow-x:hidden;overscroll-behavior-y:none}
+html{scroll-behavior:smooth;overflow-x:hidden;overscroll-behavior-y:none;overflow-y:scroll}
 :root{
   --navy:#0D1B2A;
   --navy-1:#0f2035;
@@ -42,8 +42,8 @@ html{scroll-behavior:smooth;overflow-x:hidden;overscroll-behavior-y:none}
   --muted2:rgba(255,255,255,.22);
   --brd:rgba(255,255,255,.07);
 }
-html,body{max-width:100%;overflow-x:hidden;overscroll-behavior-y:none}
-body{background:var(--navy);color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+html,body{max-width:100%;overflow-x:hidden;overscroll-behavior-y:none;height:100%}
+body{background:var(--navy);color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
 
 /* ── NAV ── */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 56px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,27,42,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--gold-brd)}
@@ -834,7 +834,14 @@ document.addEventListener('DOMContentLoaded', function(){_populateWebinarDates()
   setupFormTracking();
 
   // Exibe botão WA após 3s
-  setTimeout(function(){
+  // Previne bounce/scroll infinito no iOS Safari
+document.addEventListener('touchmove', function(e) {
+  if (e.target === document.body || e.target === document.documentElement) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+setTimeout(function(){
     var btn = document.getElementById('wa-float');
     if (btn) btn.classList.add('visible');
   }, 3000);
