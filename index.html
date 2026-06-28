@@ -410,6 +410,7 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
 .wb-date{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:4px}
 .wb-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:3px}
 .wb-desc{font-size:11px;color:var(--muted);line-height:1.5}
+/* ── WA VALIDATION ── */.fg.wa-validating input{border-color:rgba(255,255,255,.22)}.fg.wa-validating .wa-vi{display:flex}.fg.wa-valid input{border-color:rgba(76,175,131,.35);background:rgba(76,175,131,.03)}.fg.wa-valid .wa-ok{display:flex}.fg.wa-invalid input{border-color:rgba(255,185,0,.45);background:rgba(255,185,0,.02)}.fg.wa-invalid .wa-em{display:flex}.fg.wa-invalid .wa-wn{display:flex}.wa-ic{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:none;align-items:center;pointer-events:none;z-index:1}@keyframes wa-spin{to{transform:translateY(-50%) rotate(360deg)}}.wa-vi svg{animation:wa-spin .7s linear infinite;stroke:rgba(255,255,255,.35)}.wa-ok svg{stroke:#4CAF83}.wa-wn svg{stroke:#FFB900}.wa-em{display:none;align-items:flex-start;gap:6px;margin-top:5px;padding:8px 10px;background:rgba(255,185,0,.07);border-left:2px solid #FFB900;border-radius:0 3px 3px 0;font-size:11px;color:rgba(255,255,255,.65);line-height:1.5}.wa-em svg{width:12px;height:12px;stroke:#FFB900;flex-shrink:0;margin-top:1px}
 </style>
 </head>
 <body>
@@ -489,8 +490,9 @@ footer .f-contact{font-size:11px;color:var(--muted2)}
             <label>WhatsApp</label>
             <div class="iw">
               <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.67 9.81 19.79 19.79 0 0 1 1.6 1.18 2 2 0 0 1 3.58 0h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 7.91a16 16 0 0 0 8.18 8.18l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 24 16.92z"/></svg>
-              <input type="tel" id="fw" placeholder="(00) 00000-0000">
+              <input type="tel" id="fw" placeholder="(00) 00000-0000"><span class="wa-ic wa-vi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9" stroke-linecap="round"/></svg></span><span class="wa-ic wa-ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span><span class="wa-ic wa-wn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
             </div>
+            <div class="wa-em" id="wa-em"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Este número não tem WhatsApp. Verifique para receber o guia.</span></div>
           </div>
           <div class="fg">
             <label>E-mail</label>
@@ -681,7 +683,75 @@ function waitForGeo(ms){return new Promise(function(resolve){if(STATE.geo&&STATE
 function setupSectionObservers(){var secs=document.querySelectorAll('[data-track-section]');if(!window.IntersectionObserver)return;var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var n=e.target.getAttribute('data-track-section');if(STATE.engagement.sectionsViewed.indexOf(n)===-1){STATE.engagement.sectionsViewed.push(n);if(typeof fbq!=='undefined')fbq('track','ViewContent',{content_name:n,content_category:CONFIG.productCategory})}obs.unobserve(e.target)}})},{threshold:0.5});secs.forEach(function(s){obs.observe(s)})}
 function setupCTATracking(){document.querySelectorAll('[data-track-cta]').forEach(function(b){b.addEventListener('click',function(){STATE.engagement.ctaClicks++;var cn=b.getAttribute('data-track-cta')||'cta';if(typeof fbq!=='undefined')fbq('track','AddToWishlist',{content_name:cn,content_category:CONFIG.productCategory})})})}
 function setupFormTracking(){var f=document.querySelector('[data-track-form]');if(!f)return;var started=false;f.querySelectorAll('input').forEach(function(field){field.addEventListener('focus',function(){if(!started){started=true;STATE.engagement.formStartTime=Date.now();if(typeof fbq!=='undefined')fbq('track','InitiateCheckout',{content_name:'form_start',content_category:CONFIG.productCategory})}})})}
-function setupPhoneMask(){var ph=document.getElementById('fw');if(!ph)return;ph.addEventListener('input',function(e){var el=e.target,start=el.selectionStart,end=el.selectionEnd,old=el.value,v=old.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);var fmt='';if(v.length>6)fmt='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);else if(v.length>2)fmt='('+v.slice(0,2)+') '+v.slice(2);else if(v.length>0)fmt='('+v;else fmt='';if(fmt===old)return;var digitsBeforeCursor=old.slice(0,start).replace(/\D/g,'').length;el.value=fmt;var newPos=0,count=0;for(var i=0;i<fmt.length;i++){if(/\d/.test(fmt[i])){count++;if(count===digitsBeforeCursor){newPos=i+1;break}}};if(digitsBeforeCursor===0)newPos=0;el.setSelectionRange(newPos,newPos)})}
+function setupPhoneMask(){var ph=document.getElementById('fw');if(!ph)return;ph.addEventListener('input',function(e){var el=e.target,start=el.selectionStart,end=el.selectionEnd,old=el.value,v=old.replace(/\D/g,'');if(v.length>11)v=v.slice(0,11);var fmt='';if(v.length>6)fmt='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);else if(v.length>2)fmt='('+v.slice(0,2)+') '+v.slice(2);else if(v.length>0)fmt='('+v;else fmt='';if(fmt===old)return;var digitsBeforeCursor=old.slice(0,start).replace(/\D/g,'').length;el.value=fmt;var newPos=0,count=0;for(var i=0;i<fmt.length;i++){if(/\d/.test(fmt[i])){count++;if(count===digitsBeforeCursor){newPos=i+1;break}}};if(digitsBeforeCursor===0)newPos=0;el.setSelectionRange(newPos,newPos))}}
+
+/* ── WA-VALIDATE — NÃO REMOVER ── */
+(function(){
+  var _waState  = 'idle'; // idle|validating|valid|invalid|error
+  var _waNum    = '';     // último número verificado
+  var _waChecked= false;
+
+  function _setState(s){
+    _waState = s;
+    var g = document.getElementById('fw') && document.getElementById('fw').closest('.fg');
+    if(!g) return;
+    g.classList.remove('wa-validating','wa-valid','wa-invalid');
+    if(s==='validating') g.classList.add('wa-validating');
+    if(s==='valid')      g.classList.add('wa-valid');
+    if(s==='invalid')    g.classList.add('wa-invalid');
+  }
+
+  function _validate(digits){
+    return new Promise(function(resolve){
+      _setState('validating');
+      // Chama Cloudflare Function — credenciais ficam server-side
+      fetch('/api/check-whatsapp?phone=' + digits, {method:'GET'})
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          if(d.valid===true){
+            _setState('valid');   _waChecked=true; _waNum=digits; resolve('valid');
+          } else if(d.valid===false){
+            _setState('invalid'); _waChecked=true; _waNum=digits; resolve('invalid');
+          } else {
+            // Resposta inesperada → graceful pass
+            _setState('idle');    _waChecked=true; _waNum=digits; resolve('error');
+          }
+        })
+        .catch(function(){
+          // API indisponível → graceful: não bloqueia o lead
+          _setState('idle');      _waChecked=true; _waNum=digits; resolve('error');
+        });
+    });
+  }
+
+  // Expõe para o submitLead usar
+  window._waValidate  = _validate;
+  window._waGetState  = function(){ return _waState; };
+  window._waGetNum    = function(){ return _waNum; };
+  window._waIsChecked = function(){ return _waChecked; };
+  window._waReset     = function(){ _setState('idle'); _waChecked=false; _waNum=''; };
+
+  // Blur: valida quando lead sai do campo com número completo
+  document.addEventListener('DOMContentLoaded', function(){
+    var fw = document.getElementById('fw');
+    if(!fw) return;
+    fw.addEventListener('blur', function(){
+      var d = fw.value.replace(/\D/g,'');
+      if(d.length < 11) return;
+      if(_waState==='validating') return;
+      if(_waChecked && _waNum===d) return; // já checou este número
+      _validate(d);
+    });
+    // Editar o campo após validação → reseta
+    fw.addEventListener('input', function(){
+      if(_waState==='valid'||_waState==='invalid'){
+        _waReset();
+      }
+    });
+  });
+})();
+/* ── FIM WA-VALIDATE ── */
+
 function generateUUID(){if(crypto&&crypto.randomUUID)return crypto.randomUUID();return'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&0x3|0x8)).toString(16)})}
 function getStateCode(s){var m={'acre':'ac','alagoas':'al','amapá':'ap','amazonas':'am','bahia':'ba','ceará':'ce','distrito federal':'df','espírito santo':'es','goiás':'go','maranhão':'ma','mato grosso':'mt','mato grosso do sul':'ms','minas gerais':'mg','pará':'pa','paraíba':'pb','paraná':'pr','pernambuco':'pe','piauí':'pi','rio de janeiro':'rj','rio grande do norte':'rn','rio grande do sul':'rs','rondônia':'ro','roraima':'rr','santa catarina':'sc','são paulo':'sp','sergipe':'se','tocantins':'to'};return m[(s||'').toLowerCase()]||''}
 // SUBMIT com tracking completo
@@ -704,6 +774,30 @@ window.submitLead = async function () {
     alert('Preencha todos os campos para receber o guia.');
     return;
   }
+
+  // ── OPÇÃO A: Validação WhatsApp ──────────────────────────────
+  // Se já checou este número: usa resultado anterior
+  // Se ainda não checou (lead não saiu do campo): valida agora
+  var _digits = phone.replace(/\D/g,'');
+  if (window._waIsChecked && window._waIsChecked() && window._waGetNum && window._waGetNum() === _digits) {
+    if (window._waGetState && window._waGetState() === 'invalid') {
+      document.getElementById('fw') && document.getElementById('fw').focus();
+      return; // bloqueia — número sem WA confirmado
+    }
+    // valid ou error (graceful) → prossegue normalmente
+  } else if (window._waValidate && _digits.length >= 11) {
+    // Não checou ainda → valida agora antes de prosseguir
+    btn.textContent = 'Verificando...';
+    var _waResult = await window._waValidate(_digits);
+    if (_waResult === 'invalid') {
+      btn.disabled    = false;
+      btn.textContent = 'Baixar o guia agora';
+      document.getElementById('fw') && document.getElementById('fw').focus();
+      return; // bloqueia
+    }
+    btn.textContent = 'Enviando...';
+  }
+  // ── FIM VALIDAÇÃO WhatsApp ───────────────────────────────────
 
   // Salva dados para reusar no popup e no botão WA
   STATE.leadData = { name: name, email: email, phone: phone };
