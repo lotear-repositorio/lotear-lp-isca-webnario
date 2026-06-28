@@ -1,3 +1,39 @@
+## ✅ Confirmado por Carlos — 28/06/2026 (~12:40h)
+
+**Commits:**
+- index.html: `895f2c93866e...` (SHA: `fa9a415cd5913f1d44185b2546b44615e2c0bc76`)
+- functions/api/check-whatsapp.js: `b3a986076229...` (criado anteriormente)
+- **SHA anterior index.html (rollback):** `4e41464515763438cfd7532da52ca93d95d0d00e`
+
+### Validação WhatsApp via Z-API — v2 (corrigida)
+
+**Problema da v1 (madrugada 28/06):** quebrou máscara de telefone e botão WA no iOS Safari.
+Causa raiz: DOMContentLoaded aninhado + segundo listener input no campo fw.
+Rollback imediato executado às ~03h.
+
+**v2 implementada com protocolo correto:**
+- Zero novo DOMContentLoaded
+- Zero segundo listener input no fw
+- Blur listener e variáveis de estado no escopo global, antes do DCL
+- Reset _waState dentro do listener input existente (antes de setSelectionRange)
+- Auditoria: 40/40 (28 originais + 12 regras anti-conflito iOS)
+
+**Checklist mobile confirmado por Carlos:**
+- ✅ Máscara (21) 99443-9393 funcionando no iOS
+- ✅ Cursor preservado ao apagar dígito do meio
+- ✅ Ícone ✓ verde ao sair do campo com número válido
+- ✅ Borda âmbar + mensagem com número sem WA
+- ✅ Submit bloqueado com número inválido
+- ✅ Botão WA aparece (scroll e 30s)
+- ✅ Sem scroll infinito
+- ✅ Success state funcionando
+- ✅ Chrome Android — mesmo comportamento
+
+### Rollback disponível
+`git revert 895f2c93866e` ou SHA anterior: `4e41464515763438cfd7532da52ca93d95d0d00e`
+
+---
+
 ## ✅ Confirmado resolvido por Carlos — 27/06/2026
 
 **Commits:**
