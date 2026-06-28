@@ -132,6 +132,46 @@ WA trigger: footer-only → 30s + scroll até depoimento (combinados)
 
 ---
 
+## ⏳ Aguardando confirmação — 2026-06-28
+
+**Commits:**
+- index.html: `2917e821e810...` (SHA: `38e040c085e82e388535049f5528c296f13eef67`)
+- functions/api/check-whatsapp.js: `b3a986076229...` (novo arquivo)
+- **SHA anterior index.html (rollback):** `4e41464515763438cfd7532da52ca93d95d0d00e`
+
+### Funcionalidade: Validação WhatsApp via Z-API
+
+**Fluxo (Opção A — conforme decisão de Carlos):**
+1. Lead preenche WhatsApp e sai do campo (blur) → valida automaticamente
+2. Lead não saiu do campo → valida no momento do clique em Baixar
+3. Número SEM WhatsApp confirmado → submit bloqueado + mensagem âmbar
+4. Z-API indisponível → graceful pass (campanha nunca para)
+
+**4 inserções cirúrgicas (zero remoções):**
+- CSS: estados wa-validating / wa-valid / wa-invalid + spinner
+- HTML: 3 ícones de estado + mensagem de erro no campo fw
+- JS: IIFE _validate() + blur listener + reset ao editar
+- submitLead: lógica Opção A antes da validação básica
+
+**Performance:** zero bibliotecas novas, zero requests extras no load.
+Credenciais Z-API server-side (Cloudflare env vars — nunca no frontend).
+
+**Auditoria:** 28/28 ✅ + 28 verificações extras ✅
+
+**Para ativar completamente:**
+O Cloudflare já tem as variáveis de ambiente configuradas:
+- ZAPI_INSTANCE_ID, ZAPI_TOKEN, ZAPI_CLIENT_TOKEN ✅
+
+**Verificar após deploy:**
+- Scroll infinito: ok (SCROLL-FIX intacto)
+- Botão WA: ok (WA-FLOAT intacto)
+- Validação WA: preencher telefone, sair do campo, verificar ícone
+
+### Rollback
+`git revert 2917e821e810` — SHA anterior: `4e41464515763438cfd7532da52ca93d95d0d00e`
+
+---
+
 ## ✅ Sessão encerrada — 27/06/2026
 
 **Decisões confirmadas por Carlos:**
