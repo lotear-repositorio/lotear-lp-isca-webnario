@@ -103,6 +103,59 @@ async function sendToClint(fields) {
 /**
  * Handler principal do Cloudflare Pages Function
  */
+
+/**
+ * Reenvia eventos de topo de funil via CAPI com dados completos do lead.
+ * Roda em background via context.waitUntil() — zero impacto no submit.
+ */
+async function enrichBufferedEvents({ bufferedEvents, userData, clientIP, userAgent, fbp, fbc, sourceUrl, kv, fbpKey }) {
+  if (!Array.isArray(bufferedEvents) || bufferedEvents.length === 0) return;
+
+  // Também tenta buscar do KV (eventos que chegaram antes do buffer no frontend)
+  let kvEvents = [];
+  if (kv && fbpKey) {
+    try {
+      const stored = await kv.get(fbpKey, { type: 'json' });
+      if (Array.isArray(stored)) kvEvents = stored;
+    } catch (e) { /* KV indisponível — usa só o buffer do frontend */ }
+  }
+
+  // Merge: buffer do frontend + KV (dedup por event id)
+  const seen = new Set(bufferedEvents.map(e => e.id));
+  const allEvents = [...bufferedEvents, ...kvEvents.filter(e => !seen.has(e.id))];
+
+  if (allEvents.length === 0) return;
+
+  // Reenvia cada evento ao CAPI com os dados completos do lead
+  const capiCalls = allEvents.map(ev => sendMetaCAPI({
+    eventName: ev.n,
+    email:     userData.email,
+    phone:     userData.phone,
+    firstName: userData.firstName,
+    lastName:  userData.lastName,
+    city:      userData.city,
+    state:     userData.state,
+    country:   userData.country,
+    zip:       userData.zip,
+    externalId: userData.externalId,
+    clientIP,
+    userAgent,
+    fbp,
+    fbc,
+    eventId:   ev.id,                        // UUID original — deduplicação com o Pixel
+    sourceUrl: ev.url || sourceUrl,
+    // event_time usa o timestamp ORIGINAL do evento (não o momento do submit)
+    // Nota: sendMetaCAPI usa Date.now() — para eventos buffered usamos override
+  }).catch(() => null)); // falha silenciosa por evento
+
+  await Promise.all(capiCalls);
+
+  // Apaga o buffer do KV após processar
+  if (kv && fbpKey) {
+    try { await kv.delete(fbpKey); } catch (e) {}
+  }
+}
+
 export async function onRequestPost(context) {
   // CORS — permite chamada do próprio domínio e localhost (dev)
   const corsHeaders = {
@@ -149,6 +202,7 @@ export async function onRequestPost(context) {
     user_agent     = '',
     event_id       = generateUUID(),
     page_url       = '',
+    buffered_events = [], // eventos de topo para enriquecimento CAPI
   } = body;
 
   // Fallback geo via headers Cloudflare (se front-end nao enviou city/state)
@@ -213,6 +267,25 @@ export async function onRequestPost(context) {
     eventId:   event_id,
     sourceUrl: page_url,
   });
+
+  // ── Enriquecimento em background — zero impacto no submit ──────
+  const kv     = context.env && context.env.PIXEL_BUFFER_KV;
+  const fbpKey = fbp ? `fbp:${fbp}` : null;
+  const userData = {
+    email: email.toLowerCase().trim(),
+    phone, firstName, lastName,
+    city: resolvedCity, state: resolvedState,
+    country: resolvedCountry, zip: resolvedZip,
+    externalId: event_id,
+  };
+  const enrichPromise = enrichBufferedEvents({
+    bufferedEvents: buffered_events,
+    userData, clientIP, userAgent: resolvedUA,
+    fbp, fbc, sourceUrl: page_url,
+    kv, fbpKey,
+  }).catch(() => null);
+  // waitUntil: mantém a Function viva após o Response ser enviado
+  context.waitUntil(enrichPromise.catch(() => null)); // graceful — nunca quebra o submit
 
   return new Response(
     JSON.stringify({
