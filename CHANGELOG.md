@@ -1,3 +1,39 @@
+## ✅ Confirmado por Carlos — 29/06/2026
+
+**Commits:**
+- index.html: `27ad48302b88` (SHA: `4ffa67cfc306a037271529f99cfda1b3401f3ea7`)
+- functions/api/lead.js: `7b7eb9ca18d4` (SHA: `769c428225d85fa11b6081a69bd346ca8a148310`)
+- functions/api/pixel.js: `9d808e22aa52` (SHA: `74c2b6b0ececb81f7c68e812ae23619d50d2b90c`) — NOVO
+- **Rollback index.html:** `04a03780fd0375b6e1de7f737a8ca553678fa444`
+- **Rollback lead.js:** `4119ca81a1091e38c4d534e7f6c174a6e413b888`
+- **Rollback pixel.js:** deletar o arquivo
+
+### Pixel Buffering — Enriquecimento CAPI de eventos de topo de funil
+
+**Objetivo:** Elevar EMQ de PageView/ScrollDepth/ViewContent/AddToWishlist/InitiateCheckout
+de 6.1-6.5 para ~8.5 via reenvio CAPI com dados completos do lead no submit.
+
+**Arquitetura (3 peças):**
+- `index.html`: STATE._evBuf + _bufPixel() + hooks nos 4 eventos + buffered_events no payload
+- `functions/api/pixel.js` (novo): armazena eventos no Cloudflare KV por chave fbp:{_fbp}
+- `functions/api/lead.js`: enrichBufferedEvents() + context.waitUntil()
+
+**Cloudflare KV configurado:**
+- Namespace: `lotear-pixel-buffer`
+- Binding: `PIXEL_BUFFER_KV`
+- TTL por sessão: 7200s (2h)
+- Limite: 20 eventos por sessão
+
+**Impacto no lead: zero**
+- _bufPixel() é fire-and-forget com .catch() silencioso
+- enrichBufferedEvents roda em background via context.waitUntil()
+- Frontend recebe Response no mesmo tempo de hoje
+- Falha em qualquer ponto = silenciosa, Lead/CR não afetados
+
+**Code review:** 63/63 + auditoria 28/28 — zero bloqueantes, zero avisos
+
+---
+
 ## ✅ Confirmado por Carlos — 28/06/2026 (~12:40h)
 
 **Commits:**
