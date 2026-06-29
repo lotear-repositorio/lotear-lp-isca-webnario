@@ -44,7 +44,7 @@ async function sha256(value) {
 /**
  * Envia evento para Meta Conversions API
  */
-async function sendMetaCAPI({ eventName, email, phone, firstName, lastName, city, state, country, zip, externalId, clientIP, userAgent, fbp, fbc, eventId, sourceUrl, value = 0, currency = 'BRL' }) {
+async function sendMetaCAPI({ eventName, email, phone, firstName, lastName, city, state, country, zip, externalId, clientIP, userAgent, fbp, fbc, eventId, sourceUrl }) {
   const userData = {
     em:  email     ? [await sha256(email)]     : undefined,
     ph:  phone     ? [await sha256(phone)]      : undefined,
@@ -70,7 +70,7 @@ async function sendMetaCAPI({ eventName, email, phone, firstName, lastName, city
         event_id:         eventId,
         event_source_url: sourceUrl || 'https://guia.soulotear.com.br',
         action_source:    'website',
-        custom_data:      { value, currency },
+        custom_data:      {},
         user_data:        { ...userData, client_ip_address: clientIP || undefined, client_user_agent: userAgent || undefined },
       },
     ],
@@ -212,8 +212,6 @@ export async function onRequestPost(context) {
     fbc,
     eventId:   event_id,
     sourceUrl: page_url,
-    value:     0,
-    currency:  'BRL',
   });
 
   return new Response(
