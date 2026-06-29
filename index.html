@@ -770,15 +770,11 @@ window.submitLead = async function () {
     fbq('track', 'Lead', {
       content_name:     CONFIG.productName,
       content_category: CONFIG.productCategory,
-      value:    0,
-      currency: 'BRL',
     }, { eventID: eventIdLead });
     fbq('track', 'CompleteRegistration', {
       content_name:     'Webinario Lotear Studios SP',
       content_category: CONFIG.productCategory,
       status:           'confirmed',
-      value:    0,
-      currency: 'BRL',
     }, { eventID: eventIdCR });
   }
 
