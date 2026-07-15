@@ -2,27 +2,14 @@
 // Pagina protegida por senha pra trocar, toda semana:
 // - o link da sala (Meet) do webinar
 // - a data do evento (usada pra montar a tag "Funil de Webinar - Compareceu - DD-MM-YYYY")
-// Tambem mostra os ultimos cliques em /r/:phone e as ultimas chamadas
-// recebidas em /set-link, pra depuracao visual.
+//
+// So le e grava 2 valores no KV (link e data), uma vez por semana -- uso
+// de escrita irrisorio, bem longe do limite gratuito de 1.000/dia.
 //
 // Rota escolhida como /sala-admin de proposito, pra nao colidir com o
 // /admin que ja existe em producao (pagina de data do evento na LP).
 
-function paginaHtml({ currentLink, currentDate, clicks, setlinkCalls, error, saved }) {
-  const linhasCliques = clicks
-    .map(
-      (c) =>
-        `<tr><td>${escapeHtml(c.phone)}</td><td>${escapeHtml(c.timestamp)}</td></tr>`
-    )
-    .join("");
-
-  const linhasSetLink = (setlinkCalls || [])
-    .map(
-      (c) =>
-        `<tr><td>${escapeHtml(c.phone || "(nao encontrado)")}</td><td>${escapeHtml(c.timestamp)}</td><td><code>${escapeHtml(JSON.stringify(c.body))}</code></td></tr>`
-    )
-    .join("");
-
+function paginaHtml({ currentLink, currentDate, error, saved }) {
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -30,19 +17,15 @@ function paginaHtml({ currentLink, currentDate, clicks, setlinkCalls, error, sav
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sala do webinar - Lotear</title>
 <style>
-  body{font-family:Calibri,Arial,sans-serif;background:#0D1B2A;color:#FFFFFF;max-width:720px;margin:40px auto;padding:0 20px}
+  body{font-family:Calibri,Arial,sans-serif;background:#0D1B2A;color:#FFFFFF;max-width:640px;margin:40px auto;padding:0 20px}
   h1{font-family:'Trebuchet MS',Arial,sans-serif;color:#fff;font-size:22px}
-  h2{font-family:'Trebuchet MS',Arial,sans-serif;color:#fff;font-size:16px;margin-top:32px}
   label{display:block;font-size:12px;color:#7ABFAA;margin-bottom:4px;margin-top:12px}
   input{font-size:14px;padding:10px;border-radius:6px;border:1px solid #1B5E8E;width:100%;box-sizing:border-box;background:#1B3A52;color:#fff}
   button{margin-top:16px;font-size:14px;padding:10px;border-radius:6px;border:none;width:100%;background:#4CAF83;color:#0A3320;font-weight:bold;cursor:pointer}
-  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px}
-  td,th{border-bottom:1px solid #1B3A52;padding:6px;text-align:left;color:#DCEEF8;vertical-align:top}
-  th{color:#5A7A8A;font-size:11px;text-transform:uppercase}
   .msg{padding:10px;border-radius:6px;margin-bottom:10px;font-size:13px}
   .ok{background:#0A3320;color:#7ABFAA}
   .err{background:#5E2A0A;color:#E8872A}
-  code{background:#1B3A52;padding:2px 6px;border-radius:4px;color:#DCEEF8;word-break:break-all;font-size:11px}
+  code{background:#1B3A52;padding:2px 6px;border-radius:4px;color:#DCEEF8;word-break:break-all}
   .hint{font-size:11px;color:#5A7A8A;margin-top:4px}
 </style>
 </head>
@@ -69,19 +52,6 @@ function paginaHtml({ currentLink, currentDate, clicks, setlinkCalls, error, sav
 
     <button type="submit">Salvar</button>
   </form>
-
-  <h2>Ultimos cliques em /r/:phone</h2>
-  <table>
-    <tr><th>Telefone</th><th>Quando</th></tr>
-    ${linhasCliques || '<tr><td colspan="2">Nenhum clique ainda</td></tr>'}
-  </table>
-
-  <h2>Ultimas chamadas recebidas em /set-link (depuracao)</h2>
-  <p class="hint">Mostra exatamente o que o Clint mandou -- usa isso pra confirmar o nome certo do campo de telefone.</p>
-  <table>
-    <tr><th>Telefone encontrado</th><th>Quando</th><th>Corpo recebido</th></tr>
-    ${linhasSetLink || '<tr><td colspan="3">Nenhuma chamada ainda</td></tr>'}
-  </table>
 </body>
 </html>`;
 }
@@ -97,11 +67,7 @@ function escapeHtml(str) {
 async function lerEstado(env) {
   const currentLink = await env.SALA_KV.get("current_room_link");
   const currentDate = await env.SALA_KV.get("current_event_date");
-  const rawClicks = await env.SALA_KV.get("recent_clicks");
-  const clicks = rawClicks ? JSON.parse(rawClicks) : [];
-  const rawSetlink = await env.SALA_KV.get("recent_setlink_calls");
-  const setlinkCalls = rawSetlink ? JSON.parse(rawSetlink) : [];
-  return { currentLink, currentDate, clicks, setlinkCalls };
+  return { currentLink, currentDate };
 }
 
 export async function onRequestGet(context) {
@@ -146,7 +112,7 @@ export async function onRequestPost(context) {
   await env.SALA_KV.put("current_event_date", eventDate);
 
   return new Response(
-    paginaHtml({ currentLink: roomLink, currentDate: eventDate, clicks: estado.clicks, setlinkCalls: estado.setlinkCalls, saved: true }),
+    paginaHtml({ currentLink: roomLink, currentDate: eventDate, saved: true }),
     { headers: { "Content-Type": "text/html; charset=UTF-8" } }
   );
 }
