@@ -3,10 +3,11 @@
 //   https://guia.soulotear.com.br/r/{{telefone}}
 //
 // O que faz:
-// 1. Le o link da sala atual (gravado via /admin) no KV.
+// 1. Le o link da sala atual (gravado via /sala-admin) no KV.
 // 2. Redireciona a pessoa pra sala IMEDIATAMENTE (sem atraso perceptivel).
-// 3. Em paralelo (nao trava o redirect), grava o clique no KV e dispara
-//    o webhook pro Clint marcando a tag de comparecimento.
+// 3. Em paralelo (nao trava o redirect), registra o clique no KV e chama
+//    o webhook do Clint marcando a tag "Funil de Webinar - Compareceu - DD-MM-YYYY",
+//    usando a data do evento tambem configurada em /sala-admin.
 
 export async function onRequestGet(context) {
   const { params, env } = context;
@@ -36,7 +37,7 @@ export async function onRequestGet(context) {
 }
 
 async function registrarCliqueEDispararWebhook(env, phone, timestamp) {
-  // 1. Grava o clique numa lista curta pra aparecer no /admin
+  // 1. Grava o clique numa lista curta pra aparecer no /sala-admin
   try {
     const raw = await env.SALA_KV.get("recent_clicks");
     const clicks = raw ? JSON.parse(raw) : [];
@@ -46,25 +47,26 @@ async function registrarCliqueEDispararWebhook(env, phone, timestamp) {
     // nao deixa erro de log derrubar o webhook abaixo
   }
 
-  // 2. Dispara o webhook direto pro Clint marcando a tag de comparecimento.
-  //    AJUSTAR: env.CLINT_WEBHOOK_URL e o formato do body abaixo precisam
-  //    bater com o que o Clint espera de verdade -- isto e um placeholder
-  //    ate confirmar o contrato exato do webhook do Clint.
+  // 2. Monta a tag no formato exigido pelo Clint:
+  //    "Funil de Webinar - Compareceu - 12-07-2026"
+  const eventDate = await env.SALA_KV.get("current_event_date");
+  if (!eventDate) {
+    // sem data configurada em /sala-admin, nao da pra montar a tag certa --
+    // melhor nao mandar nada errado pro Clint do que mandar tag sem data.
+    return;
+  }
+  const tag = `Funil de Webinar - Compareceu - ${eventDate}`;
+
+  // 3. Dispara o webhook direto pro Clint.
+  //    Campos exigidos pelo mapeamento do Clint: "Telefone" e "Tag" (exatos).
   if (env.CLINT_WEBHOOK_URL) {
     try {
       await fetch(env.CLINT_WEBHOOK_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(env.CLINT_WEBHOOK_TOKEN
-            ? { Authorization: `Bearer ${env.CLINT_WEBHOOK_TOKEN}` }
-            : {}),
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          telefone: phone,
-          tag: "compareceu_webinar",
-          evento: "clicou_link_sala",
-          timestamp,
+          Telefone: phone,
+          Tag: tag,
         }),
       });
     } catch (err) {
