@@ -1,9 +1,14 @@
 // Rota: /sala-admin
-// Pagina simples e protegida por senha pra trocar o link da sala toda
-// semana e ver os ultimos cliques (teste visual de que o redirect e o
-// registro estao funcionando).
+// Pagina protegida por senha pra trocar, toda semana:
+// - o link da sala (Meet) do webinar
+// - a data do evento (usada pra montar a tag "Funil de Webinar - Compareceu - DD-MM-YYYY")
+// Tambem mostra os ultimos cliques registrados, pra conferir que o /r/:phone
+// esta funcionando.
+//
+// Rota escolhida como /sala-admin de proposito, pra nao colidir com o
+// /admin que ja existe em producao (pagina de data do evento na LP).
 
-function paginaHtml({ currentLink, clicks, error, saved }) {
+function paginaHtml({ currentLink, currentDate, clicks, error, saved }) {
   const linhas = clicks
     .map(
       (c) =>
@@ -31,21 +36,31 @@ function paginaHtml({ currentLink, clicks, error, saved }) {
   .ok{background:#0A3320;color:#7ABFAA}
   .err{background:#5E2A0A;color:#E8872A}
   code{background:#1B3A52;padding:2px 6px;border-radius:4px;color:#DCEEF8;word-break:break-all}
+  .hint{font-size:11px;color:#5A7A8A;margin-top:4px}
 </style>
 </head>
 <body>
   <h1>Sala do webinar</h1>
-  ${saved ? '<div class="msg ok">Link atualizado.</div>' : ""}
+  ${saved ? '<div class="msg ok">Atualizado.</div>' : ""}
   ${error ? `<div class="msg err">${escapeHtml(error)}</div>` : ""}
   <p>Link atual: ${
     currentLink ? `<code>${escapeHtml(currentLink)}</code>` : "<em>ainda nao configurado</em>"
   }</p>
+  <p>Data do evento atual: ${
+    currentDate ? `<code>${escapeHtml(currentDate)}</code>` : "<em>ainda nao configurada</em>"
+  }</p>
   <form method="POST">
     <label for="password">Senha</label>
     <input type="password" id="password" name="password" required>
+
     <label for="room_link">Novo link da sala (Meet) para esta semana</label>
     <input type="url" id="room_link" name="room_link" required placeholder="https://meet.google.com/xxx-xxxx-xxx">
-    <button type="submit">Salvar link da semana</button>
+
+    <label for="event_date">Data do evento (formato DD-MM-AAAA)</label>
+    <input type="text" id="event_date" name="event_date" required placeholder="12-07-2026" pattern="\\d{2}-\\d{2}-\\d{4}">
+    <div class="hint">Usada pra montar a tag no Clint: "Funil de Webinar - Compareceu - 12-07-2026"</div>
+
+    <button type="submit">Salvar</button>
   </form>
   <h2>Ultimos cliques registrados</h2>
   <table>
@@ -66,15 +81,16 @@ function escapeHtml(str) {
 
 async function lerEstado(env) {
   const currentLink = await env.SALA_KV.get("current_room_link");
+  const currentDate = await env.SALA_KV.get("current_event_date");
   const raw = await env.SALA_KV.get("recent_clicks");
   const clicks = raw ? JSON.parse(raw) : [];
-  return { currentLink, clicks };
+  return { currentLink, currentDate, clicks };
 }
 
 export async function onRequestGet(context) {
   const { env } = context;
-  const { currentLink, clicks } = await lerEstado(env);
-  return new Response(paginaHtml({ currentLink, clicks }), {
+  const estado = await lerEstado(env);
+  return new Response(paginaHtml(estado), {
     headers: { "Content-Type": "text/html; charset=UTF-8" },
   });
 }
@@ -84,27 +100,36 @@ export async function onRequestPost(context) {
   const form = await request.formData();
   const password = form.get("password");
   const roomLink = form.get("room_link");
+  const eventDate = form.get("event_date");
 
-  const { currentLink, clicks } = await lerEstado(env);
+  const estado = await lerEstado(env);
 
   if (!env.ADMIN_PASSWORD || password !== env.ADMIN_PASSWORD) {
     return new Response(
-      paginaHtml({ currentLink, clicks, error: "Senha incorreta." }),
+      paginaHtml({ ...estado, error: "Senha incorreta." }),
       { status: 401, headers: { "Content-Type": "text/html; charset=UTF-8" } }
     );
   }
 
   if (!roomLink || typeof roomLink !== "string" || !roomLink.startsWith("http")) {
     return new Response(
-      paginaHtml({ currentLink, clicks, error: "Link invalido -- precisa comecar com http(s)." }),
+      paginaHtml({ ...estado, error: "Link invalido -- precisa comecar com http(s)." }),
+      { status: 400, headers: { "Content-Type": "text/html; charset=UTF-8" } }
+    );
+  }
+
+  if (!eventDate || !/^\d{2}-\d{2}-\d{4}$/.test(eventDate)) {
+    return new Response(
+      paginaHtml({ ...estado, error: "Data invalida -- use o formato DD-MM-AAAA, ex: 12-07-2026." }),
       { status: 400, headers: { "Content-Type": "text/html; charset=UTF-8" } }
     );
   }
 
   await env.SALA_KV.put("current_room_link", roomLink);
+  await env.SALA_KV.put("current_event_date", eventDate);
 
   return new Response(
-    paginaHtml({ currentLink: roomLink, clicks, saved: true }),
+    paginaHtml({ currentLink: roomLink, currentDate: eventDate, clicks: estado.clicks, saved: true }),
     { headers: { "Content-Type": "text/html; charset=UTF-8" } }
   );
 }
