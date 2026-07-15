@@ -1,12 +1,12 @@
 // Rota: /set-link
-// Recebe a chamada de webhook DE SAIDA do Clint (configurada na automacao
-// do funil do webinar, disparada quando o lead entra no funil).
-// Monta o link personalizado e devolve pro Clint via um SEGUNDO webhook
-// (de entrada, criado igual ao de "comparecimento", so que mapeando o
-// campo "Link" em vez de "Tag").
+// Recebe a chamada de webhook DE SAIDA do Clint (automacao do funil do
+// webinar, disparada quando o lead entra no funil). Monta o link
+// personalizado e devolve pro Clint via o webhook de "Registro de Link".
 //
-// Isso e' isolado do resto do site -- nao mexe em nenhuma automacao ou
-// funcao que ja existe em producao.
+// Sem log de depuracao em KV aqui de proposito -- essa rota nao precisa
+// gravar nada pra funcionar, so ler o telefone recebido e chamar o Clint.
+// Isso mantem o uso de escrita do KV gratuito (1.000/dia) livre pra outras
+// coisas, mesmo com centenas de leads passando ao mesmo tempo.
 
 export async function onRequestPost(context) {
   const { env, request } = context;
@@ -23,16 +23,9 @@ export async function onRequestPost(context) {
     }
   }
 
-  // tenta achar o telefone em variacoes comuns de nome de campo, porque
-  // ainda nao sabemos o formato exato que o Clint manda nesse webhook de saida
   const phoneRaw =
     body.Telefone || body.telefone || body.phone || body.Phone || body.numero || body.Numero || "";
   const phone = String(phoneRaw).replace(/\D/g, "");
-  const timestamp = new Date().toISOString();
-
-  // grava um log de depuracao -- serve pra confirmar no /sala-admin o que
-  // o Clint realmente esta enviando, ate confirmarmos o formato certo
-  context.waitUntil(logarChamada(env, body, phone, timestamp));
 
   if (!phone) {
     return new Response(
@@ -51,14 +44,21 @@ export async function onRequestPost(context) {
   }
 
   try {
-    await fetch(env.CLINT_LINK_WEBHOOK_URL, {
+    const resp = await fetch(env.CLINT_LINK_WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ Telefone: phone, Link: link }),
     });
+    if (!resp.ok) {
+      const texto = await resp.text().catch(() => "");
+      return new Response(
+        JSON.stringify({ ok: false, telefone: phone, link, status: resp.status, resposta: texto.slice(0, 400) }),
+        { status: 502, headers: { "Content-Type": "application/json" } }
+      );
+    }
   } catch (err) {
     return new Response(
-      JSON.stringify({ ok: false, error: "falha ao chamar o webhook de Link do Clint" }),
+      JSON.stringify({ ok: false, telefone: phone, link, erro: String(err) }),
       { status: 502, headers: { "Content-Type": "application/json" } }
     );
   }
@@ -66,15 +66,4 @@ export async function onRequestPost(context) {
   return new Response(JSON.stringify({ ok: true, telefone: phone, link }), {
     headers: { "Content-Type": "application/json" },
   });
-}
-
-async function logarChamada(env, body, phone, timestamp) {
-  try {
-    const raw = await env.SALA_KV.get("recent_setlink_calls");
-    const calls = raw ? JSON.parse(raw) : [];
-    calls.unshift({ phone, timestamp, body });
-    await env.SALA_KV.put("recent_setlink_calls", JSON.stringify(calls.slice(0, 30)));
-  } catch (err) {
-    // silencioso
-  }
 }
