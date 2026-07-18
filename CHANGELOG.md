@@ -1,5 +1,10 @@
 ## ⏳ Aguardando confirmação — 18/07/2026 (2)
 
+Verificado automaticamente na produção: imagem servida como `image/jpeg`,
+102.721 bytes idênticos ao original, `og:image` correta no HTML ao vivo,
+auditoria 28/28. Falta confirmação explícita de Carlos (protocolo:
+verificação automatizada não substitui "ok"/"funcionou" do Carlos).
+
 **Commits:**
 - index.html + assets/og-image.jpg: `29f0d7a` (SHA: `29f0d7afb5dd60e9f64a713dafe38cb127631d15`)
 - **Rollback index.html:** `e07fc5efd92f35d41c4beb97f80532a8f529c78d`
