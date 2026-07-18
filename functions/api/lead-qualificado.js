@@ -22,6 +22,31 @@ const META_ACCESS_TOKEN =
   'EAAPDHk6enYsBRyCZCbOZAHDEZC48DPrwysSOjEZAJQJuntELoPjBnj3ZCTTZAVg9LmSPKQdpFWfvJlr9R8jlTJnt9kBcuXGhAPuAMSsy3vFBP8ll1KZCZAOdMXrmi7V3Wn7ZAUlXWPZAdS95XtOPaVUMKNxJvEBEMuKKzFl6SnaKzIvKxIDkgSuzVvGbUhgQwxH0AZB0AZDZD';
 
 /**
+ * Mapeia o estágio do Deal (Clint) para o nome de evento correto na Meta.
+ * Cada estágio tem um event_name próprio para o algoritmo aprender pesos
+ * diferentes — não diluir tudo em um único "LeadQualificado" genérico.
+ *
+ * Ajustar as chaves à esquerda se o Clint enviar o stage com grafia
+ * diferente (ex: sem acento, em outro idioma, ou com sufixo de etapa).
+ */
+const STAGE_TO_EVENT = {
+  'Negócio':     'LeadQualificado',
+  'Negocio':     'LeadQualificado', // fallback sem acento
+  'Agendamento': 'LeadAgendou',
+  'Proposta':    'LeadProposta',
+  'Venda':       'Purchase', // evento padrão Meta — permite otimizar como conversão de valor
+};
+
+/**
+ * Resolve o event_name a partir do stage recebido.
+ * Stage desconhecido cai em "LeadQualificado" (comportamento anterior
+ * preservado) em vez de falhar — nunca perde o evento por mapeamento ausente.
+ */
+function resolveEventName(stage) {
+  return STAGE_TO_EVENT[stage] || 'LeadQualificado';
+}
+
+/**
  * Gera UUID v4 simples para event_id único
  * (mesmo gerador usado em lead.js — mantém consistência no projeto)
  */
@@ -51,7 +76,7 @@ async function sha256(value) {
  * A Meta reconhece a mesma pessoa via em/ph hasheados, não via event_id
  * (event_id só serve para deduplicação, não para matching de identidade).
  */
-async function sendLeadQualificadoCAPI({ email, phone, firstName, lastName, clientIP, userAgent, testEventCode }) {
+async function sendLeadQualificadoCAPI({ email, phone, firstName, lastName, clientIP, userAgent, testEventCode, eventName }) {
   const userData = {
     em: email ? [await sha256(email)] : undefined,
     ph: phone ? [await sha256(phone)] : undefined,
@@ -67,7 +92,7 @@ async function sendLeadQualificadoCAPI({ email, phone, firstName, lastName, clie
   const payload = {
     data: [
       {
-        event_name:       'LeadQualificado',
+        event_name:       eventName,
         event_time:       Math.floor(Date.now() / 1000),
         event_id:         generateUUID(),
         action_source:    'system_generated', // evento originado no CRM, não no site
@@ -130,6 +155,7 @@ export async function onRequestPost(context) {
 
   const clientIP = context.request.headers.get('CF-Connecting-IP') || '';
   const userAgent = context.request.headers.get('User-Agent') || '';
+  const eventName = resolveEventName(stage);
 
   const metaResult = await sendLeadQualificadoCAPI({
     email,
@@ -139,12 +165,14 @@ export async function onRequestPost(context) {
     clientIP,
     userAgent,
     testEventCode: test_event_code,
+    eventName,
   });
 
   return new Response(
     JSON.stringify({
       ok:    true,
-      stage, // eco do estágio recebido — útil para conferir no log
+      stage,       // eco do estágio recebido — útil para conferir no log
+      event: eventName, // qual evento foi de fato enviado à Meta
       meta:  metaResult,
     }),
     { status: 200, headers: corsHeaders }
