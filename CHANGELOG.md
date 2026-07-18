@@ -1,3 +1,28 @@
+## ⏳ Aguardando confirmação — 18/07/2026 (4)
+
+**Commits:**
+- index.html: `97cae07` (SHA: `97cae07d922c74ca6fe8d18154d7cd678c00babf`)
+- **Rollback index.html:** `aa67f14493bef372da9e3f6916bc9a6850684ece`
+
+### Performance — Google Fonts assíncrono
+
+Lighthouse apontou "Solicitações que bloquearam a renderização" no CSS das
+fontes, 1.610ms de economia estimada. Troca o `<link rel="stylesheet">`
+bloqueante pela técnica padrão preload + `media=print`/`onload` swap +
+fallback `<noscript>`.
+
+**Trade-off avisado ao Carlos:** texto pode aparecer um instante em fonte
+de sistema antes de trocar pra Playfair Display/DM Sans (FOUT). H1 usa
+`<br>` manual — confirmado que as 3 linhas não mudam mesmo com a troca de fonte.
+
+**Impacto no lead: zero** — nenhum bloco protegido, form ou tracking alterado.
+
+**Auditoria:** `lotear_audit.py` 28/28 ✅
+**Teste local:** zero erros de console, `font-family` aplicada corretamente,
+H1 com 2 `<br>` intactos verificado em mobile (375×812) e desktop
+
+---
+
 ## ✅ Confirmado por Carlos — 18/07/2026 (3)
 
 > "ok Ficou mais rapido"
