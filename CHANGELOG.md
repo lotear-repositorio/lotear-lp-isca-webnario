@@ -1,4 +1,11 @@
-## ⏳ Aguardando confirmação — 18/07/2026 (4)
+## ✅ Confirmado por Carlos — 18/07/2026 (4)
+
+> "sim"
+
+Lighthouse (Desempenho): 72 → 85. LCP 2,1s 🟢, FCP 1,3s 🟢, CLS 0,001 🟢
+(confirma que o H1 não sofreu layout shift). Cadeia de fontes bloqueando
+renderização sumiu da árvore crítica; latência do caminho crítico caiu de
+626ms para 435ms.
 
 **Commits:**
 - index.html: `97cae07` (SHA: `97cae07d922c74ca6fe8d18154d7cd678c00babf`)
