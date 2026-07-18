@@ -51,7 +51,7 @@ async function sha256(value) {
  * A Meta reconhece a mesma pessoa via em/ph hasheados, não via event_id
  * (event_id só serve para deduplicação, não para matching de identidade).
  */
-async function sendLeadQualificadoCAPI({ email, phone, firstName, lastName, clientIP, userAgent }) {
+async function sendLeadQualificadoCAPI({ email, phone, firstName, lastName, clientIP, userAgent, testEventCode }) {
   const userData = {
     em: email ? [await sha256(email)] : undefined,
     ph: phone ? [await sha256(phone)] : undefined,
@@ -76,6 +76,12 @@ async function sendLeadQualificadoCAPI({ email, phone, firstName, lastName, clie
       },
     ],
   };
+
+  // Opcional: só presente durante testes no Events Manager (aba "Eventos de teste")
+  // Nunca enviar em produção — testEventCode fica undefined em chamadas reais do Clint
+  if (testEventCode) {
+    payload.test_event_code = testEventCode;
+  }
 
   const url = `https://graph.facebook.com/v19.0/${META_PIXEL_ID}/events?access_token=${META_ACCESS_TOKEN}`;
 
@@ -107,7 +113,7 @@ export async function onRequestPost(context) {
     });
   }
 
-  const { name = '', email = '', phone = '', stage = '' } = body;
+  const { name = '', email = '', phone = '', stage = '', test_event_code = '' } = body;
 
   // Segurança básica: sem email nem telefone não há como fazer matching na Meta
   if (!email && !phone) {
@@ -132,6 +138,7 @@ export async function onRequestPost(context) {
     lastName,
     clientIP,
     userAgent,
+    testEventCode: test_event_code,
   });
 
   return new Response(
