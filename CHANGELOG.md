@@ -1,4 +1,6 @@
-## ⏳ Aguardando confirmação — 18/07/2026
+## ✅ Confirmado por Carlos — 18/07/2026
+
+> "Visualmente esta certo"
 
 **Commits:**
 - index.html: `7acf8e1` (SHA: `7acf8e1da4d50a2962cac50561b42cbf4e6df61e`)
