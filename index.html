@@ -7,6 +7,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>O Guia do Comprador de Studios em SP · Lotear</title>
 
+<meta name="description" content="Baixe grátis o guia de compra de Studios em São Paulo: bairros, HIS/HMP/R2V, planta vs. pronto e os erros mais comuns. Inclui vaga no webinar ao vivo.">
+<link rel="canonical" href="https://guia.soulotear.com.br/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Lotear">
+<meta property="og:url" content="https://guia.soulotear.com.br/">
+<meta property="og:title" content="O Guia do Comprador de Studios em SP · Lotear">
+<meta property="og:description" content="+1.200 pessoas já baixaram. Guia gratuito + vaga no webinar ao vivo sobre como comprar Studios em São Paulo.">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="O Guia do Comprador de Studios em SP · Lotear">
+<meta name="twitter:description" content="Guia gratuito + vaga no webinar ao vivo sobre como comprar Studios em São Paulo.">
+
+<script type="application/ld+json" id="event-schema">
+{"@context":"https://schema.org","@type":"Event","name":"Análise de empreendimento real da curadoria Lotear","startDate":"2026-07-22T20:00:00-03:00","eventAttendanceMode":"https://schema.org/OnlineEventAttendanceMode","eventStatus":"https://schema.org/EventScheduled","location":{"@type":"VirtualLocation","url":"https://guia.soulotear.com.br/"},"description":"Webinar ao vivo sobre como comprar Studios em São Paulo: bairros, HIS/HMP/R2V, planta vs. pronto e curadoria de empreendimentos. Sem gravação.","organizer":{"@type":"Organization","name":"Lotear","url":"https://guia.soulotear.com.br/"}}
+</script>
+
 <!-- META PIXEL -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){
@@ -937,7 +955,8 @@ if(_fwEl){
 }
 /* ── FIM WA-VALIDATE JS ── */
 
-document.addEventListener('DOMContentLoaded', function(){_populateWebinarDates();
+function _updateEventSchema(){var w=CONFIG.webinarDate;if(!w)return;var p=w.date.split('/');if(p.length!==3)return;var iso=p[2]+'-'+p[1]+'-'+p[0]+'T'+w.time+':00-03:00';var el=document.getElementById('event-schema');if(!el)return;try{var d=JSON.parse(el.textContent);d.startDate=iso;el.textContent=JSON.stringify(d);}catch(e){}}
+document.addEventListener('DOMContentLoaded', function(){_populateWebinarDates();_updateEventSchema();
   setupScrollTracking();
   setupSectionObservers();
   setupCTATracking();
