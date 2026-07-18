@@ -1,3 +1,35 @@
+## ⏳ Aguardando confirmação — 18/07/2026
+
+**Commits:**
+- index.html: `7acf8e1` (SHA: `7acf8e1da4d50a2962cac50561b42cbf4e6df61e`)
+- **Rollback index.html:** `42ec88edb7890fdbd68ee09ca465081d1291bfd8`
+
+### SEO — meta description, Open Graph, Twitter Card e Event schema (JSON-LD)
+
+**Objetivo:** habilitar preview correto do link (WhatsApp/Instagram/Facebook) e
+rich result de evento no Google, sem depender de banco/CMS.
+
+**O que mudou (só adições no `<head>` + 1 função JS):**
+- `meta description` + `link rel="canonical"`
+- `og:*` e `twitter:*` (sem `og:image` ainda — pendente imagem 1200×630)
+- `<script type="application/ld+json" id="event-schema">` com Event schema
+- `_updateEventSchema()`: lê `CONFIG.webinarDate` (a mesma variável que o
+  `/admin` já atualiza via `update-webinar.js`) e recalcula o `startDate`
+  em toda carga de página — acompanha as trocas semanais de data automaticamente
+
+**Impacto no lead: zero**
+- Nenhum bloco protegido (SCROLL-FIX, WA-FLOAT, tracking, form) alterado
+- Nenhuma nova requisição de rede — tudo inline no mesmo HTML
+- `functions/api/update-webinar.js` não foi tocado (caminho de escrita no GitHub intacto)
+- +1KB gzip no documento (68906 → 69967 bytes)
+
+**Auditoria:** `lotear_audit.py` 28/28 ✅
+**Teste local:** servidor estático com JS executando — zero erros de console,
+JSON-LD válido, `_updateEventSchema()` testado com data simulada (29/07/2026 21:30)
+recalculando `startDate` corretamente
+
+---
+
 ## ✅ Confirmado por Carlos — 29/06/2026
 
 **Commits:**
