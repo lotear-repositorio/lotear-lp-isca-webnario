@@ -224,6 +224,10 @@ export async function onRequestPost(context) {
   const lastName  = parts.slice(1).join(' ') || '';
 
   // ── 1. Envio para Clint ──────────────────────────────────────────────
+  // NOVO (Ponto 1): external_id, fbp e fbc passam a ser gravados no contato
+  // do Clint para que a automação de mudança de estágio (lead-qualificado.js)
+  // consiga devolvê-los depois — sem isso, esses campos ficam vazios no
+  // webhook de qualificação e a Meta perde os sinais de maior peso no EMQ.
   const clintPayload = {
     name,
     email,
@@ -240,6 +244,9 @@ export async function onRequestPost(context) {
     webinar_accept, // "Sim" ou "Não"
     data_hora_webinar,
     tag_data,
+    external_id: event_id, // UUID gerado nesta requisição — NÃO hasheado (Clint só armazena)
+    fbp,
+    fbc,
   };
 
   const clintResult = await sendToClint(clintPayload);
