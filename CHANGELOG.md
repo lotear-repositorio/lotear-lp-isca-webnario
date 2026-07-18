@@ -1,3 +1,21 @@
+## ⏳ Aguardando confirmação — 18/07/2026 (6)
+
+**Commits:**
+- llms.txt (novo): `d4673e7` (SHA: `d4673e72669cb86f49ada93503160607b9711818`)
+- **Rollback:** deletar o arquivo llms.txt
+
+### SEO — llms.txt (categoria "Navegação agêntica" do PSI, experimental)
+
+Único item reprovado dos 3 avaliados nessa categoria nova do PageSpeed
+Insights. Os outros 2 (WebMCP) ficam fora da pontuação — protocolo
+nascente, sem adoção real ainda, não mexemos.
+
+**Impacto no lead: zero** — não toca em `index.html`, arquivo novo isolado.
+
+**Teste local:** servido como `text/plain`, status 200, H1 e link presentes
+
+---
+
 ## ⏳ Aguardando confirmação — 18/07/2026 (5)
 
 **Commits:**
