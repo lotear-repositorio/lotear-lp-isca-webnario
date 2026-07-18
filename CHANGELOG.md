@@ -1,3 +1,22 @@
+## ⏳ Aguardando confirmação — 18/07/2026 (5)
+
+**Commits:**
+- robots.txt (novo): `51b6360` (SHA: `51b6360181d8d272be87b891cace8c9556644d9f`)
+- **Rollback:** deletar o arquivo robots.txt
+
+### SEO — robots.txt real
+
+PageSpeed Insights apontava "robots.txt não é válido" — a rota caía no
+fallback do SPA e devolvia `index.html` como se fosse o robots.txt.
+Criado arquivo `robots.txt` de verdade na raiz, com bônus de bloquear
+indexação de `/admin`, `/admin.html`, `/webinar-admin.html`, `/sala-admin`.
+
+**Impacto no lead: zero** — não toca em `index.html`, arquivo novo isolado.
+
+**Teste local:** servido como `text/plain`, status 200, conteúdo correto
+
+---
+
 ## ✅ Confirmado por Carlos — 18/07/2026 (4)
 
 > "sim"
