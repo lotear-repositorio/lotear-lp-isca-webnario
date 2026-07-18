@@ -1,9 +1,10 @@
-## ⏳ Aguardando confirmação — 18/07/2026 (2)
+## ✅ Confirmado por Carlos — 18/07/2026 (2)
 
-Verificado automaticamente na produção: imagem servida como `image/jpeg`,
-102.721 bytes idênticos ao original, `og:image` correta no HTML ao vivo,
-auditoria 28/28. Falta confirmação explícita de Carlos (protocolo:
-verificação automatizada não substitui "ok"/"funcionou" do Carlos).
+> "Confirmado"
+
+Preview testado no WhatsApp após habilitar "Prévia de link" nas configurações
+de privacidade do app (estava desligado — configuração do cliente, não do
+site). Com a opção ligada, imagem/título/descrição aparecem corretamente.
 
 **Commits:**
 - index.html + assets/og-image.jpg: `29f0d7a` (SHA: `29f0d7afb5dd60e9f64a713dafe38cb127631d15`)
