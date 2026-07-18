@@ -4,14 +4,23 @@
  * Método: POST
  *
  * Recebe webhook de automação do Clint (disparado quando um Deal muda
- * para o estágio de qualificação — ex: "Negócio" ou "Agendamento") e
- * envia um evento customizado "LeadQualificado" para a Meta Conversions API.
+ * de estágio — Negócio, Agendamento, Proposta, Venda) e envia o evento
+ * Meta correspondente via Conversions API.
  *
  * Objetivo: ensinar o algoritmo Meta a reconhecer o padrão de quem
  * qualifica no CRM, não apenas quem preenche o formulário.
  *
  * Payload esperado (configurado no webhook do Clint):
- *   { "name": "...", "email": "...", "phone": "...", "stage": "..." }
+ *   {
+ *     "name": "...", "email": "...", "phone": "...", "stage": "...",
+ *     "cep": "...", "estado": "...", "cidade": "...", "pais": "...",
+ *     "external_id": "...", "fbp": "...", "fbc": "..."
+ *   }
+ *
+ * NOVO (Ponto 2): cep/estado/cidade/pais elevam o EMQ com sinal
+ * geográfico; external_id/fbp/fbc — gravados no contato do Clint pelo
+ * lead.js (Ponto 1) — são os campos de maior peso na correspondência
+ * de eventos e antes não existiam neste fluxo.
  *
  * Variáveis já existentes no projeto (reaproveitadas):
  *   META_PIXEL_ID, META_ACCESS_TOKEN — mesmas do lead.js
@@ -71,17 +80,34 @@ async function sha256(value) {
 }
 
 /**
- * Envia evento "LeadQualificado" para Meta Conversions API.
+ * Envia evento de qualificação para Meta Conversions API.
  * Sem event_id reaproveitado da jornada original — usa um novo UUID.
- * A Meta reconhece a mesma pessoa via em/ph hasheados, não via event_id
- * (event_id só serve para deduplicação, não para matching de identidade).
+ * A Meta reconhece a mesma pessoa via em/ph (e agora external_id/fbp/fbc)
+ * — event_id só serve para deduplicação, não para matching de identidade.
  */
-async function sendLeadQualificadoCAPI({ email, phone, firstName, lastName, clientIP, userAgent, testEventCode, eventName }) {
+async function sendLeadQualificadoCAPI({
+  email, phone, firstName, lastName,
+  city, state, country, zip, externalId, fbp, fbc,
+  clientIP, userAgent, testEventCode, eventName,
+}) {
   const userData = {
     em: email ? [await sha256(email)] : undefined,
     ph: phone ? [await sha256(phone)] : undefined,
     fn: firstName ? [await sha256(firstName)] : undefined,
     ln: lastName ? [await sha256(lastName)] : undefined,
+    // NOVO (Ponto 2) — mesma normalização/hash usada em lead.js
+    ct: city    ? [await sha256(city)]    : undefined,
+    st: state   ? [await sha256(state)]   : undefined,
+    country: country ? [await sha256(country)] : undefined,
+    // CEP: remove tudo que não for dígito antes de hashear (Clint pode enviar com hífen/espaço)
+    zp: zip ? [await sha256(zip.replace(/\D/g, ''))] : undefined,
+    // external_id hasheado — segue o MESMO padrão já usado em lead.js
+    // (nota: o blueprint de tracking registra external_id como "não hashear";
+    // o código em produção de lead.js hasheia. Mantido consistente com o
+    // código real — ver observação de risco na entrega desta mudança)
+    external_id: externalId ? [await sha256(externalId)] : undefined,
+    fbp: fbp || undefined,
+    fbc: fbc || undefined,
     client_ip_address: clientIP || undefined,
     client_user_agent: userAgent || undefined,
   };
@@ -138,7 +164,21 @@ export async function onRequestPost(context) {
     });
   }
 
-  const { name = '', email = '', phone = '', stage = '', test_event_code = '' } = body;
+  const {
+    name = '',
+    email = '',
+    phone = '',
+    stage = '',
+    // NOVO (Ponto 2) — campos já mapeados na automação do Clint
+    cep = '',
+    estado = '',
+    cidade = '',
+    pais = '',
+    external_id = '',
+    fbp = '',
+    fbc = '',
+    test_event_code = '',
+  } = body;
 
   // Segurança básica: sem email nem telefone não há como fazer matching na Meta
   if (!email && !phone) {
@@ -162,6 +202,13 @@ export async function onRequestPost(context) {
     phone,
     firstName,
     lastName,
+    city:       cidade,
+    state:      estado,
+    country:    pais,
+    zip:        cep,
+    externalId: external_id,
+    fbp,
+    fbc,
     clientIP,
     userAgent,
     testEventCode: test_event_code,
