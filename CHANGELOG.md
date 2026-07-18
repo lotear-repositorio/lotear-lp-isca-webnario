@@ -1,3 +1,23 @@
+## ⏳ Aguardando confirmação — 18/07/2026 (3)
+
+**Commits:**
+- index.html: `89af6d0` (SHA: `89af6d0028abafffdf355bb31f7cf09ca716d4e8`)
+- **Rollback index.html:** `418b20229df9f35c7aa3f34047c66160eefbb956`
+
+### Performance — preconnect Google Fonts
+
+Adiciona `<link rel="preconnect">` para `fonts.googleapis.com` e
+`fonts.gstatic.com` antes do stylesheet de fontes. Reduz latência de
+DNS/TLS na primeira busca das fontes (Playfair Display, DM Sans, DM Mono).
+
+**Impacto no lead: zero** — só 2 tags de rede no `<head>`, nenhum bloco
+protegido, form ou tracking alterado.
+
+**Auditoria:** `lotear_audit.py` 28/28 ✅
+**Teste local:** zero erros de console, preconnects presentes no DOM
+
+---
+
 ## ✅ Confirmado por Carlos — 18/07/2026 (2)
 
 > "Confirmado"
