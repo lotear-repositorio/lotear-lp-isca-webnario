@@ -1,4 +1,8 @@
-## ⏳ Aguardando confirmação — 18/07/2026 (6)
+## ✅ Confirmado por Carlos — 18/07/2026 (6)
+
+> "ok"
+
+PageSpeed Insights: Navegação agêntica 2/3 → 3/3.
 
 **Commits:**
 - llms.txt (novo): `d4673e7` (SHA: `d4673e72669cb86f49ada93503160607b9711818`)
@@ -16,7 +20,11 @@ nascente, sem adoção real ainda, não mexemos.
 
 ---
 
-## ⏳ Aguardando confirmação — 18/07/2026 (5)
+## ✅ Confirmado por Carlos — 18/07/2026 (5)
+
+> "ok"
+
+PageSpeed Insights: SEO 92 → 100.
 
 **Commits:**
 - robots.txt (novo): `51b6360` (SHA: `51b6360181d8d272be87b891cace8c9556644d9f`)
