@@ -1,3 +1,24 @@
+## ⏳ Aguardando confirmação — 18/07/2026 (2)
+
+**Commits:**
+- index.html + assets/og-image.jpg: `29f0d7a` (SHA: `29f0d7afb5dd60e9f64a713dafe38cb127631d15`)
+- **Rollback index.html:** `e07fc5efd92f35d41c4beb97f80532a8f529c78d`
+
+### SEO — og:image e twitter:image
+
+Complementa o commit anterior (`7acf8e1`), que ficou sem imagem. Adiciona
+`assets/og-image.jpg` (foto do hero, 1200×630, 102KB) e referencia em
+`og:image`/`twitter:image`. `twitter:card` sobe de `summary` para
+`summary_large_image`.
+
+**Impacto no lead: zero** — só adiciona um arquivo estático novo e 6 meta tags.
+Nenhum bloco protegido, form ou tracking alterado.
+
+**Auditoria:** `lotear_audit.py` 28/28 ✅
+**Teste local:** imagem carrega 200 / image/jpeg / 102721 bytes, zero erros de console
+
+---
+
 ## ✅ Confirmado por Carlos — 18/07/2026
 
 > "Visualmente esta certo"
