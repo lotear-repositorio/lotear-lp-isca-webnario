@@ -1,3 +1,48 @@
+## ⏳ Aguardando confirmação de Carlos — 05/08/2026
+
+**Commits:**
+- `functions/api/lead.js`: `47a5bb8` (rollback SHA: `87b7a5d7e879c1a6fd37870394912641538fc91d`)
+- `functions/api/confirm-presence.js` (novo): `d9a967e` (rollback: deletar o arquivo)
+- `index.html`: `4821aad` (rollback SHA: `0102530a86f416604e5fe8220bd41aaaeb2a6be5`)
+
+### Passo de confirmação de presença no webinário
+
+Objetivo: elevar taxa de comparecimento (hoje ~10%) transformando a inscrição
+no webinário de passiva (bundle automático com o guia) para ativa (a pessoa
+confirma ou sinaliza "talvez").
+
+**O que muda:**
+- Novo passo entre o submit e a tela de sucesso: card "Confirma sua presença?"
+  com botões Confirmar presença / Talvez
+- Não bloqueante — se a pessoa fechar a aba, o fluxo de WhatsApp de sempre
+  dispara normalmente (a chamada `/api/lead` já ocorreu antes desse passo)
+- Novo campo `webinar_presenca` no Clint: `Confirmado` | `Talvez` | `Não respondeu`
+  (default `Não respondeu` no backend, cobre quem não interage)
+- Novo endpoint `POST /api/confirm-presence`: recebe `{phone, webinar_presenca}`,
+  repassa pro mesmo webhook Clint (upsert por telefone) — chamada leve,
+  `.catch()` silencioso, mesmo padrão de graceful degradation do Z-API
+
+**O que NÃO muda (verificado antes do commit):**
+- `webinar_accept` continua fixo em `'Sim'` no CAPI — não mexido
+- Regex do `/admin` (`webinarDate:{date:'...',time:'...'}`) — string idêntica
+  byte a byte antes/depois, testado com diff
+- 8 eventos Pixel/CAPI existentes — nenhum novo disparado, nenhum alterado
+- Blocos protegidos SCROLL-FIX, WA-FLOAT, PIXEL BUFFER — intactos
+- CTA, H1, formulário de 3 campos — sem alteração de copy nesta entrega
+
+**Validação técnica feita:**
+- `lotear_audit.py`: 28/28 (antes e depois do fetch do SHA final)
+- `node --check` nos 3 arquivos — sintaxe OK
+- Diff da string `webinarDate` — idêntica
+- Reconferido: nenhum commit concorrente entre a leitura do SHA e o PUT
+
+**Pendente para fechar como ✅:**
+- Confirmação visual de Carlos no mobile
+- Definir nome do campo Clint para "presença" se `webinar_presenca` precisar
+  de ajuste depois de ver o registro real chegando
+
+---
+
 ## ✅ Confirmado por Carlos — 18/07/2026 (6)
 
 > "ok"
