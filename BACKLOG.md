@@ -4,11 +4,22 @@
 
 ---
 
+## ✅ Feito nesta sessão (05/08/2026)
+
+- Passo de confirmação de presença no webinário (commit `4821aad`)
+- Correção de compliance no depoimento: "impacto no retorno" → "impacto no valor" (commit `b6d3f4c`)
+- Seção FAQ com 4 perguntas (commit `b6d3f4c`)
+- Decisão registrada: palavra "investidor" fica de fora de toda a página — risco de
+  Special Ad Category "Financial Products and Services" empilhar sobre "Housing" e
+  restringir segmentação por idade/gênero/CEP
+
+---
+
 ## 1. Medir comparecimento da sessão de 12/08
 
 **Status:** bloqueado até a data passar.
 **O que fazer:** segmentar `webinar_presenca` (Confirmado / Talvez / Não respondeu) contra quem realmente compareceu na sessão de 12/08 às 20h. Comparar taxa de comparecimento de cada grupo.
-**Por quê:** valida se o passo de confirmação de presença (commit `4821aad`, 05/08) teve efeito real. Sem esse dado, nenhuma decisão abaixo pode ser tomada com segurança.
+**Por quê:** valida se o passo de confirmação de presença teve efeito real. Sem esse dado, os itens 2 e 4 abaixo não podem ser decididos com segurança.
 
 ---
 
@@ -28,15 +39,11 @@
 
 ---
 
-## 4. Correções de conversão de topo da LP (auditoria de junho)
+## 4. Depoimentos novos com identificação real
 
-**Status:** pronto para começar, sem bloqueio.
-**O que fazer:**
-- Adicionar 2-3 depoimentos com identificação real (hoje só 1)
-- Implementar seção FAQ (4 objeções do lead frio) — nunca foi implementada
-- Corrigir o depoimento existente: remove "impacto no retorno" → palavra proibida por compliance, está ao vivo desde antes desta sessão
-- Avaliar reduzir as 2 imagens base64 ainda embutidas no HTML (67KB — já foi 192KB, mas ainda pesa no LCP mobile)
-**Por quê:** proposta já documentada em `lotear-lp-auditoria-proposta-v1.html` desde 23/06, nunca aplicada. "impacto no retorno" é risco de compliance ativo, prioridade alta apesar de baixo esforço.
+**Status:** bloqueado — depende do time comercial.
+**O que fazer:** puxar 2-3 clientes reais do Marcelo ou da Fabiana, pedir autorização pra usar nome + cidade + frase, redigir a partir do que a pessoa disse de verdade.
+**Por quê:** fabricar depoimento é problema de compliance e de credibilidade. Sem prazo fixo — só avança quando o comercial trouxer nomes.
 
 ---
 
@@ -71,7 +78,7 @@
 | 1. Medir comparecimento 12/08 | Data | — |
 | 2. Trocar CTA do botão | Item 1 | Baixo |
 | 3. Segmentar 35-44 | Nada | Baixo |
-| 4. Depoimentos + FAQ + compliance | Nada | Médio |
+| 4. Depoimentos novos | Time comercial | Baixo (mas não é seu) |
 | 5. Campanha-laboratório criativos | Item 1 | Médio |
 | 6. Corrigir criativo 6 | Nada | Baixo |
 | 7. Threshold CAPI | Nada | Baixo (só verificar) |
