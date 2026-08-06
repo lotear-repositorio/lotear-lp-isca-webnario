@@ -1,4 +1,10 @@
-## ⏳ Aguardando confirmação de Carlos — 05/08/2026
+## ✅ Confirmado por Carlos — 05/08/2026
+
+> "Funil de Webnario - Presença é so o nome de exibição ... e esse é mapeado para o que vem do webinar_presenca"
+
+Testado no mobile: fluxo completo confirmado (formulário → confirmação →
+Clint com campo `webinar_presenca` chegando corretamente, valor "Confirmado"
+validado no card do Clint).
 
 **Commits:**
 - `functions/api/lead.js`: `47a5bb8` (rollback SHA: `87b7a5d7e879c1a6fd37870394912641538fc91d`)
@@ -36,10 +42,10 @@ confirma ou sinaliza "talvez").
 - Diff da string `webinarDate` — idêntica
 - Reconferido: nenhum commit concorrente entre a leitura do SHA e o PUT
 
-**Pendente para fechar como ✅:**
-- Confirmação visual de Carlos no mobile
-- Definir nome do campo Clint para "presença" se `webinar_presenca` precisar
-  de ajuste depois de ver o registro real chegando
+**Resolvido:**
+- Confirmação visual de Carlos no mobile — OK
+- Campo Clint confirmado: "Funil de Webnario - Presença" é o nome de exibição
+  do campo `webinar_presenca` — mapeamento correto, sem ambiguidade
 
 ---
 
