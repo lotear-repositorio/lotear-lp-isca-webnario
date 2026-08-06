@@ -1,4 +1,37 @@
-## ⏳ Aguardando confirmação de Carlos — 05/08/2026 (3)
+## ✅ Confirmado por Carlos — 05/08/2026 (4)
+
+**Commits:**
+- `index.html`: `5788c83` (rollback SHA: `75827f26a1dd45e555d478719d14f2c763703fb4`)
+
+### Card 03 (Benefícios) — adiciona NR ao texto
+
+Segundo lugar na página que enumera as siglas, achado por Carlos após o
+commit do glossário. Card "03 · O glossário do mercado" na seção de
+Benefícios cita as siglas em texto corrido — estava desatualizado desde
+a adição do pill NR.
+
+```
+Antes: "HIS, HMP e R2V — o que cada sigla significa..."
+Depois: "HIS, HMP, R2V e NR — o que cada sigla significa..."
+```
+
+**Nota operacional:** durante a preparação deste commit, a leitura via
+`raw.githubusercontent.com` retornou conteúdo desatualizado (cache de CDN,
+~alguns minutos de atraso) sem o pill NR do commit anterior — a leitura
+via `api.github.com/contents` (sem cache) confirmou o conteúdo real antes
+de aplicar o diff. Nenhum dado foi perdido; SHA reconfirmado 2x antes do
+PUT.
+
+**Validação técnica:**
+- `lotear_audit.py`: 28/28
+- `node --check` — sintaxe OK
+- Diff final: 1 linha alterada, nada mais
+
+---
+
+## ✅ Confirmado por Carlos — 05/08/2026 (3)
+
+> "Li e esta ok"
 
 **Commits:**
 - `index.html`: `e558414` (rollback SHA: `893d74063a165247232c66c3cac0f9b83e4dcebc`)
