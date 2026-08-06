@@ -1,3 +1,35 @@
+## ⏳ Aguardando confirmação de Carlos — 05/08/2026 (2)
+
+**Commits:**
+- `index.html`: `b6d3f4c` (rollback SHA: `7972e369245cebe59ce12687cc97b1efdd559cb2`)
+
+### Compliance no depoimento + seção FAQ
+
+**O que mudou:**
+- Depoimento de Ricardo M.: "impacto no retorno" → "impacto no valor" — "retorno" é
+  palavra proibida pela política de compliance da Lotear, estava ao vivo desde antes
+  desta sessão
+- Nova seção FAQ com 4 perguntas (gratuidade, contato comercial pós-cadastro,
+  necessidade de capital imediato, atendimento fora de SP) — inserida entre o
+  glossário e o footer
+- Decisão explícita de Carlos: **não incluir a palavra "investidor" em nenhum lugar
+  visível da página** — risco de Special Ad Category "Financial Products and
+  Services" empilhar em cima de "Housing" (já declarada), o que restringiria
+  segmentação por idade/gênero/CEP — quebraria a estratégia de segmentação por
+  faixa etária em uso hoje
+
+**O que NÃO mudou:**
+- Regex do `/admin` (`webinarDate`) — testado, idêntico
+- 0 ocorrências de "investidor" na página, mantido assim
+- Rótulo do depoimento já estava "Comprador", não precisou de correção
+
+**Validação técnica:**
+- `lotear_audit.py`: 28/28
+- `node --check` — sintaxe OK
+- Nenhum commit concorrente entre leitura do SHA e o PUT
+
+---
+
 ## ✅ Confirmado por Carlos — 05/08/2026
 
 > "Funil de Webnario - Presença é so o nome de exibição ... e esse é mapeado para o que vem do webinar_presenca"
