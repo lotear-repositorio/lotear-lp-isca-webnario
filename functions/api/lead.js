@@ -197,6 +197,7 @@ export async function onRequestPost(context) {
     webinar_accept = 'Não', // "Sim" ou "Não"
     data_hora_webinar = '',
     tag_data       = '',
+    webinar_presenca = 'Não respondeu', // "Confirmado" | "Talvez" | "Não respondeu"
     zip            = '',
     region         = '',
     user_agent     = '',
@@ -244,6 +245,7 @@ export async function onRequestPost(context) {
     webinar_accept, // "Sim" ou "Não"
     data_hora_webinar,
     tag_data,
+    webinar_presenca,
     external_id: event_id, // UUID gerado nesta requisição — NÃO hasheado (Clint só armazena)
     fbp,
     fbc,
