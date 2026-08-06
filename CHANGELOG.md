@@ -1,4 +1,29 @@
-## ⏳ Aguardando confirmação de Carlos — 05/08/2026 (2)
+## ⏳ Aguardando confirmação de Carlos — 05/08/2026 (3)
+
+**Commits:**
+- `index.html`: `e558414` (rollback SHA: `893d74063a165247232c66c3cac0f9b83e4dcebc`)
+
+### Glossário — adiciona sigla NR
+
+Adicionado 4º pill no glossário (`.gloss-pills`), mesmo padrão visual dos
+existentes (HIS, HMP, R2V):
+
+```
+NR → Não Residencial
+```
+
+**O que NÃO mudou:** CSS do componente, layout, regex do `/admin`.
+
+**Validação técnica:**
+- `lotear_audit.py`: 28/28
+- `node --check` — sintaxe OK
+- Nenhum commit concorrente entre leitura do SHA e o PUT
+
+---
+
+## ✅ Confirmado por Carlos — 05/08/2026 (2)
+
+> "Ok! validado"
 
 **Commits:**
 - `index.html`: `b6d3f4c` (rollback SHA: `7972e369245cebe59ce12687cc97b1efdd559cb2`)
