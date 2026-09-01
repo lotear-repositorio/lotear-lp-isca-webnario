@@ -922,10 +922,22 @@ window.submitLead = async function () {
   var swEl = document.getElementById('success-webinar-date');
   if (swEl) swEl.textContent = _wDate().short;
 
+  // Se em 5s ninguem clicar em Confirmado/Talvez, revela a tela de
+  // sucesso normal (com botao manual do WhatsApp) -- NAO redireciona
+  // sozinho, so garante que ninguem fica preso na tela de confirmacao
+  STATE._presenceTimeout = setTimeout(function () {
+    var cp = document.getElementById('confirm-presence');
+    if (cp && cp.style.display !== 'none') {
+      cp.style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+    }
+  }, 5000);
 
 };
 
 window.confirmarPresenca = function (valor) {
+  if (STATE._presenceTimeout) { clearTimeout(STATE._presenceTimeout); }
+
   var phone = (STATE.leadData && STATE.leadData.phone) || '';
   fetch('/api/confirm-presence', {
     method:  'POST',
@@ -933,8 +945,9 @@ window.confirmarPresenca = function (valor) {
     body:    JSON.stringify({ phone: phone, webinar_presenca: valor }),
   }).catch(function(){});
 
-  document.getElementById('confirm-presence').style.display = 'none';
-  document.getElementById('success').style.display = 'block';
+  // Clique real do usuario -- pode redirecionar direto pro WhatsApp
+  // (gesto do usuario, nao e bloqueado por navegador mobile)
+  window.location.href = 'https://wa.link/dq4v89';
 };
 
 
