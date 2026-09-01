@@ -1,3 +1,50 @@
+## ⏳ Aguardando validação de Carlos em aparelho real — 12/08/2026
+
+**Commit:**
+- `index.html`: `323a368` (rollback SHA: `7c0c38c2e004f0aff8c235e1690bc3fa734629f6`)
+
+### Clique nos botões vai direto pro WhatsApp + timeout de 5s
+
+Objetivo: garantir que 100% dos leads cheguem no WhatsApp, mesmo quem
+não clica em "Confirmado" nem "Talvez" na tela de confirmação de
+presença. Antes dessa mudança, quem não clicava ficava preso na tela
+indefinidamente, sem nunca ver o botão de sucesso do WhatsApp.
+
+**O que muda:**
+- Clique em "Confirmado" ou "Talvez" → cancela o timer, grava no
+  Clint (igual antes), e redireciona direto pro WhatsApp
+  (`window.location.href`), pulando a tela de sucesso intermediária
+- Se ninguém clicar em 5 segundos → timer revela a tela de sucesso
+  normal, com botão manual do WhatsApp — **não redireciona sozinho**,
+  só evita que a pessoa fique presa na tela
+
+**Por que não auto-redireciona no timeout:** navegadores mobile
+bloqueiam redirecionamento automático sem gesto direto do usuário.
+Fazer isso no timeout arriscaria falhar silenciosamente em alguns
+aparelhos, sem erro visível. O redirecionamento direto só acontece
+no clique real (gesto do usuário), que não tem essa restrição.
+
+**O que NÃO muda:** pixel, CAPI, link da página, `/admin`
+(`webinarDate` idêntico, testado), campo `webinar_presenca`, blocos
+protegidos (SCROLL-FIX, WA-FLOAT).
+
+**Validação técnica feita:**
+- `lotear_audit.py`: 28/28
+- `node --check` — sintaxe OK
+- Simulação isolada da lógica (clique vs. timeout) — sem conflito
+  entre os dois caminhos
+- Diff final: só as linhas da mudança pretendida
+
+**Pendente para fechar como ✅:**
+- Teste em Android real
+- Teste em iPhone real
+- Teste vindo de dentro do navegador do Instagram (via DM, clicando
+  no link de dentro do app)
+- Confirmar os 3 casos em cada: clique em "Confirmado", clique em
+  "Talvez", e esperar 5s sem clicar
+
+---
+
 ## ✅ Confirmado por Carlos — 05/08/2026 (4)
 
 **Commits:**
