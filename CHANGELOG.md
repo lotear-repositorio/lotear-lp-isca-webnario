@@ -1,3 +1,19 @@
+## ⚠️ Correção antes da validação — 12/08/2026
+
+**Commit:** `index.html`: `a61674a` (rollback SHA: `b9effea55e64f983cab603c7e4730907bb73e9cb`)
+
+Erro achado por Carlos antes do teste: o redirecionamento direto usava
+o link do botão flutuante (`wa-float`, `wa.link/dq4v89`) em vez do link
+correto da tela de sucesso (`wa-cta-btn`, `wa.link/wwr04p`), que é o
+fluxo já validado. Corrigido — 1 linha alterada, resto intocado.
+
+`lotear_audit.py`: 28/28. Diff de 1 linha, confirmado.
+
+Continua ⏳ aguardando teste de Carlos em Android, iPhone e via DM do
+Instagram — só agora com o link certo.
+
+---
+
 ## ⏳ Aguardando validação de Carlos em aparelho real — 12/08/2026
 
 **Commit:**
