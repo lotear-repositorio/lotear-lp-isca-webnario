@@ -1,4 +1,6 @@
-## ⚠️ Correção antes da validação — 12/08/2026
+## ✅ Confirmado por Carlos — 12/08/2026
+
+> "Ok! Esta foi comitado assim? ja esta tudo certo?" — confirmado.
 
 **Commit:** `index.html`: `a61674a` (rollback SHA: `b9effea55e64f983cab603c7e4730907bb73e9cb`)
 
@@ -14,7 +16,7 @@ Instagram — só agora com o link certo.
 
 ---
 
-## ⏳ Aguardando validação de Carlos em aparelho real — 12/08/2026
+## ✅ Confirmado por Carlos — 12/08/2026 (redirect + timeout)
 
 **Commit:**
 - `index.html`: `323a368` (rollback SHA: `7c0c38c2e004f0aff8c235e1690bc3fa734629f6`)
@@ -51,13 +53,11 @@ protegidos (SCROLL-FIX, WA-FLOAT).
   entre os dois caminhos
 - Diff final: só as linhas da mudança pretendida
 
-**Pendente para fechar como ✅:**
-- Teste em Android real
-- Teste em iPhone real
-- Teste vindo de dentro do navegador do Instagram (via DM, clicando
-  no link de dentro do app)
-- Confirmar os 3 casos em cada: clique em "Confirmado", clique em
-  "Talvez", e esperar 5s sem clicar
+**Confirmado:**
+- Links finais verificados direto na fonte (sem cache): Confirmado/Talvez
+  → `wa.link/wwr04p`, botão flutuante → `wa.link/dq4v89` (correto,
+  intocado)
+- Carlos validou e aprovou
 
 ---
 
