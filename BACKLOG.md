@@ -1,73 +1,84 @@
 # Backlog — guia.soulotear.com.br
 
-> Última atualização: 05/08/2026. Itens em ordem de prioridade, cada um com o que precisa acontecer antes de começar.
+> Última atualização: 12/08/2026. Itens em ordem de prioridade, cada um com o que precisa acontecer antes de começar.
 
 ---
 
-## ✅ Feito nesta sessão (05/08/2026)
+## ✅ Feito
 
-- Passo de confirmação de presença no webinário (commit `4821aad`)
-- Correção de compliance no depoimento: "impacto no retorno" → "impacto no valor" (commit `b6d3f4c`)
-- Seção FAQ com 4 perguntas (commit `b6d3f4c`)
-- Decisão registrada: palavra "investidor" fica de fora de toda a página — risco de
-  Special Ad Category "Financial Products and Services" empilhar sobre "Housing" e
-  restringir segmentação por idade/gênero/CEP
+**LP (guia.soulotear.com.br)**
+- Passo de confirmação de presença no webinário (`webinar_presenca`: Confirmado/Talvez/Não respondeu)
+- Correção de compliance no depoimento: "impacto no retorno" → "impacto no valor"
+- Seção FAQ com 4 perguntas
+- Sigla NR adicionada ao glossário (pill + card 03)
+- Decisão registrada: palavra "investidor" fica de fora de toda a página — risco de Special Ad Category "Financial Products and Services" empilhar sobre "Housing"
+- Clique em "Confirmado"/"Talvez" vai direto pro WhatsApp (`wa.link/wwr04p`); timeout de 5s revela tela de sucesso pra quem não clica — garante que 100% dos leads chegam no WhatsApp
 
----
-
-## 1. Medir comparecimento da sessão de 12/08
-
-**Status:** bloqueado até a data passar.
-**O que fazer:** segmentar `webinar_presenca` (Confirmado / Talvez / Não respondeu) contra quem realmente compareceu na sessão de 12/08 às 20h. Comparar taxa de comparecimento de cada grupo.
-**Por quê:** valida se o passo de confirmação de presença teve efeito real. Sem esse dado, os itens 2 e 4 abaixo não podem ser decididos com segurança.
-
----
-
-## 2. Trocar CTA "Baixar o guia agora" → "Garantir minha vaga"
-
-**Status:** bloqueado pelo item 1.
-**O que fazer:** reescrever o botão principal do formulário e o `form-sub` para enquadrar o webinário como o produto, não o guia.
-**Por quê:** hoje o funil inteiro vende "baixar PDF" — o webinário é bônus. Mudar isso deve reduzir fricção de cadastro, mas só compensa se subir comparecimento mais do que derruba conversão do formulário. Testar isolado do item 1 para não misturar variável.
+**Campanha de teste (30-54)**
+- Campanha `[TESTE 30-54]` criada, separada da produção, R$80/dia
+- Idade travada em 30-54 de verdade (não só sugestão) — resolvido o bug do Advantage+ que limitava a 25+
+- Criativos André, Larissa e Ricardo (C2) prontos e publicados
+- 2 variações extras prontas, não publicadas ainda: C1 (curiosidade/topo de funil) e C3 (retargeting/urgência)
+- Template de composição Python (`template_criativo.py`) travado — fonte, tamanho, espaçamento fixos, não variar mais
 
 ---
 
-## 3. Segmentar conjunto de anúncio da faixa 35-44
+## 1. Verificar status do carrossel na campanha de teste
 
-**Status:** pronto para começar, sem bloqueio.
-**O que fazer:** separar a faixa etária 35-44 em conjunto próprio por 7 dias antes de decidir cortar. Hoje ela consome 17% do gasto com CPL R$ 17,93 — bem acima das demais faixas (R$ 11-12).
-**Por quê:** é a única ineficiência clara nos dados sem precisar de novo criativo. Não cortar direto — pode subir CPM do resto se estreitar o público.
-
----
-
-## 4. Depoimentos novos com identificação real
-
-**Status:** bloqueado — depende do time comercial.
-**O que fazer:** puxar 2-3 clientes reais do Marcelo ou da Fabiana, pedir autorização pra usar nome + cidade + frase, redigir a partir do que a pessoa disse de verdade.
-**Por quê:** fabricar depoimento é problema de compliance e de credibilidade. Sem prazo fixo — só avança quando o comercial trouxer nomes.
+**Status:** pendente verificação — travado em "Em processamento" por vários dias.
+**O que fazer:** abrir o anúncio, editar qualquer campo pequeno (ex: descrição) e resubmeter pra forçar nova revisão. Se travar de novo, é bloqueio de política, não fila normal.
+**Por quê:** não é comportamento normal da Meta — revisão não deveria demorar dias. Enquanto isso, a hipótese de Carlos ("carrossel ajuda a conversão do conjunto") continua impossível de testar, porque ele nunca chegou a rodar de verdade.
 
 ---
 
-## 5. Campanha-laboratório para teste de criativos
+## 2. Larissa ficou sem verba um dia (11/08)
 
-**Status:** bloqueado pelo item 1 — sem sentido testar criativo enquanto o gargalo é comparecimento, não atração.
-**O que fazer:** campanha separada, ABO, ~R$ 80/dia, mesmo público da campanha de produção. Levar o anúncio "02 - Estático" pra lá (hoje subfinanciado dentro do CBO) + 2 criativos novos por rodada.
-**Por quê:** anúncio 01 e 02 têm qualificação estatisticamente empatada (10,4% vs 10,5%) — criativo não é o problema atual, mas a infraestrutura de teste falta para quando voltar a ser relevante.
-
----
-
-## 6. Corrigir promessa do criativo 6 ("lista personalizada")
-
-**Status:** pronto para começar, sem bloqueio.
-**O que fazer:** o criativo promete "lista personalizada com os studios mais rentáveis" — a página entrega um guia genérico igual pra todo mundo. Ou remove a promessa do criativo, ou cria segmentação real na entrega.
-**Por quê:** promessa quebrada queima confiança antes da nutrição começar. Baixo esforço, resolve sozinho (trocar o anúncio é mais rápido que personalizar a entrega).
+**Status:** monitorar, não agir ainda.
+**O que fazer:** se persistir por mais 2-3 dias, isolar em conjunto próprio pra garantir entrega.
+**Por quê:** o algoritmo concentrou tudo no André num dia — pode ser variação normal de leilão ou início de concentração precoce. Cedo demais pra agir.
 
 ---
 
-## 7. Verificar threshold de otimização por evento qualificado (CAPI)
+## 3. Decidir sobre as 2 variações C1/C3 prontas
 
-**Status:** pronto para verificar, sem bloqueio.
-**O que fazer:** conferir no Events Manager se o volume de `LeadQualificado` já atinge o mínimo (~50 eventos/7 dias) pra trocar o evento de otimização do conjunto.
-**Por quê:** com ~27 negócios/10 dias (~19/semana), pode já estar perto do threshold. Se estiver, é ganho de eficiência sem trabalho de criativo ou copy.
+**Status:** aguardando decisão de Carlos.
+**O que fazer:** publicar ou não os criativos C1 (curiosidade, topo de funil) e C3 (retargeting, urgência) na campanha de teste.
+**Por quê:** ainda não foi decidido se entram agora ou ficam pra uma próxima rodada — evitar adicionar variável nova enquanto a campanha atual (André/Larissa/Ricardo, idade corrigida) ainda está gerando os primeiros dias de dado limpo.
+
+---
+
+## 4. Ler relatório da campanha de teste com idade corrigida
+
+**Status:** bloqueado até acumular volume (idade 30-54 só ficou 100% correta a partir de ~11-12/08).
+**O que fazer:** esperar uns 4-5 dias de dado limpo (sem contaminação de idade) antes de comparar CPL/CVR contra a produção.
+**Por quê:** os relatórios até agora estavam parcialmente contaminados por tráfego de 55-64/65+ que não deveria estar ali.
+
+---
+
+## 5. Trocar CTA "Baixar o guia agora" → "Garantir minha vaga"
+
+**Status:** ainda bloqueado — depende de dado de comparecimento consolidado.
+**O que fazer:** reescrever o botão principal do formulário pra enquadrar o webinário como o produto, não o guia.
+**Por quê:** ainda não há dado suficiente de comparecimento acumulado pra saber se vale a troca.
+
+---
+
+## 6. Segmentar conjunto de anúncio da faixa 35-44 (produção)
+
+**Status:** pronto pra começar, sem bloqueio.
+**O que fazer:** separar 35-44 em conjunto próprio por 7 dias — CPL historicamente mais caro (R$17,93) que as demais faixas.
+
+---
+
+## 7. Depoimentos novos com identificação real
+
+**Status:** bloqueado — depende do time comercial trazer nomes/autorização.
+
+---
+
+## 8. Verificar threshold de otimização por evento qualificado (CAPI)
+
+**Status:** pronto pra verificar, sem bloqueio — conferir no Events Manager se `LeadQualificado` já atinge ~50 eventos/7 dias.
 
 ---
 
@@ -75,10 +86,11 @@
 
 | Item | Bloqueado por | Esforço |
 |---|---|---|
-| 1. Medir comparecimento 12/08 | Data | — |
-| 2. Trocar CTA do botão | Item 1 | Baixo |
-| 3. Segmentar 35-44 | Nada | Baixo |
-| 4. Depoimentos novos | Time comercial | Baixo (mas não é seu) |
-| 5. Campanha-laboratório criativos | Item 1 | Médio |
-| 6. Corrigir criativo 6 | Nada | Baixo |
-| 7. Threshold CAPI | Nada | Baixo (só verificar) |
+| 1. Carrossel travado em revisão | Nada — resubmeter | Baixo |
+| 2. Larissa sem verba (11/08) | Monitorar | — |
+| 3. Decidir C1/C3 | Decisão de Carlos | Baixo |
+| 4. Ler relatório idade corrigida | Volume/tempo | — |
+| 5. Trocar CTA botão | Dado de comparecimento | Baixo |
+| 6. Segmentar 35-44 (produção) | Nada | Baixo |
+| 7. Depoimentos novos | Time comercial | Baixo (não é seu) |
+| 8. Threshold CAPI | Nada | Baixo (só verificar) |
