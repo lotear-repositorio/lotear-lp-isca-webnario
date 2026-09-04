@@ -1,3 +1,15 @@
+## ✅ Timeout ajustado para 15s — 12/08/2026
+
+**Commit:** `index.html`: `3b249f1` (rollback SHA: `5532a3355c3cfeac53cef9c2d961ab1f8f772441`)
+
+Carlos reportou que muitos leads não estavam respondendo a tempo — 5s
+era curto demais pra ler a pergunta e decidir entre os 2 botões.
+Aumentado pra 15s. Diff de 1 caractere (`5000` → `15000`).
+
+`lotear_audit.py`: 28/28. Sem mudança de comportamento além do tempo.
+
+---
+
 ## ✅ Confirmado por Carlos — 12/08/2026
 
 > "Ok! Esta foi comitado assim? ja esta tudo certo?" — confirmado.
